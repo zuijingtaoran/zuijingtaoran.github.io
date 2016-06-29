@@ -83,6 +83,62 @@ sing.author='lb';sing.poem='hjqdy,lyzmf';sing();
 sing,author='lz';sing();
 </code>
 
+##2016-06-29
+#放下对象
+对象天生具有自私的一面，外面的世界未经允许不可访问对象内部，当然他提供属性和方法，为他人服务。
+###this
+同一个函数可以从不同的角度来调用，this并不一定是函数本身所处的对象，this只是在任意对象和function预案算结合时的一个概念，在js中，可以把this看做是当前要<b>[服务]</b>的这个对象。this是一个特殊的内置参数，根据this参数，您可以访问这个对象的属性和方法，但不能给this参数赋值，
+<code>
+function wai(){alert(this.name+typeof(this))}
+
+wai();//输出  object
+
+var bg={name:'bg'};bg.wai=wai;bg.wai();//输出bg object
+
+var sj={name:'sj'}sj.wai=wai;sj.wai()//输出sj object
+
+//////////////////////////////
+
+wai.call(bg)//直接将bg作为this ，调用wai,输出bg object
+
+bg.wai.call(sj)//将sj作为this，去调用bg的wai方法，输出sj object
+
+wai.wai=wai//将wai设置为自身的方法
+
+wai.name='wai';
+wai.wai()//此时的this是wai函数自身，输出 wai function
+
+({name:'nbd',wai:wai}).wai()//创建一个匿名对象并设置属性后调用wai方法，输出 nbd object
+
+
+
+</code>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- markdown end -->
@@ -147,6 +203,39 @@ with(arguments.callee)</code></p><code>
 
 </code><p><code>sing,author='lz';sing();
 </code></p>
+
+<h2 id="20160629">2016-06-29</h2>
+
+<h1 id="">放下对象</h1>
+
+<p>对象天生具有自私的一面，外面的世界未经允许不可访问对象内部，当然他提供属性和方法，为他人服务。</p>
+
+<h3 id="this">this</h3>
+
+<p>同一个函数可以从不同的角度来调用，this并不一定是函数本身所处的对象，this只是在任意对象和function预案算结合时的一个概念，在js中，可以把this看做是当前要<b>[服务]</b>的这个对象。this是一个特殊的内置参数，根据this参数，您可以访问这个对象的属性和方法，但不能给this参数赋值，
+<code>
+function wai(){alert(this.name+typeof(this))}</code></p><code>
+
+<p>wai();//输出  object</p>
+
+<p>var bg={name:'bg'};bg.wai=wai;bg.wai();//输出bg object</p>
+
+<p>var sj={name:'sj'}sj.wai=wai;sj.wai()//输出sj object</p>
+
+<p>//////////////////////////////</p>
+
+<p>wai.call(bg)//直接将bg作为this ，调用wai,输出bg object</p>
+
+<p>bg.wai.call(sj)//将sj作为this，去调用bg的wai方法，输出sj object</p>
+
+<p>wai.wai=wai//将wai设置为自身的方法</p>
+
+<p>wai.name='wai';
+wai.wai()//此时的this是wai函数自身，输出 wai function</p>
+
+<p>({name:'nbd',wai:wai}).wai()//创建一个匿名对象并设置属性后调用wai方法，输出 nbd object</p>
+
+</code><p><code></code></p>
 <!-- content end -->
 </div>
 <br>
