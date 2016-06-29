@@ -26,22 +26,64 @@
 <div id="md" style="display: none;">
 <!-- markdown -->
 #数据类型
-undefined:未定义
++ undefined:未定义
 
-null:typeof(null)=object 但null并非object
++ null:typeof(null)=object 但null并非object
 
-boolean:布尔量
++ boolean:布尔量
 
-number:线性的事物，迭代和循环 NaN参与任何数值计算的结构都是NaN
++ number:线性的事物，迭代和循环 NaN参与任何数值计算的结构都是NaN
 
-string：字符
++ string：字符
 
-====================<br/>
-简单类型都不是对象
-所谓对象化就是可以将数据和代码组织成复杂结构的能力。
+====================
+
+* 简单类型都不是对象
+
+* 所谓对象化就是可以将数据和代码组织成复杂结构的能力。
 
 #没有类
-js中没有类，类已化为无形，与对象融合为一体。（若一个生命对象开始就被规定了固定的类，那它还能演化吗？
+js中没有类，类已化为无形，与对象融合为一体。（若一个生命对象开始就被规定了固定的类，那它还能演化吗？）
+函数的魅力
+=
+function就是函数的类型
+-
+- 当我们写下一个函数时，只不过是建立了一个function类型的实体而已。
+
+- 我们写的这些js函数只不过是一个命了名的变量而已，其变量类型即为function，变量的值就是我们编写的函数代码体。
+
+- 函数就是变量，变量可以被随意赋值并用到任何地方
+
+<code>
+function mf(){alert('1')}mf();
+
+function mf(){alert('2')}mf();
+
+
+</code>
+两次都会输出2，因为js是一段段分析执行程序的，而且在同一段程序的分析中，定义式的函数语句会被优先提取出来执行。
+
+可以这样理解：
+-
+js中的代码也只是一种数据，同样可被任意修改复值，而他的值就是代码的逻辑。
+
+奇妙的对象
+=
+函数就是对象，只不过比一般的对象多了一个（）而已，这个操作符用来执行函数的逻辑，即，函数本身还可以被调用，一般对象却不可被调用。
+
+<code>
+function sing(){
+with(arguments.callee)
+
+alert(author+poem)
+}
+
+sing.author='lb';sing.poem='hjqdy,lyzmf';sing();
+
+sing,author='lz';sing();
+</code>
+
+
 
 <!-- markdown end -->
 </div>
@@ -49,23 +91,62 @@ js中没有类，类已化为无形，与对象融合为一体。（若一个生
 <!-- content -->
 <h1 id="">数据类型</h1>
 
-<p>undefined:未定义</p>
+<ul>
+<li><p>undefined:未定义</p></li>
+<li><p>null:typeof(null)=object 但null并非object</p></li>
+<li><p>boolean:布尔量</p></li>
+<li><p>number:线性的事物，迭代和循环 NaN参与任何数值计算的结构都是NaN</p></li>
+<li><p>string：字符</p></li>
+</ul>
 
-<p>null:typeof(null)=object 但null并非object</p>
+<p>====================</p>
 
-<p>boolean:布尔量</p>
-
-<p>number:线性的事物，迭代和循环 NaN参与任何数值计算的结构都是NaN</p>
-
-<p>string：字符</p>
-
-<p>====================<br>
-简单类型都不是对象
-所谓对象化就是可以将数据和代码组织成复杂结构的能力。</p>
+<ul>
+<li><p>简单类型都不是对象</p></li>
+<li><p>所谓对象化就是可以将数据和代码组织成复杂结构的能力。</p></li>
+</ul>
 
 <h1 id="">没有类</h1>
 
-<p>js中没有类，类已化为无形，与对象融合为一体。（若一个生命对象开始就被规定了固定的类，那它还能演化吗？</p>
+<p>js中没有类，类已化为无形，与对象融合为一体。（若一个生命对象开始就被规定了固定的类，那它还能演化吗？）</p>
+
+<h1 id="">函数的魅力</h1>
+
+<h2 id="function">function就是函数的类型</h2>
+
+<ul>
+<li><p>当我们写下一个函数时，只不过是建立了一个function类型的实体而已。</p></li>
+<li><p>我们写的这些js函数只不过是一个命了名的变量而已，其变量类型即为function，变量的值就是我们编写的函数代码体。</p></li>
+<li><p>函数就是变量，变量可以被随意赋值并用到任何地方</p></li>
+</ul>
+
+<p><code>
+function mf(){alert('1')}mf();</code></p><code>
+
+<p>function mf(){alert('2')}mf();</p>
+
+</code><p><code></code>
+两次都会输出2，因为js是一段段分析执行程序的，而且在同一段程序的分析中，定义式的函数语句会被优先提取出来执行。</p>
+
+<h2 id="">可以这样理解：</h2>
+
+<p>js中的代码也只是一种数据，同样可被任意修改复值，而他的值就是代码的逻辑。</p>
+
+<h1 id="">奇妙的对象</h1>
+
+<p>函数就是对象，只不过比一般的对象多了一个（）而已，这个操作符用来执行函数的逻辑，即，函数本身还可以被调用，一般对象却不可被调用。</p>
+
+<p><code>
+function sing(){
+with(arguments.callee)</code></p><code>
+
+<p>alert(author+poem)
+}</p>
+
+<p>sing.author='lb';sing.poem='hjqdy,lyzmf';sing();</p>
+
+</code><p><code>sing,author='lz';sing();
+</code></p>
 <!-- content end -->
 </div>
 <br>
