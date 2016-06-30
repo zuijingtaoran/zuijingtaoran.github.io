@@ -114,7 +114,53 @@ wai.wai()//此时的this是wai函数自身，输出 wai function
 
 </code>
 
+#对象素描
+##如何建立对象
++ json
+js对象表示法
 
+var o={};
+
++ 构造对象
+
+使用new操作符结合一个函数来创建对象。
+
+function my(){};
+var ao=new my();
+
+等价于
+
+function my(); var ao={};my.call(ao);//将ao作为this指针调用my函数。
+
+__理解：<b>js先用new操作符创建了一个对象，紧接着将这个对象作为this参数调用了后面的函数。</b>
+
+[附：call的解读]：<small>call和apply是为了动态改变this而存在的，当一个object设有某个方法，其它没有，可以借助。</small>
+
+##可以把my当成构造函数
+
+function per(name){this.name=name;
+this.sh=function(){alert('sh'+this.name)}}
+
+function emp(name.salary){<b>per.call(this,name)</b>
+this.salary=salary;
+this.shm=function(){alert(this.name+this.salary)}
+}
+
+var bg=new per('bg')//用per构造函数创建bg对象
+
+var sj=new emp('sj',1234);
+
+bg.sh();
+
+sj.sh();
+
+sj.shm();
+
+alert(bg.constructor==per)
+
+alert(sj.constructor==emp)
+
+alert(bg.sh==sj.sh)//false
 
 
 
@@ -236,6 +282,60 @@ wai.wai()//此时的this是wai函数自身，输出 wai function</p>
 <p>({name:'nbd',wai:wai}).wai()//创建一个匿名对象并设置属性后调用wai方法，输出 nbd object</p>
 
 </code><p><code></code></p>
+
+<h1 id="">对象素描</h1>
+
+<h2 id="">如何建立对象</h2>
+
+<ul>
+<li>json
+js对象表示法</li>
+</ul>
+
+<p>var o={};</p>
+
+<ul>
+<li>构造对象</li>
+</ul>
+
+<p>使用new操作符结合一个函数来创建对象。</p>
+
+<p>function my(){};
+var ao=new my();</p>
+
+<p>等价于</p>
+
+<p>function my(); var ao={};my.call(ao);//将ao作为this指针调用my函数。</p>
+
+<p>__理解：<b>js先用new操作符创建了一个对象，紧接着将这个对象作为this参数调用了后面的函数。</b></p>
+
+<p>[附：call的解读]：<small>call和apply是为了动态改变this而存在的，当一个object设有某个方法，其它没有，可以借助。</small></p>
+
+<h2 id="my">可以把my当成构造函数</h2>
+
+<p>function per(name){this.name=name;
+this.sh=function(){alert('sh'+this.name)}}</p>
+
+<p>function emp(name.salary){<b>per.call(this,name)</b>
+this.salary=salary;
+this.shm=function(){alert(this.name+this.salary)}
+}</p>
+
+<p>var bg=new per('bg')//用per构造函数创建bg对象</p>
+
+<p>var sj=new emp('sj',1234);</p>
+
+<p>bg.sh();</p>
+
+<p>sj.sh();</p>
+
+<p>sj.shm();</p>
+
+<p>alert(bg.constructor==per)</p>
+
+<p>alert(sj.constructor==emp)</p>
+
+<p>alert(bg.sh==sj.sh)//false</p>
 <!-- content end -->
 </div>
 <br>
