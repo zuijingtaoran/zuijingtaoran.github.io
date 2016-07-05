@@ -45,7 +45,29 @@ dom3引入了以统一方式加载，保护，验证文档的方法
 #在html中使用js
 defer属性只适用于外部脚本文件。把延迟脚本放在页面底部是最佳选择。异步脚本会在页面的onload事件前执行，但可能会在DOMContentLoad后执行。
 
-<noscript>使用：浏览器不支持脚本或脚本被禁用。
+noscript使用：浏览器不支持脚本或脚本被禁用。
+
+#变量
+松散型的，每个变量仅是用于保存值的占位符。var定义的变量将成为定义该变量作用域中的局部变量。
+#数据类型
++ typeof操作符（非函数）
+
++ undefined
+
+使用var声明但未对其初始化时，其值为und...(显式的初始化是明智的选择)
+
++ null
+
+空对象指针，typeof null=object
+
+if(car!=null){对car的操作}定义的对象用来保存对象，初始化时设置为null.
+
+undefined派生于null null==und..
+
++ boolean
+Boolean(mes)
+
++Number
 
 
 
@@ -81,7 +103,37 @@ dom3引入了以统一方式加载，保护，验证文档的方法</p>
 
 <p>defer属性只适用于外部脚本文件。把延迟脚本放在页面底部是最佳选择。异步脚本会在页面的onload事件前执行，但可能会在DOMContentLoad后执行。</p>
 
-<p><noscript>使用：浏览器不支持脚本或脚本被禁用。&lt;/p&gt;</noscript></p>
+<p>noscript使用：浏览器不支持脚本或脚本被禁用。</p>
+
+<h1 id="">变量</h1>
+
+<p>松散型的，每个变量仅是用于保存值的占位符。var定义的变量将成为定义该变量作用域中的局部变量。</p>
+
+<h1 id="">数据类型</h1>
+
+<ul>
+<li><p>typeof操作符（非函数）</p></li>
+<li><p>undefined</p></li>
+</ul>
+
+<p>使用var声明但未对其初始化时，其值为und...(显式的初始化是明智的选择)</p>
+
+<ul>
+<li>null</li>
+</ul>
+
+<p>空对象指针，typeof null=object</p>
+
+<p>if(car!=null){对car的操作}定义的对象用来保存对象，初始化时设置为null.</p>
+
+<p>undefined派生于null null==und..</p>
+
+<ul>
+<li>boolean
+Boolean(mes)</li>
+</ul>
+
+<p>+Number</p>
 <!-- content end -->
 </div>
 <br>
