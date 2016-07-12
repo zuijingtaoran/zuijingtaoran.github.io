@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+http://www.cnblogs.com/nulifendou/archive/2016/01/04/5100351.html
+js中函数参数值传递和引用传递
+
+在阅读本章节之前建议参阅一下两章节:
+1.值类型可以参阅javascript的值类型一章节。
+2.引用类型可以参阅javascript的引用类型一章节。
+一.函数传递值类型:
+代码实例如下:
+
+ 
+
+复制代码
+function addNum(num)
+{ 
+　num+=10; 
+　return num; 
+} 
+var num=10; 
+var result=addNum(num); 
+console.log(num);
+console.log(result);
+复制代码
+ 
+
+以上代码的弹出值分别为:10和20，下面进行一下分析:
+声明变量num并复制为10，这个是num是一个值类型，当为函数传递参数的时候，是将此值复制一份传递给函数，所以在函数执行之后，num本身的值并没有被改变，函数中被改变的值仅仅是一个副本而已。
+二.函数传递引用类型:
+
+ 
+
+复制代码
+function setName(obj)
+{ 
+  obj.name="青岛新锐"; 
+} 
+var web=new Object(); 
+web.name="蚂蚁部落";
+setName(web); 
+console.log(web.name);
+复制代码
+ 
+
+以上代码的弹出值是:“青岛新锐”，下面进行一下分析:
+声明一个对象web，它是一个引用类型，当为函数传递参数的时候，是传递的web对象的引用，也就是此对象的内存地址，所以在函数中修改属性的对象就是函数外面创建的对象本身。
+三.加深理解:
+
+ 
+
+复制代码
+function setName(obj)
+{ 
+  obj.name="青岛新锐"; 
+  obj=new Object(); 
+  obj.name="蚂蚁部落"; 
+} 
+var web=new Object(); 
+setName(web); 
+console.log(web.name);
+复制代码
+ 
+
+以上代码的弹出值是:青岛新锐，很多人可能会以为将会弹出“蚂蚁部落”，下面进行一下简单的分析:
+在函数外面创建一个对象，并将对象的引用赋值给变量web，web中存储的是对象在内存中的存储地址，当为函数传递参数的，就是传递的在函数外面创建的对象的地址。在函数中，为外面创建的对象创建一个自定义属性name并赋值为“青岛新锐”，然后又创建一个新的对象，并将新对象的地址赋值给obj，这个时候obj指向的并不是函数外面创建的对象，所以外面对象name属性不会被改变。
+
+原文地址是:http://www.softwhy.com/forum.php?mod=viewthread&tid=9052
+
+更多内容可以参阅:http://www.softwhy.com/javascript/
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>http://www.cnblogs.com/nulifendou/archive/2016/01/04/5100351.html
+js中函数参数值传递和引用传递</p>
+
+<p>在阅读本章节之前建议参阅一下两章节:
+1.值类型可以参阅javascript的值类型一章节。
+2.引用类型可以参阅javascript的引用类型一章节。
+一.函数传递值类型:
+代码实例如下:</p>
+
+<p>复制代码
+function addNum(num)
+{ 
+　num+=10; 
+　return num; 
+} 
+var num=10; 
+var result=addNum(num); 
+console.log(num);
+console.log(result);
+复制代码</p>
+
+<p>以上代码的弹出值分别为:10和20，下面进行一下分析:
+声明变量num并复制为10，这个是num是一个值类型，当为函数传递参数的时候，是将此值复制一份传递给函数，所以在函数执行之后，num本身的值并没有被改变，函数中被改变的值仅仅是一个副本而已。
+二.函数传递引用类型:</p>
+
+<p>复制代码
+function setName(obj)
+{ 
+  obj.name="青岛新锐"; 
+} 
+var web=new Object(); 
+web.name="蚂蚁部落";
+setName(web); 
+console.log(web.name);
+复制代码</p>
+
+<p>以上代码的弹出值是:“青岛新锐”，下面进行一下分析:
+声明一个对象web，它是一个引用类型，当为函数传递参数的时候，是传递的web对象的引用，也就是此对象的内存地址，所以在函数中修改属性的对象就是函数外面创建的对象本身。
+三.加深理解:</p>
+
+<p>复制代码
+function setName(obj)
+{ 
+  obj.name="青岛新锐"; 
+  obj=new Object(); 
+  obj.name="蚂蚁部落"; 
+} 
+var web=new Object(); 
+setName(web); 
+console.log(web.name);
+复制代码</p>
+
+<p>以上代码的弹出值是:青岛新锐，很多人可能会以为将会弹出“蚂蚁部落”，下面进行一下简单的分析:
+在函数外面创建一个对象，并将对象的引用赋值给变量web，web中存储的是对象在内存中的存储地址，当为函数传递参数的，就是传递的在函数外面创建的对象的地址。在函数中，为外面创建的对象创建一个自定义属性name并赋值为“青岛新锐”，然后又创建一个新的对象，并将新对象的地址赋值给obj，这个时候obj指向的并不是函数外面创建的对象，所以外面对象name属性不会被改变。</p>
+
+<p>原文地址是:http://www.softwhy.com/forum.php?mod=viewthread&amp;tid=9052</p>
+
+<p>更多内容可以参阅:http://www.softwhy.com/javascript/</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "160712.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
