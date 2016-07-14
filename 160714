@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+执行环境定义了变量或函数有权访问其他数据，决定了他们各自行为。函数参数也被当做变量对待，因此其访问规则与执行环境中的其他变量相同
+##没有块级作用域
+对于js，由for创造的变量i即使在循环结束后，也依旧存在于循环外部的执行环境中。
+###查询标识符
+搜索过程从作用域链的前端，向上逐级查询。
+
+##小结
++ 基本类型值在内存中占据固定大小的空间，因此保存在占内存中。
++ 从一个变量向另一个变量复制**基本类型**的值，会创建这个值的一个副本
++ 包含引用类型值的变量实际上包含的并不是对象本身，而是一个指向对象的指针
++ 从一个变量向另一个变量复制**引用类型**的值，复制的其实是指针，因此两个对象都指向同一个对象。
++ 确定值是哪种基本类型用typeof操作符，而确定是哪种引用类型用instanceof
++ 执行环境有全局执行环境和函数执行环境之分。
++ 每进入一个新执行环境，都会创建一个用于搜索变量和函数的作用域链。
+#引用类型
+引用类型是一种数据结构，用于将数据和功能组织在一起。
+**对象是某个淡定引用类型的实例**新对象是使用new 操作符后跟一个构造函数来创建的。
+##object类型
+对象字面量创建法
+var p={}
+****
+访问对象属性：p.n  p['n'] _建议使用点表示法_
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>执行环境定义了变量或函数有权访问其他数据，决定了他们各自行为。函数参数也被当做变量对待，因此其访问规则与执行环境中的其他变量相同</p>
+
+<h2 id="">没有块级作用域</h2>
+
+<p>对于js，由for创造的变量i即使在循环结束后，也依旧存在于循环外部的执行环境中。</p>
+
+<h3 id="">查询标识符</h3>
+
+<p>搜索过程从作用域链的前端，向上逐级查询。</p>
+
+<h2 id="">小结</h2>
+
+<ul>
+<li>基本类型值在内存中占据固定大小的空间，因此保存在占内存中。</li>
+<li>从一个变量向另一个变量复制<strong>基本类型</strong>的值，会创建这个值的一个副本</li>
+<li>包含引用类型值的变量实际上包含的并不是对象本身，而是一个指向对象的指针</li>
+<li>从一个变量向另一个变量复制<strong>引用类型</strong>的值，复制的其实是指针，因此两个对象都指向同一个对象。</li>
+<li>确定值是哪种基本类型用typeof操作符，而确定是哪种引用类型用instanceof</li>
+<li>执行环境有全局执行环境和函数执行环境之分。</li>
+<li>每进入一个新执行环境，都会创建一个用于搜索变量和函数的作用域链。</li>
+</ul>
+
+<h1 id="">引用类型</h1>
+
+<p>引用类型是一种数据结构，用于将数据和功能组织在一起。
+<strong>对象是某个淡定引用类型的实例</strong>新对象是使用new 操作符后跟一个构造函数来创建的。</p>
+
+<h2 id="object">object类型</h2>
+
+<p>对象字面量创建法
+var p={}</p>
+
+<hr>
+
+<p>访问对象属性：p.n  p['n'] <em>建议使用点表示法</em></p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "160714";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
