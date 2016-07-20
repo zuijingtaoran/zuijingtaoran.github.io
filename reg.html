@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+/判断输入内容是否为空    
+function IsNull(){    
+    var str = document.getElementById('str').value.trim();    
+    if(str.length==0){    
+        alert('对不起，文本框不能为空或者为空格!');//请将“文本框”改成你需要验证的属性名称!    
+    }    
+}    
+   
+//判断日期类型是否为YYYY-MM-DD格式的类型    
+function IsDate(){     
+    var str = document.getElementById('str').value.trim();    
+    if(str.length!=0){    
+        var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/;     
+        var r = str.match(reg);     
+        if(r==null)    
+            alert('对不起，您输入的日期格式不正确!'); //请将“日期”改成你需要验证的属性名称!    
+        }    
+}     
+   
+//判断日期类型是否为YYYY-MM-DD hh:mm:ss格式的类型    
+function IsDateTime(){     
+    var str = document.getElementById('str').value.trim();    
+    if(str.length!=0){    
+        var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/;     
+        var r = str.match(reg);     
+        if(r==null)    
+        alert('对不起，您输入的日期格式不正确!'); //请将“日期”改成你需要验证的属性名称!    
+    }    
+}     
+   
+//判断日期类型是否为hh:mm:ss格式的类型    
+function IsTime()     
+{     
+    var str = document.getElementById('str').value.trim();    
+    if(str.length!=0){    
+    reg=/^((20|21|22|23|[0-1]\d)\:[0-5][0-9])(\:[0-5][0-9])?$/     
+        if(!reg.test(str)){    
+            alert("对不起，您输入的日期格式不正确!");//请将“日期”改成你需要验证的属性名称!    
+        }    
+    }    
+}     
+   
+//判断输入的字符是否为英文字母    
+function IsLetter()     
+{     
+        var str = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^[a-zA-Z]+$/;     
+        if(!reg.test(str)){    
+            alert("对不起，您输入的英文字母类型格式不正确!");//请将“英文字母类型”改成你需要验证的属性名称!    
+        }    
+        }    
+}     
+   
+//判断输入的字符是否为整数    
+function IsInteger()     
+{       
+        var str = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^[-+]?\d*$/;     
+        if(!reg.test(str)){    
+            alert("对不起，您输入的整数类型格式不正确!");//请将“整数类型”要换成你要验证的那个属性名称！    
+        }    
+        }    
+}     
+   
+//判断输入的字符是否为双精度    
+function IsDouble(val)     
+{     
+        var str = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^[-\+]?\d+(\.\d+)?$/;    
+        if(!reg.test(str)){    
+            alert("对不起，您输入的双精度类型格式不正确!");//请将“双精度类型”要换成你要验证的那个属性名称！    
+        }    
+        }    
+}     
+   
+   
+//判断输入的字符是否为:a-z,A-Z,0-9    
+function IsString()     
+{     
+        var str = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^[a-zA-Z0-9_]+$/;     
+        if(!reg.test(str)){    
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！    
+        }    
+        }    
+}     
+   
+//判断输入的字符是否为中文    
+function IsChinese()     
+{     
+        var str = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^[\u0391-\uFFE5]+$/;    
+        if(!reg.test(str)){    
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！    
+        }    
+        }    
+}     
+   
+//判断输入的EMAIL格式是否正确    
+function IsEmail()     
+{     
+        var str = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;    
+        if(!reg.test(str)){    
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！    
+        }    
+        }    
+}     
+   
+//判断输入的邮编(只能为六位)是否正确    
+function IsZIP()     
+{     
+        var str = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^\d{6}$/;    
+        if(!reg.test(str)){    
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！    
+        }    
+        }    
+}     
+   
+//判断输入的数字不大于某个特定的数字    
+function MaxValue()     
+{     
+    var val = document.getElementById('str').value.trim();    
+        if(str.length!=0){    
+        reg=/^[-+]?\d*$/;     
+        if(!reg.test(str)){//判断是否为数字类型    
+            if(val>parseInt('123')) //“123”为自己设定的最大值    
+            {     
+                alert('对不起，您输入的数字超出范围');//请将“数字”改成你要验证的那个属性名称！    
+            }     
+        }    
+    }    
+}     
+   
+   
+ Phone : /^((\(\d{2,3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7}(\-\d{1,4})?$/    
+ Mobile : /^((\(\d{2,3}\))|(\d{3}\-))?13\d{9}$/    
+ Url : /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/   
+ IdCard : /^\d{15}(\d{2}[A-Za-z0-9])?$/   
+ QQ : /^[1-9]\d{4,8}$/   
+ 某种特殊金额：/^((\d{1,3}(,\d{3})*)|(\d+))(\.\d{2})?$/               //说明：除“XXX    XX,XXX    XX,XXX.00”格式外
+
+//为上面提供各个JS验证方法提供.trim()属性   
+String.prototype.trim=function(){   
+        return this.replace(/(^\s*)|(\s*$)/g, "");    
+    }
+
+调用：
+<input type="text" name="str" >
+<input type="button" value=" 确定 " onClick="">    //onClick中写自己要调用的JS验证函数
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>/判断输入内容是否为空 <br>
+function IsNull(){ <br>
+    var str = document.getElementById('str').value.trim(); <br>
+    if(str.length==0){ <br>
+        alert('对不起，文本框不能为空或者为空格!');//请将“文本框”改成你需要验证的属性名称! <br>
+    } <br>
+}    </p>
+
+<p>//判断日期类型是否为YYYY-MM-DD格式的类型 <br>
+function IsDate(){ <br>
+    var str = document.getElementById('str').value.trim(); <br>
+    if(str.length!=0){ <br>
+        var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/; <br>
+        var r = str.match(reg); <br>
+        if(r==null) <br>
+            alert('对不起，您输入的日期格式不正确!'); //请将“日期”改成你需要验证的属性名称! <br>
+        } <br>
+}     </p>
+
+<p>//判断日期类型是否为YYYY-MM-DD hh:mm:ss格式的类型 <br>
+function IsDateTime(){ <br>
+    var str = document.getElementById('str').value.trim(); <br>
+    if(str.length!=0){ <br>
+        var reg = /^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/; <br>
+        var r = str.match(reg); <br>
+        if(r==null) <br>
+        alert('对不起，您输入的日期格式不正确!'); //请将“日期”改成你需要验证的属性名称! <br>
+    } <br>
+}     </p>
+
+<p>//判断日期类型是否为hh:mm:ss格式的类型 <br>
+function IsTime() <br>
+{ <br>
+    var str = document.getElementById('str').value.trim(); <br>
+    if(str.length!=0){ <br>
+    reg=/^((20|21|22|23|[0-1]\d)\:[0-5][0-9])(\:[0-5][0-9])?$/ <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的日期格式不正确!");//请将“日期”改成你需要验证的属性名称! <br>
+        } <br>
+    } <br>
+}     </p>
+
+<p>//判断输入的字符是否为英文字母 <br>
+function IsLetter() <br>
+{ <br>
+        var str = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^[a-zA-Z]+$/; <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的英文字母类型格式不正确!");//请将“英文字母类型”改成你需要验证的属性名称! <br>
+        } <br>
+        } <br>
+}     </p>
+
+<p>//判断输入的字符是否为整数 <br>
+function IsInteger() <br>
+{ <br>
+        var str = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^[-+]?\d*$/; <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的整数类型格式不正确!");//请将“整数类型”要换成你要验证的那个属性名称！ <br>
+        } <br>
+        } <br>
+}     </p>
+
+<p>//判断输入的字符是否为双精度 <br>
+function IsDouble(val) <br>
+{ <br>
+        var str = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^[-+]?\d+(.\d+)?$/; <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的双精度类型格式不正确!");//请将“双精度类型”要换成你要验证的那个属性名称！ <br>
+        } <br>
+        } <br>
+}     </p>
+
+<p>//判断输入的字符是否为:a-z,A-Z,0-9 <br>
+function IsString() <br>
+{ <br>
+        var str = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^[a-zA-Z0-9_]+$/; <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！ <br>
+        } <br>
+        } <br>
+}     </p>
+
+<p>//判断输入的字符是否为中文 <br>
+function IsChinese() <br>
+{ <br>
+        var str = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^[\u0391-\uFFE5]+$/; <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！ <br>
+        } <br>
+        } <br>
+}     </p>
+
+<p>//判断输入的EMAIL格式是否正确 <br>
+function IsEmail() <br>
+{ <br>
+        var str = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^\w+([-+.]\w+)<em>@\w+([-.]\w+)</em>.\w+([-.]\w+)*$/; <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！ <br>
+        } <br>
+        } <br>
+}     </p>
+
+<p>//判断输入的邮编(只能为六位)是否正确 <br>
+function IsZIP() <br>
+{ <br>
+        var str = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^\d{6}$/; <br>
+        if(!reg.test(str)){ <br>
+            alert("对不起，您输入的字符串类型格式不正确!");//请将“字符串类型”要换成你要验证的那个属性名称！ <br>
+        } <br>
+        } <br>
+}     </p>
+
+<p>//判断输入的数字不大于某个特定的数字 <br>
+function MaxValue() <br>
+{ <br>
+    var val = document.getElementById('str').value.trim(); <br>
+        if(str.length!=0){ <br>
+        reg=/^[-+]?\d*$/; <br>
+        if(!reg.test(str)){//判断是否为数字类型 <br>
+            if(val&gt;parseInt('123')) //“123”为自己设定的最大值 <br>
+            { <br>
+                alert('对不起，您输入的数字超出范围');//请将“数字”改成你要验证的那个属性名称！ <br>
+            } <br>
+        } <br>
+    } <br>
+}     </p>
+
+<p>Phone : /^(((\d{2,3}))|(\d{3}-))?((0\d{2,3})|0\d{2,3}-)?[1-9]\d{6,7}(-\d{1,4})?<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4-Frame" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>/</mo></mrow><mi>M</mi><mi>o</mi><mi>b</mi><mi>i</mi><mi>l</mi><mi>e</mi><mo>:</mo><msup><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>/</mo></mrow><mo stretchy=&quot;false&quot;>(</mo></msup><mo stretchy=&quot;false&quot;>(</mo><mo stretchy=&quot;false&quot;>(</mo><mtext mathcolor=&quot;red&quot;>\d</mtext><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>2</mn><mo>,</mo><mn>3</mn></mrow><mo stretchy=&quot;false&quot;>)</mo><mo stretchy=&quot;false&quot;>)</mo><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo stretchy=&quot;false&quot;>|</mo></mrow><mo stretchy=&quot;false&quot;>(</mo><mtext mathcolor=&quot;red&quot;>\d</mtext><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>3</mn></mrow><mo>&amp;#x2212;</mo><mo stretchy=&quot;false&quot;>)</mo><mo stretchy=&quot;false&quot;>)</mo><mo>?</mo><mn>13</mn><mtext mathcolor=&quot;red&quot;>\d</mtext><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>9</mn></mrow></math>" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-146" role="math" style="width: 20.253em; display: inline-block;"><span style="display: inline-block; position: relative; width: 16.203em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.153em 1016.15em 2.702em -999.998em); top: -2.298em; left: 0.003em;"><span class="mrow" id="MathJax-Span-147"><span class="texatom" id="MathJax-Span-148"><span class="mrow" id="MathJax-Span-149"><span class="mo" id="MathJax-Span-150" style="font-family: MathJax_Main;">/</span></span></span><span class="mi" id="MathJax-Span-151" style="font-family: MathJax_Math-italic;">M<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.102em;"></span></span><span class="mi" id="MathJax-Span-152" style="font-family: MathJax_Math-italic;">o</span><span class="mi" id="MathJax-Span-153" style="font-family: MathJax_Math-italic;">b</span><span class="mi" id="MathJax-Span-154" style="font-family: MathJax_Math-italic;">i</span><span class="mi" id="MathJax-Span-155" style="font-family: MathJax_Math-italic;">l</span><span class="mi" id="MathJax-Span-156" style="font-family: MathJax_Math-italic;">e</span><span class="mo" id="MathJax-Span-157" style="font-family: MathJax_Main; padding-left: 0.302em;">:</span><span class="msubsup" id="MathJax-Span-158" style="padding-left: 0.302em;"><span style="display: inline-block; position: relative; width: 0.853em; height: 0px;"><span style="position: absolute; clip: rect(3.103em 1000.45em 4.402em -999.998em); top: -3.998em; left: 0.003em;"><span class="texatom" id="MathJax-Span-159"><span class="mrow" id="MathJax-Span-160"><span class="mo" id="MathJax-Span-161" style="font-family: MathJax_Main;">/</span></span></span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -4.498em; left: 0.503em;"><span class="mo" id="MathJax-Span-162" style="font-size: 70.7%; font-family: MathJax_Main;">(</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="mo" id="MathJax-Span-163" style="font-family: MathJax_Main;">(</span><span class="mo" id="MathJax-Span-164" style="font-family: MathJax_Main;">(</span><span class="mtext" id="MathJax-Span-165" style="font-family: MathJax_Main; color: red;">\d</span><span class="texatom" id="MathJax-Span-166"><span class="mrow" id="MathJax-Span-167"><span class="mn" id="MathJax-Span-168" style="font-family: MathJax_Main;">2</span><span class="mo" id="MathJax-Span-169" style="font-family: MathJax_Main;">,</span><span class="mn" id="MathJax-Span-170" style="font-family: MathJax_Main; padding-left: 0.152em;">3</span></span></span><span class="mo" id="MathJax-Span-171" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-172" style="font-family: MathJax_Main;">)</span><span class="texatom" id="MathJax-Span-173"><span class="mrow" id="MathJax-Span-174"><span class="mo" id="MathJax-Span-175" style="font-family: MathJax_Main;">|</span></span></span><span class="mo" id="MathJax-Span-176" style="font-family: MathJax_Main;">(</span><span class="mtext" id="MathJax-Span-177" style="font-family: MathJax_Main; color: red;">\d</span><span class="texatom" id="MathJax-Span-178"><span class="mrow" id="MathJax-Span-179"><span class="mn" id="MathJax-Span-180" style="font-family: MathJax_Main;">3</span></span></span><span class="mo" id="MathJax-Span-181" style="font-family: MathJax_Main;">−</span><span class="mo" id="MathJax-Span-182" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-183" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-184" style="font-family: MathJax_Main;">?</span><span class="mn" id="MathJax-Span-185" style="font-family: MathJax_Main;">13</span><span class="mtext" id="MathJax-Span-186" style="font-family: MathJax_Main; color: red;">\d</span><span class="texatom" id="MathJax-Span-187"><span class="mrow" id="MathJax-Span-188"><span class="mn" id="MathJax-Span-189" style="font-family: MathJax_Main;">9</span></span></span></span><span style="display: inline-block; width: 0px; height: 2.302em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.691em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mi>M</mi><mi>o</mi><mi>b</mi><mi>i</mi><mi>l</mi><mi>e</mi><mo>:</mo><msup><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mo stretchy="false">(</mo></msup><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mtext mathcolor="red">\d</mtext><mrow class="MJX-TeXAtom-ORD"><mn>2</mn><mo>,</mo><mn>3</mn></mrow><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mrow class="MJX-TeXAtom-ORD"><mo stretchy="false">|</mo></mrow><mo stretchy="false">(</mo><mtext mathcolor="red">\d</mtext><mrow class="MJX-TeXAtom-ORD"><mn>3</mn></mrow><mo>−</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>?</mo><mn>13</mn><mtext mathcolor="red">\d</mtext><mrow class="MJX-TeXAtom-ORD"><mn>9</mn></mrow></math></span></span><script type="math/tex" id="MathJax-Element-4">/  
+ Mobile : /^(((\d{2,3}))|(\d{3}-))?13\d{9}</script>/ <br>
+ Url : /^http:\/\/[A-Za-z0-9]+.[A-Za-z0-9]+[\/=\?%-&amp;_~`@[]\':+!]<em>([^&lt;&gt;\"\"])</em><span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-5-Frame" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>/</mo></mrow><mi>I</mi><mi>d</mi><mi>C</mi><mi>a</mi><mi>r</mi><mi>d</mi><mo>:</mo><msup><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>/</mo></mrow><mtext mathcolor=&quot;red&quot;>\d</mtext></msup><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>15</mn></mrow><mo stretchy=&quot;false&quot;>(</mo><mtext mathcolor=&quot;red&quot;>\d</mtext><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>2</mn></mrow><mo stretchy=&quot;false&quot;>[</mo><mi>A</mi><mo>&amp;#x2212;</mo><mi>Z</mi><mi>a</mi><mo>&amp;#x2212;</mo><mi>z</mi><mn>0</mn><mo>&amp;#x2212;</mo><mn>9</mn><mo stretchy=&quot;false&quot;>]</mo><mo stretchy=&quot;false&quot;>)</mo><mo>?</mo></math>" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-190" role="math" style="width: 21.703em; display: inline-block;"><span style="display: inline-block; position: relative; width: 17.352em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.153em 1017.3em 2.702em -999.998em); top: -2.298em; left: 0.003em;"><span class="mrow" id="MathJax-Span-191"><span class="texatom" id="MathJax-Span-192"><span class="mrow" id="MathJax-Span-193"><span class="mo" id="MathJax-Span-194" style="font-family: MathJax_Main;">/</span></span></span><span class="mi" id="MathJax-Span-195" style="font-family: MathJax_Math-italic;">I<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mi" id="MathJax-Span-196" style="font-family: MathJax_Math-italic;">d<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mi" id="MathJax-Span-197" style="font-family: MathJax_Math-italic;">C<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mi" id="MathJax-Span-198" style="font-family: MathJax_Math-italic;">a</span><span class="mi" id="MathJax-Span-199" style="font-family: MathJax_Math-italic;">r</span><span class="mi" id="MathJax-Span-200" style="font-family: MathJax_Math-italic;">d<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mo" id="MathJax-Span-201" style="font-family: MathJax_Main; padding-left: 0.302em;">:</span><span class="msubsup" id="MathJax-Span-202" style="padding-left: 0.302em;"><span style="display: inline-block; position: relative; width: 1.302em; height: 0px;"><span style="position: absolute; clip: rect(3.103em 1000.45em 4.402em -999.998em); top: -3.998em; left: 0.003em;"><span class="texatom" id="MathJax-Span-203"><span class="mrow" id="MathJax-Span-204"><span class="mo" id="MathJax-Span-205" style="font-family: MathJax_Main;">/</span></span></span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -4.498em; left: 0.503em;"><span class="mtext" id="MathJax-Span-206" style="font-size: 70.7%; font-family: MathJax_Main; color: red;">\d</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="texatom" id="MathJax-Span-207"><span class="mrow" id="MathJax-Span-208"><span class="mn" id="MathJax-Span-209" style="font-family: MathJax_Main;">15</span></span></span><span class="mo" id="MathJax-Span-210" style="font-family: MathJax_Main;">(</span><span class="mtext" id="MathJax-Span-211" style="font-family: MathJax_Main; color: red;">\d</span><span class="texatom" id="MathJax-Span-212"><span class="mrow" id="MathJax-Span-213"><span class="mn" id="MathJax-Span-214" style="font-family: MathJax_Main;">2</span></span></span><span class="mo" id="MathJax-Span-215" style="font-family: MathJax_Main;">[</span><span class="mi" id="MathJax-Span-216" style="font-family: MathJax_Math-italic;">A</span><span class="mo" id="MathJax-Span-217" style="font-family: MathJax_Main; padding-left: 0.202em;">−</span><span class="mi" id="MathJax-Span-218" style="font-family: MathJax_Math-italic; padding-left: 0.202em;">Z<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.053em;"></span></span><span class="mi" id="MathJax-Span-219" style="font-family: MathJax_Math-italic;">a</span><span class="mo" id="MathJax-Span-220" style="font-family: MathJax_Main; padding-left: 0.202em;">−</span><span class="mi" id="MathJax-Span-221" style="font-family: MathJax_Math-italic; padding-left: 0.202em;">z<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.003em;"></span></span><span class="mn" id="MathJax-Span-222" style="font-family: MathJax_Main;">0</span><span class="mo" id="MathJax-Span-223" style="font-family: MathJax_Main; padding-left: 0.202em;">−</span><span class="mn" id="MathJax-Span-224" style="font-family: MathJax_Main; padding-left: 0.202em;">9</span><span class="mo" id="MathJax-Span-225" style="font-family: MathJax_Main;">]</span><span class="mo" id="MathJax-Span-226" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-227" style="font-family: MathJax_Main;">?</span></span><span style="display: inline-block; width: 0px; height: 2.302em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.691em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mi>I</mi><mi>d</mi><mi>C</mi><mi>a</mi><mi>r</mi><mi>d</mi><mo>:</mo><msup><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mtext mathcolor="red">\d</mtext></msup><mrow class="MJX-TeXAtom-ORD"><mn>15</mn></mrow><mo stretchy="false">(</mo><mtext mathcolor="red">\d</mtext><mrow class="MJX-TeXAtom-ORD"><mn>2</mn></mrow><mo stretchy="false">[</mo><mi>A</mi><mo>−</mo><mi>Z</mi><mi>a</mi><mo>−</mo><mi>z</mi><mn>0</mn><mo>−</mo><mn>9</mn><mo stretchy="false">]</mo><mo stretchy="false">)</mo><mo>?</mo></math></span></span><script type="math/tex" id="MathJax-Element-5">/  
+ IdCard : /^\d{15}(\d{2}[A-Za-z0-9])?</script>/ <br>
+ QQ : /^[1-9]\d{4,8}<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-6-Frame" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>/</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x67D0;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x79CD;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x7279;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x6B8A;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x91D1;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x989D;</mo></mrow><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#xFF1A;</mo></mrow><msup><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>/</mo></mrow><mo stretchy=&quot;false&quot;>(</mo></msup><mo stretchy=&quot;false&quot;>(</mo><mtext mathcolor=&quot;red&quot;>\d</mtext><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>1</mn><mo>,</mo><mn>3</mn></mrow><mo stretchy=&quot;false&quot;>(</mo><mo>,</mo><mtext mathcolor=&quot;red&quot;>\d</mtext><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>3</mn></mrow><mo stretchy=&quot;false&quot;>)</mo><mo>&amp;#x2217;</mo><mo stretchy=&quot;false&quot;>)</mo><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo stretchy=&quot;false&quot;>|</mo></mrow><mo stretchy=&quot;false&quot;>(</mo><mtext mathcolor=&quot;red&quot;>\d</mtext><mo>+</mo><mo stretchy=&quot;false&quot;>)</mo><mo stretchy=&quot;false&quot;>)</mo><mo stretchy=&quot;false&quot;>(</mo><mo>.</mo><mtext mathcolor=&quot;red&quot;>\d</mtext><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mn>2</mn></mrow><mo stretchy=&quot;false&quot;>)</mo><mo>?</mo></math>" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-228" role="math" style="width: 25.003em; display: inline-block;"><span style="display: inline-block; position: relative; width: 20.003em; height: 0px; font-size: 125%;"><span style="position: absolute; clip: rect(1.153em 1019.95em 2.702em -999.998em); top: -2.298em; left: 0.003em;"><span class="mrow" id="MathJax-Span-229"><span class="texatom" id="MathJax-Span-230"><span class="mrow" id="MathJax-Span-231"><span class="mo" id="MathJax-Span-232" style="font-family: MathJax_Main;">/</span></span></span><span class="texatom" id="MathJax-Span-233"><span class="mrow" id="MathJax-Span-234"><span class="mo" id="MathJax-Span-235"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 80%; font-style: normal; font-weight: normal;">某</span></span></span></span><span class="texatom" id="MathJax-Span-236"><span class="mrow" id="MathJax-Span-237"><span class="mo" id="MathJax-Span-238"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 80%; font-style: normal; font-weight: normal;">种</span></span></span></span><span class="texatom" id="MathJax-Span-239"><span class="mrow" id="MathJax-Span-240"><span class="mo" id="MathJax-Span-241"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 80%; font-style: normal; font-weight: normal;">特</span></span></span></span><span class="texatom" id="MathJax-Span-242"><span class="mrow" id="MathJax-Span-243"><span class="mo" id="MathJax-Span-244"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 80%; font-style: normal; font-weight: normal;">殊</span></span></span></span><span class="texatom" id="MathJax-Span-245"><span class="mrow" id="MathJax-Span-246"><span class="mo" id="MathJax-Span-247"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 80%; font-style: normal; font-weight: normal;">金</span></span></span></span><span class="texatom" id="MathJax-Span-248"><span class="mrow" id="MathJax-Span-249"><span class="mo" id="MathJax-Span-250"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 80%; font-style: normal; font-weight: normal;">额</span></span></span></span><span class="texatom" id="MathJax-Span-251"><span class="mrow" id="MathJax-Span-252"><span class="mo" id="MathJax-Span-253"><span style="font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 80%; font-style: normal; font-weight: normal;">：</span></span></span></span><span class="msubsup" id="MathJax-Span-254"><span style="display: inline-block; position: relative; width: 0.853em; height: 0px;"><span style="position: absolute; clip: rect(3.103em 1000.45em 4.402em -999.998em); top: -3.998em; left: 0.003em;"><span class="texatom" id="MathJax-Span-255"><span class="mrow" id="MathJax-Span-256"><span class="mo" id="MathJax-Span-257" style="font-family: MathJax_Main;">/</span></span></span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -4.498em; left: 0.503em;"><span class="mo" id="MathJax-Span-258" style="font-size: 70.7%; font-family: MathJax_Main;">(</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="mo" id="MathJax-Span-259" style="font-family: MathJax_Main;">(</span><span class="mtext" id="MathJax-Span-260" style="font-family: MathJax_Main; color: red;">\d</span><span class="texatom" id="MathJax-Span-261"><span class="mrow" id="MathJax-Span-262"><span class="mn" id="MathJax-Span-263" style="font-family: MathJax_Main;">1</span><span class="mo" id="MathJax-Span-264" style="font-family: MathJax_Main;">,</span><span class="mn" id="MathJax-Span-265" style="font-family: MathJax_Main; padding-left: 0.152em;">3</span></span></span><span class="mo" id="MathJax-Span-266" style="font-family: MathJax_Main;">(</span><span class="mo" id="MathJax-Span-267" style="font-family: MathJax_Main;">,</span><span class="mtext" id="MathJax-Span-268" style="font-family: MathJax_Main; padding-left: 0.152em; color: red;">\d</span><span class="texatom" id="MathJax-Span-269"><span class="mrow" id="MathJax-Span-270"><span class="mn" id="MathJax-Span-271" style="font-family: MathJax_Main;">3</span></span></span><span class="mo" id="MathJax-Span-272" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-273" style="font-family: MathJax_Main;">∗</span><span class="mo" id="MathJax-Span-274" style="font-family: MathJax_Main;">)</span><span class="texatom" id="MathJax-Span-275"><span class="mrow" id="MathJax-Span-276"><span class="mo" id="MathJax-Span-277" style="font-family: MathJax_Main;">|</span></span></span><span class="mo" id="MathJax-Span-278" style="font-family: MathJax_Main;">(</span><span class="mtext" id="MathJax-Span-279" style="font-family: MathJax_Main; color: red;">\d</span><span class="mo" id="MathJax-Span-280" style="font-family: MathJax_Main;">+</span><span class="mo" id="MathJax-Span-281" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-282" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-283" style="font-family: MathJax_Main;">(</span><span class="mo" id="MathJax-Span-284" style="font-family: MathJax_Main;">.</span><span class="mtext" id="MathJax-Span-285" style="font-family: MathJax_Main; padding-left: 0.152em; color: red;">\d</span><span class="texatom" id="MathJax-Span-286"><span class="mrow" id="MathJax-Span-287"><span class="mn" id="MathJax-Span-288" style="font-family: MathJax_Main;">2</span></span></span><span class="mo" id="MathJax-Span-289" style="font-family: MathJax_Main;">)</span><span class="mo" id="MathJax-Span-290" style="font-family: MathJax_Main;">?</span></span><span style="display: inline-block; width: 0px; height: 2.302em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.372em; border-left-width: 0px; border-left-style: solid; width: 0px; height: 1.691em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>某</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>种</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>特</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>殊</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>金</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>额</mo></mrow><mrow class="MJX-TeXAtom-ORD"><mo>：</mo></mrow><msup><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mo stretchy="false">(</mo></msup><mo stretchy="false">(</mo><mtext mathcolor="red">\d</mtext><mrow class="MJX-TeXAtom-ORD"><mn>1</mn><mo>,</mo><mn>3</mn></mrow><mo stretchy="false">(</mo><mo>,</mo><mtext mathcolor="red">\d</mtext><mrow class="MJX-TeXAtom-ORD"><mn>3</mn></mrow><mo stretchy="false">)</mo><mo>∗</mo><mo stretchy="false">)</mo><mrow class="MJX-TeXAtom-ORD"><mo stretchy="false">|</mo></mrow><mo stretchy="false">(</mo><mtext mathcolor="red">\d</mtext><mo>+</mo><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mo>.</mo><mtext mathcolor="red">\d</mtext><mrow class="MJX-TeXAtom-ORD"><mn>2</mn></mrow><mo stretchy="false">)</mo><mo>?</mo></math></span></span><script type="math/tex" id="MathJax-Element-6">/  
+ 某种特殊金额：/^((\d{1,3}(,\d{3})*)|(\d+))(.\d{2})?</script>/               //说明：除“XXX    XX,XXX    XX,XXX.00”格式外</p>
+
+<p>//为上面提供各个JS验证方法提供.trim()属性 <br>
+String.prototype.trim=function(){ <br>
+        return this.replace(/(^\s<em>)|(\s</em>$)/g, ""); <br>
+    }</p>
+
+<p>调用：
+<input type="text" name="str">
+<input type="button" value=" 确定 " onclick="">    //onClick中写自己要调用的JS验证函数</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "reg.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
