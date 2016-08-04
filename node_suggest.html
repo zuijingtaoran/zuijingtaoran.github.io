@@ -1,0 +1,506 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+
+
+不知不觉的已经用Node.js有将近一年了，这里我有几条出自实践的node.js建议送给刚刚入门的node.js的朋友。
+
+##命名而不是匿名
+
+在JavaScript中，我们可以创建匿名对象和匿名函数。一般来说，匿名函数可以让代码更加简短精悍。
+
+然而，对这些对象或函数进行命名，则有利于调试和优化。以下是我从Chrome DevTool的文章中借用的图片:
+
+Picture
+
+很明显，命名的实体更利于调试和优化。
+
+##尽早解引用
+
+V8的GC是清除标记的做法，下面的内容有误导，不推荐阅读了。有关V8 GC的话题，可以阅读我翻译的另一篇文章
+
+JavaScript的GC以一种类似引用计数的算法工作，一个对象当且仅当所有指向它的引用全部释放之后，它本身才会被释放掉。
+
+然而可能你有其他的闭包或者全局对象持有它的引用，从而阻止了垃圾回收。为避免这一现象，应当尽早地解除不必要的引用：
+````
+var some_var = new net.Server();
+// other code…
+var i_want_it_temperoray = some_var;
+some_operation(i_want_it_temperoray);
+i_want_it_temperoray = null; // derefernce
+// other code…
+````
+如果闭包中尚有一个变量未能被释放，那么整个闭包都有可能无法被回收，从而造成其它对象也无法释放。
+
+现在有很多工具可以辅助我们监视内存的变化情况，比如heapdump、webkit-devtools-agent等等。同时，这也更加说明了为什么要尽可能使用命名而不是匿名的对象。
+
+##别复制代码
+
+我用Node.js开发的项目代码变化非常快，重构也很频繁，常常会到处复制代码。然而每当我这样做的时候，后来都会发现某些变量要么就是忘了改名，要么就是有些变量压根就不存在了，导致代码变得极为不稳定。
+
+JS是一门高度动态的语言，它不像C++这样可以利用编译器做静态检查，因此你几乎没有机会依靠工具检查出这些问题。所以我的建议是，尽可能地自己再输入一遍代码，这样IDE或者编辑器有机会利用代码自动补全来为你检查。如果你的IDE还没这功能，那你真得考虑换掉它了。
+
+##慎重引入新模块
+
+Node.js社区非常活跃，有成千上万的现成模块可以取用，然而其中有些其实已经没人管了。Node.js的API也常常发生变化，适配node v0.8.x的模块，有可能不支持v0.10.x。
+
+因此当你考虑引入新的模块的时候，务必先去它的pull request列表或者issue列表看看，确认一下这个模块是不是已经被抛弃，或者存在重大的隐患。
+
+##用async.js或者promise
+
+Node.js基于回调。因为回调的本质，我们很容易写出嵌套多层的回调函数。回调对于异步来说是好事，但对于代码维护来说却是坏事。
+
+如果你发现代码需要3层以上的回调函数嵌套，那你应该考虑一下，要不要使用async.js或者基于promise概念的模块。
+
+以下是一个用async.js写出来的一系列异步操作：
+````
+async.auto([
+‘init_logger’: function(done){
+set_handlers_to_logger(done);
+},
+‘load_config’: [‘init_logger’, function(done){
+load_my_config(done);
+}],
+‘init_database’: [‘load_config’, function(done){
+connect_to_db_here(done);
+}],
+// 假定open_cache与数据库无关
+’open_cache’: [‘load_config’, function(done){
+open_cache_here(done);
+}],
+// warm_up通常用于从数据库预先抓取一些数据
+// 注意，warm_up只会在’init_database’以及’open_cache’结束后执行
+’warm_up’: [‘init_database’, ‘open_cache’, function(done){
+fetch_some_data(done);
+}],
+‘init_routers’: [‘load_config’, function(done){
+install_routers(done);
+}],
+‘emit_out’: [‘warm_up’, ‘init_routers’, function(done){
+notify_others(done);
+}]
+], function(err) {
+if(err){
+// 在这处理异常
+}
+});
+````
+我对promise相关的模块不是很熟，但使用Q，应该可以写出这样的代码,，同样易于阅读：
+````
+Q.nfcall(function init_logger(){
+set_handlers_to_logger();
+})
+.then(function load_config(){
+load_my_config();
+})
+.then(function init_database(){
+connect_to_db_here();
+})
+.then(function open_cache(){
+open_cache_here();
+})
+.then(function warm_up(){
+fetch_some_data();
+})
+.then(function init_routers(){
+install_routers();
+})
+.then(function emit_out(){
+notify_others();
+})
+.catch(function (error) {
+// 在这处理异常
+})
+.done();
+````
+选取什么样的库来简化逻辑一般都是随便你。通常来说，async.js非常简单，而Q则更加灵活强大。
+
+ 比如说async.js中各个函数独立而不嵌套，因此如果你想通过捕获某个函数中的变量就显得有些困难，而在Q中就可以使用嵌套的then语句。
+
+本来我还想写一写不使用任何辅助模块的上述代码，但其实我都很怀疑自己能不能写对。
+
+##客户端也许特别慢
+
+用Node.js的时候我们可能会变得有点过于理想化了，因此很容易写出下面这样的聊天室代码：
+````
+var net = require(‘net’);
+var clientList = [];
+var server = net.createServer(function© { //‘connection’ listener
+console.log(‘server connected’);
+clientList.push©;
+c.on(‘end’, function() {
+console.log(‘server disconnected’);
+unpipe_all(c, clientList);
+remove_from(c, clientList);
+});
+clientList.forEach(function(item){
+item.pipe©; // 注意这
+c.pipe(item); // 还有这
+});
+});
+server.listen(8124, function() { //‘listening’ listener
+console.log(‘server bound’);
+});
+````
+我觉得整个结构没什么大问题，但当我们遇上网络状况不好的客户端时，情况就不大好了。这里的两个pipe会把数据缓存在内存中，因此当客户端不能及时接收数据时，这些数据就会大量滞留在内存当中。我们往往假设客户端的速度还不错，但其实那都只是假设！
+
+我想到的一个方法是，用一个中间件来做缓存，当数据太多时使用文件缓冲，而数据不多则用内存，如下：
+````
+Delegate delegate;
+clientList.forEach(function(item){
+delegate.append(item);
+// delegate内部会有一个与文件关联的缓存
+// 如果数据太大则把数据存入文件
+});
+````
+如果你有其它的方案来处理这种情况，不妨也分享一下:)
+
+用事件通知完成，而且不要太早
+
+大多数小对象都是同步构造的，但对于某些封装了复杂操作的对象来说，初始化都有可能是异步的。
+
+如果一个对象需要异步构造，那么最好使用事件通知完成。这时你要留意官方文档 中的一小段话：
+````
+ This is important in developing APIs where you want to give the user the chance to assign event handlers after an object has been constructed, but before any I/O has occurred.
+
+ function MyThing(options) {
+this.setupOptions(options);
+
+process.nextTick(function() {
+this.startDoingStuff();
+}.bind(this));
+}
+
+var thing = new MyThing();
+thing.getReadyForStuff();
+
+// thing.startDoingStuff() gets called now, not before.
+````
+典型的解决方案是，在构造结束时用process.nextTick来发消息：
+````
+function SomeTCPServer(options) {
+var self = this;
+// 其他可能异步的初始化工作
+process.nextTick(function(){
+self.emit(‘ready’);
+});
+}
+
+// 其他代码
+var server = new SomeTCPServer(ops);
+server.on(‘ready’, function when_ready(){
+// 其它事情
+});
+````
+因为用的是process.nextTick，when_ready不会错过ready事件。
+
+其它建议？
+
+我暂时就想起来这么多，因为我自己也不是Node.js的真正专家。不过我还是希望上面的几条能对新手有所帮助，欢迎大家指出上面的任何错漏，谢啦。
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>不知不觉的已经用Node.js有将近一年了，这里我有几条出自实践的node.js建议送给刚刚入门的node.js的朋友。</p>
+
+<h2 id="">命名而不是匿名</h2>
+
+<p>在JavaScript中，我们可以创建匿名对象和匿名函数。一般来说，匿名函数可以让代码更加简短精悍。</p>
+
+<p>然而，对这些对象或函数进行命名，则有利于调试和优化。以下是我从Chrome DevTool的文章中借用的图片:</p>
+
+<p>Picture</p>
+
+<p>很明显，命名的实体更利于调试和优化。</p>
+
+<h2 id="">尽早解引用</h2>
+
+<p>V8的GC是清除标记的做法，下面的内容有误导，不推荐阅读了。有关V8 GC的话题，可以阅读我翻译的另一篇文章</p>
+
+<p>JavaScript的GC以一种类似引用计数的算法工作，一个对象当且仅当所有指向它的引用全部释放之后，它本身才会被释放掉。</p>
+
+<p>然而可能你有其他的闭包或者全局对象持有它的引用，从而阻止了垃圾回收。为避免这一现象，应当尽早地解除不必要的引用：</p>
+
+<pre><code class="`">var some_var = new net.Server();
+// other code…
+var i_want_it_temperoray = some_var;
+some_operation(i_want_it_temperoray);
+i_want_it_temperoray = null; // derefernce
+// other code…
+</code></pre>
+
+<p>`
+如果闭包中尚有一个变量未能被释放，那么整个闭包都有可能无法被回收，从而造成其它对象也无法释放。</p>
+
+<p>现在有很多工具可以辅助我们监视内存的变化情况，比如heapdump、webkit-devtools-agent等等。同时，这也更加说明了为什么要尽可能使用命名而不是匿名的对象。</p>
+
+<h2 id="">别复制代码</h2>
+
+<p>我用Node.js开发的项目代码变化非常快，重构也很频繁，常常会到处复制代码。然而每当我这样做的时候，后来都会发现某些变量要么就是忘了改名，要么就是有些变量压根就不存在了，导致代码变得极为不稳定。</p>
+
+<p>JS是一门高度动态的语言，它不像C++这样可以利用编译器做静态检查，因此你几乎没有机会依靠工具检查出这些问题。所以我的建议是，尽可能地自己再输入一遍代码，这样IDE或者编辑器有机会利用代码自动补全来为你检查。如果你的IDE还没这功能，那你真得考虑换掉它了。</p>
+
+<h2 id="">慎重引入新模块</h2>
+
+<p>Node.js社区非常活跃，有成千上万的现成模块可以取用，然而其中有些其实已经没人管了。Node.js的API也常常发生变化，适配node v0.8.x的模块，有可能不支持v0.10.x。</p>
+
+<p>因此当你考虑引入新的模块的时候，务必先去它的pull request列表或者issue列表看看，确认一下这个模块是不是已经被抛弃，或者存在重大的隐患。</p>
+
+<h2 id="asyncjspromise">用async.js或者promise</h2>
+
+<p>Node.js基于回调。因为回调的本质，我们很容易写出嵌套多层的回调函数。回调对于异步来说是好事，但对于代码维护来说却是坏事。</p>
+
+<p>如果你发现代码需要3层以上的回调函数嵌套，那你应该考虑一下，要不要使用async.js或者基于promise概念的模块。</p>
+
+<p>以下是一个用async.js写出来的一系列异步操作：</p>
+
+<pre><code class="`">async.auto([
+‘init_logger’: function(done){
+set_handlers_to_logger(done);
+},
+‘load_config’: [‘init_logger’, function(done){
+load_my_config(done);
+}],
+‘init_database’: [‘load_config’, function(done){
+connect_to_db_here(done);
+}],
+// 假定open_cache与数据库无关
+’open_cache’: [‘load_config’, function(done){
+open_cache_here(done);
+}],
+// warm_up通常用于从数据库预先抓取一些数据
+// 注意，warm_up只会在’init_database’以及’open_cache’结束后执行
+’warm_up’: [‘init_database’, ‘open_cache’, function(done){
+fetch_some_data(done);
+}],
+‘init_routers’: [‘load_config’, function(done){
+install_routers(done);
+}],
+‘emit_out’: [‘warm_up’, ‘init_routers’, function(done){
+notify_others(done);
+}]
+], function(err) {
+if(err){
+// 在这处理异常
+}
+});
+</code></pre>
+
+<p>`
+我对promise相关的模块不是很熟，但使用Q，应该可以写出这样的代码,，同样易于阅读：</p>
+
+<pre><code class="`">Q.nfcall(function init_logger(){
+set_handlers_to_logger();
+})
+.then(function load_config(){
+load_my_config();
+})
+.then(function init_database(){
+connect_to_db_here();
+})
+.then(function open_cache(){
+open_cache_here();
+})
+.then(function warm_up(){
+fetch_some_data();
+})
+.then(function init_routers(){
+install_routers();
+})
+.then(function emit_out(){
+notify_others();
+})
+.catch(function (error) {
+// 在这处理异常
+})
+.done();
+</code></pre>
+
+<p>`
+选取什么样的库来简化逻辑一般都是随便你。通常来说，async.js非常简单，而Q则更加灵活强大。</p>
+
+<p>比如说async.js中各个函数独立而不嵌套，因此如果你想通过捕获某个函数中的变量就显得有些困难，而在Q中就可以使用嵌套的then语句。</p>
+
+<p>本来我还想写一写不使用任何辅助模块的上述代码，但其实我都很怀疑自己能不能写对。</p>
+
+<h2 id="">客户端也许特别慢</h2>
+
+<p>用Node.js的时候我们可能会变得有点过于理想化了，因此很容易写出下面这样的聊天室代码：</p>
+
+<pre><code class="`">var net = require(‘net’);
+var clientList = [];
+var server = net.createServer(function© { //‘connection’ listener
+console.log(‘server connected’);
+clientList.push©;
+c.on(‘end’, function() {
+console.log(‘server disconnected’);
+unpipe_all(c, clientList);
+remove_from(c, clientList);
+});
+clientList.forEach(function(item){
+item.pipe©; // 注意这
+c.pipe(item); // 还有这
+});
+});
+server.listen(8124, function() { //‘listening’ listener
+console.log(‘server bound’);
+});
+</code></pre>
+
+<p>`
+我觉得整个结构没什么大问题，但当我们遇上网络状况不好的客户端时，情况就不大好了。这里的两个pipe会把数据缓存在内存中，因此当客户端不能及时接收数据时，这些数据就会大量滞留在内存当中。我们往往假设客户端的速度还不错，但其实那都只是假设！</p>
+
+<p>我想到的一个方法是，用一个中间件来做缓存，当数据太多时使用文件缓冲，而数据不多则用内存，如下：</p>
+
+<pre><code class="`">Delegate delegate;
+clientList.forEach(function(item){
+delegate.append(item);
+// delegate内部会有一个与文件关联的缓存
+// 如果数据太大则把数据存入文件
+});
+</code></pre>
+
+<p>`
+如果你有其它的方案来处理这种情况，不妨也分享一下:)</p>
+
+<p>用事件通知完成，而且不要太早</p>
+
+<p>大多数小对象都是同步构造的，但对于某些封装了复杂操作的对象来说，初始化都有可能是异步的。</p>
+
+<p>如果一个对象需要异步构造，那么最好使用事件通知完成。这时你要留意官方文档 中的一小段话：</p>
+
+<pre><code class="`"> This is important in developing APIs where you want to give the user the chance to assign event handlers after an object has been constructed, but before any I/O has occurred.
+
+ function MyThing(options) {
+this.setupOptions(options);
+
+process.nextTick(function() {
+this.startDoingStuff();
+}.bind(this));
+}
+
+var thing = new MyThing();
+thing.getReadyForStuff();
+
+// thing.startDoingStuff() gets called now, not before.
+</code></pre>
+
+<p>`
+典型的解决方案是，在构造结束时用process.nextTick来发消息：</p>
+
+<pre><code class="`">function SomeTCPServer(options) {
+var self = this;
+// 其他可能异步的初始化工作
+process.nextTick(function(){
+self.emit(‘ready’);
+});
+}
+
+// 其他代码
+var server = new SomeTCPServer(ops);
+server.on(‘ready’, function when_ready(){
+// 其它事情
+});
+</code></pre>
+
+<p>`
+因为用的是process.nextTick，when_ready不会错过ready事件。</p>
+
+<p>其它建议？</p>
+
+<p>我暂时就想起来这么多，因为我自己也不是Node.js的真正专家。不过我还是希望上面的几条能对新手有所帮助，欢迎大家指出上面的任何错漏，谢啦。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "node_suggest.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
