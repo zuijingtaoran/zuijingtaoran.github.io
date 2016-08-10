@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组，除了IE下的节点集合（因为ie下的dom对象是以com对象的形式实现的，js对象与com对象不能进行转换）
+如：
+1 var a={length:2,0:'first',1:'second'};
+2 Array.prototype.slice.call(a);//  ["first", "second"]
+3  
+4 var a={length:2};
+5 Array.prototype.slice.call(a);//  [undefined, undefined]
+可能刚开始学习js的童鞋并不是很能理解这句为什么能实现这样的功能。比如我就是一个，所以，来探究一下。
+
+首先，slice有两个用法，一个是String.slice,一个是Array.slice，第一个返回的是字符串，第二个返回的是数组，这里我们看第2个。
+
+Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就是arguments.toArray().slice();到这里，是不是就可以说Array.prototype.slice.call(arguments)的过程就是先将传入进来的第一个参数转为数组，再调用slice？
+ 
+再看call的用法，如下例子
+复制代码
+1 var a = function(){
+2      console.log(this);    // 'littledu'
+3      console.log(typeof this);      //  Object
+4      console.log(this instanceof String);    // true
+5 }
+6 a.call('littledu');
+复制代码
+可以看出，call了后，就把当前函数推入所传参数的作用域中去了，不知道这样说对不对，但反正this就指向了所传进去的对象就肯定的了。
+到这里，基本就差不多了，我们可以大胆猜一下slice的内部实现，如下
+复制代码
+1 Array.prototype.slice = function(start,end){
+2      var result = new Array();
+3      start = start || 0;
+4      end = end || this.length; //this指向调用的对象，当用了call后，能够改变this的指向，也就是指向传进来的对象，这是关键
+5      for(var i = start; i < end; i++){
+6           result.push(this[i]);
+7      }
+8      return result;
+9 }
+复制代码
+大概就是这样吧，理解就行，不深究。
+
+ 
+
+最后，附个转成数组的通用函数
+
+复制代码
+ 1 var toArray = function(s){
+ 2     try{
+ 3         return Array.prototype.slice.call(s);
+ 4     } catch(e){
+ 5             var arr = [];
+ 6             for(var i = 0,len = s.length; i < len; i++){
+ 7                 //arr.push(s[i]);
+                   arr[i] = s[i];  //据说这样比push快
+ 8             }
+ 9              return arr;
+10     }
+11 }
+复制代码
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组，除了IE下的节点集合（因为ie下的dom对象是以com对象的形式实现的，js对象与com对象不能进行转换）
+如：
+1 var a={length:2,0:'first',1:'second'};
+2 Array.prototype.slice.call(a);//  ["first", "second"]
+3 <br>
+4 var a={length:2};
+5 Array.prototype.slice.call(a);//  [undefined, undefined]
+可能刚开始学习js的童鞋并不是很能理解这句为什么能实现这样的功能。比如我就是一个，所以，来探究一下。</p>
+
+<p>首先，slice有两个用法，一个是String.slice,一个是Array.slice，第一个返回的是字符串，第二个返回的是数组，这里我们看第2个。</p>
+
+<p>Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就是arguments.toArray().slice();到这里，是不是就可以说Array.prototype.slice.call(arguments)的过程就是先将传入进来的第一个参数转为数组，再调用slice？</p>
+
+<p>再看call的用法，如下例子
+复制代码
+1 var a = function(){
+2      console.log(this);    // 'littledu'
+3      console.log(typeof this);      //  Object
+4      console.log(this instanceof String);    // true
+5 }
+6 a.call('littledu');
+复制代码
+可以看出，call了后，就把当前函数推入所传参数的作用域中去了，不知道这样说对不对，但反正this就指向了所传进去的对象就肯定的了。
+到这里，基本就差不多了，我们可以大胆猜一下slice的内部实现，如下
+复制代码
+1 Array.prototype.slice = function(start,end){
+2      var result = new Array();
+3      start = start || 0;
+4      end = end || this.length; //this指向调用的对象，当用了call后，能够改变this的指向，也就是指向传进来的对象，这是关键
+5      for(var i = start; i &lt; end; i++){
+6           result.push(this[i]);
+7      }
+8      return result;
+9 }
+复制代码
+大概就是这样吧，理解就行，不深究。</p>
+
+<p>最后，附个转成数组的通用函数</p>
+
+<p>复制代码
+ 1 var toArray = function(s){
+ 2     try{
+ 3         return Array.prototype.slice.call(s);
+ 4     } catch(e){
+ 5             var arr = [];
+ 6             for(var i = 0,len = s.length; i &lt; len; i++){
+ 7                 //arr.push(s[i]);
+                   arr[i] = s[i];  //据说这样比push快
+ 8             }
+ 9              return arr;
+10     }
+11 }
+复制代码</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "Array.prototype.slice.call.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
