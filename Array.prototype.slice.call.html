@@ -27,11 +27,13 @@
 <!-- markdown -->
 Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组，除了IE下的节点集合（因为ie下的dom对象是以com对象的形式实现的，js对象与com对象不能进行转换）
 如：
+```
 1 var a={length:2,0:'first',1:'second'};
 2 Array.prototype.slice.call(a);//  ["first", "second"]
 3  
 4 var a={length:2};
 5 Array.prototype.slice.call(a);//  [undefined, undefined]
+```
 可能刚开始学习js的童鞋并不是很能理解这句为什么能实现这样的功能。比如我就是一个，所以，来探究一下。
 
 首先，slice有两个用法，一个是String.slice,一个是Array.slice，第一个返回的是字符串，第二个返回的是数组，这里我们看第2个。
@@ -40,16 +42,19 @@ Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就�
  
 再看call的用法，如下例子
 复制代码
+```
 1 var a = function(){
 2      console.log(this);    // 'littledu'
 3      console.log(typeof this);      //  Object
 4      console.log(this instanceof String);    // true
 5 }
 6 a.call('littledu');
+```
 复制代码
 可以看出，call了后，就把当前函数推入所传参数的作用域中去了，不知道这样说对不对，但反正this就指向了所传进去的对象就肯定的了。
 到这里，基本就差不多了，我们可以大胆猜一下slice的内部实现，如下
 复制代码
+```
 1 Array.prototype.slice = function(start,end){
 2      var result = new Array();
 3      start = start || 0;
@@ -59,6 +64,7 @@ Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就�
 7      }
 8      return result;
 9 }
+```
 复制代码
 大概就是这样吧，理解就行，不深究。
 
@@ -66,7 +72,8 @@ Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就�
 
 最后，附个转成数组的通用函数
 
-复制代码
+
+```
  1 var toArray = function(s){
  2     try{
  3         return Array.prototype.slice.call(s);
@@ -79,37 +86,45 @@ Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就�
  9              return arr;
 10     }
 11 }
-复制代码
+
+```
 <!-- markdown end -->
 </div>
 <div class="entry" id="main">
 <!-- content -->
 <p>Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组，除了IE下的节点集合（因为ie下的dom对象是以com对象的形式实现的，js对象与com对象不能进行转换）
-如：
-1 var a={length:2,0:'first',1:'second'};
+如：</p>
+
+<pre><code>1 var a={length:2,0:'first',1:'second'};
 2 Array.prototype.slice.call(a);//  ["first", "second"]
-3 <br>
+3  
 4 var a={length:2};
 5 Array.prototype.slice.call(a);//  [undefined, undefined]
-可能刚开始学习js的童鞋并不是很能理解这句为什么能实现这样的功能。比如我就是一个，所以，来探究一下。</p>
+</code></pre>
+
+<p>可能刚开始学习js的童鞋并不是很能理解这句为什么能实现这样的功能。比如我就是一个，所以，来探究一下。</p>
 
 <p>首先，slice有两个用法，一个是String.slice,一个是Array.slice，第一个返回的是字符串，第二个返回的是数组，这里我们看第2个。</p>
 
 <p>Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就是arguments.toArray().slice();到这里，是不是就可以说Array.prototype.slice.call(arguments)的过程就是先将传入进来的第一个参数转为数组，再调用slice？</p>
 
 <p>再看call的用法，如下例子
-复制代码
-1 var a = function(){
+复制代码</p>
+
+<pre><code>1 var a = function(){
 2      console.log(this);    // 'littledu'
 3      console.log(typeof this);      //  Object
 4      console.log(this instanceof String);    // true
 5 }
 6 a.call('littledu');
-复制代码
+</code></pre>
+
+<p>复制代码
 可以看出，call了后，就把当前函数推入所传参数的作用域中去了，不知道这样说对不对，但反正this就指向了所传进去的对象就肯定的了。
 到这里，基本就差不多了，我们可以大胆猜一下slice的内部实现，如下
-复制代码
-1 Array.prototype.slice = function(start,end){
+复制代码</p>
+
+<pre><code>1 Array.prototype.slice = function(start,end){
 2      var result = new Array();
 3      start = start || 0;
 4      end = end || this.length; //this指向调用的对象，当用了call后，能够改变this的指向，也就是指向传进来的对象，这是关键
@@ -118,13 +133,14 @@ Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就�
 7      }
 8      return result;
 9 }
-复制代码
+</code></pre>
+
+<p>复制代码
 大概就是这样吧，理解就行，不深究。</p>
 
 <p>最后，附个转成数组的通用函数</p>
 
-<p>复制代码
- 1 var toArray = function(s){
+<pre><code> 1 var toArray = function(s){
  2     try{
  3         return Array.prototype.slice.call(s);
  4     } catch(e){
@@ -136,7 +152,7 @@ Array.prototype.slice.call(arguments)能够将arguments转成数组，那么就�
  9              return arr;
 10     }
 11 }
-复制代码</p>
+</code></pre>
 <!-- content end -->
 </div>
 <br>
