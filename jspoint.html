@@ -1,0 +1,495 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+
+http://zhuanlan.zhihu.com/p/22109292
+
+##JavaScript 中 this 是如何工作的 ？
+
+先来看看这个题目：
+
+```
+var x = 0;
+var foo = {
+    x:1,
+    bar:{
+    x:2,
+    baz: function () {
+       console.log(this.x)
+     }
+    }
+}
+
+var a = foo.bar.baz
+foo.bar.baz() // 2
+a() //0
+```
++ •this 永远指向函数运行时所在的对象，而不是函数创建时所在的对象
++ •匿名函数和不处于任何对象中的函数，This指向window
++ •call, apply, with指的This是谁就是谁。
++ •普通函数调用，函数被谁调用，This就指向谁
+
+_上面的例子中，baz被bar调用所以指向的指bar. a 运行时所在的对象是 window,所以指向的是window。_
+
+##作用域链?
+
+_理解执行环境和上下文_
+
+函数调用都有与之相关的`作用域`和`上下文`。从根本上说，作用域是基于函数(function-based)而上下文是基于对象(object-based)。换句话说，作用域是和每次函数调用时变量的访问有关，并且每次调用都是独立的。上下文总是关键字 this 的值，是调用当前可执行代码的对象的引用。
+
+执行上下文分有global、function、eval，一个函数可以产生无数个执行上下文，一系列的执行上下文从逻辑上形成了 执行上下文栈，栈底总是全局上下文，栈顶是当前（活动的）执行上下文。
+
+执行上下文三属性：this指针，变量对象（数据作用域），作用域链
+
+作用域链 即：一变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。过程如下：
+•任何在执行上下文时刻的作用域都由作用域链来实现
+•在一个函数被定义的时候, 会将它定义时刻的scope chain链接到这个函数对象的[[scope]]属性
+•在一个函数对象被调用的时候，会创建一个活动对象(也就是一个对象), 然后对于每一个函数的形参，都命名为该活动对象的命名属性, 然后将这个活动对象做为此时的作用域链(scope chain)最前端, 并将这个函数对象的[[scope]]加入到scope chain中.
+
+
+
+上面的文字大家可以好好琢磨一下，可以更好的理解函数作用域。
+
+
+##函数声明提升和变量声明提升(Hoisting) ？
+
+我们先来了解js编译器在执行代码的过程：
+以执行一段function代码为例：
+第一步：创建可执行上下文（以下简称为EC），压入当前的EC栈中。EC中包括了以下信息：
+•词法环境（=环境记录项（保存变量、函数声明和形参）+ 外部词法环境（function的[[scope]]属性，作用域链的本质））
+•this的指针
+•变量环境（与环境记录项的值相同，但不再发生变动。）
+
+
+第二步：收集函数声明、变量声明和形参，保存在环境记录项内。这个收集的过程，就是一般所谓的声明提升现象的本质。如果发现了重复的标识符，则优先级为函数声明 、形参 、变量声明（优先级低的会被无视）。
+
+第三步：开始执行代码，环境记录项内没有的标识符会根据作用域链查找标识符对应的值，环境记录项亦有可能因赋值语句而被修改。
+
+第四步：函数执行完毕，EC栈被弹出、销毁。
+
+好了，第二步说的很清楚了 声明提升(Hoisting)现象就是在收集函数、变量声明和形参的过程会根据函数声明、形参、变量声明的顺序优先级来收集。
+
+例子：
+
+
+```
+var a = 1;  
+function b() {  
+    a = 10;  
+    return;  
+    function a() {}  
+}  
+b();  
+console.log(a); 
+// 输出1 由于函数声明提升，b内的实际是这样：
+// function b() {  
+//    var a = function a() {}; 这里是函数声明提升
+//    a = 10;  
+//    return;  
+//    function a() {}  
+// }
+
+``
+理解了吗？
+
+##什么是闭包，如何使用它，为什么要使用它？
+
+还是上面的题目，做个变形。
+
+
+```
+var x = 0;
+var foo = {
+    x:1,
+    bar:function () {
+        console.log(this.x);
+        var that = this;
+        return function () {
+           console.log(this.x)
+           console.log(that.x)
+        }
+    }
+}
+
+
+foo.bar()       // 1
+foo.bar()()     // this: 0, that: 1
+
+```
+上面的例子中ba'r里面返回了一个匿名函数，这个匿名函数可以在外部被调用即：foo.bar()() 读取到了bar的执行上下文的变量对象 that，这个函数就形成了一个闭包。
+
+
+好了，我们理解了上面的套路，下面来解释闭包就好理解了。
+
+闭包就是能够读取其它函数内部变量的函数
+
+在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成“定义在一个函数内部的函数”
+
+```
+var x = 0;
+var bar:function () {
+        var n = 999;
+        return function () {
+           return n;
+        }
+    }
+var outer = bar();
+outer() // 999
+
+``
+用途：
+1.读取函数内部的变量
+2.让这些变量的值始终保持在内存中
+
+我们修改一下上面的代码
+
+```
+var add;
+var bar = function () {
+        var n = 999;
+        add = function () {
+            n += 1;
+        }
+        return function () {
+           return n;
+        }
+    }
+var outer = bar();
+outer() // 999 
+add();
+outer(); // 1000
+```
+
+说明，n一直保存在内存当中，而没有在bar()执行完成之后被销毁；
+原因：
+bar里面的匿名函数被赋值给了outer，这个导致在outer没有被销毁的时候，该匿名函数一直存在内存当中，而匿名函数的存在依赖于bar，所以bar需要使用都在内存当中，所以bar并不会在调用结束后呗垃圾回收机制给收回。
+
+而上面的add接受的也是一个匿名函数，该匿名函数本身也是闭包，所以也可以在外部操作里面的变量。
+
+注意点
+1.会导致内存泄漏，慎用
+2.闭包会修改内部变量的值，所以在使用闭包作为对象的公用方法时要谨慎。
+闭包的一个应用，单例模式
+
+
+单例模式的定义是产生一个类的唯一实例
+
+单例模式在js中经常会遇到，比如 var a = {}; 其实就是一个单例子。
+
+但是我们写一个更有意义的单例：
+
+```
+var singleton = function( fn ){
+    var result;
+    return function(){
+        return result || ( result = fn .apply( this, arguments ) );
+    }
+}
+```
+
+更简洁一点的：
+
+
+```
+var singleton = (function () {
+    var instance;
+    return function (object) {
+        if(!instance){
+            instance = new object();
+        }
+        return instance;
+    }
+    })();
+
+```
+
+接下来的文章讲解一些关于js面向对象的东西，敬请关注我的专栏 《前端杂货铺》https://zhuanlan.zhihu.com/jscss
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>http://zhuanlan.zhihu.com/p/22109292</p>
+
+<h2 id="javascriptthis">JavaScript 中 this 是如何工作的 ？</h2>
+
+<p>先来看看这个题目：</p>
+
+<pre><code>var x = 0;
+var foo = {
+    x:1,
+    bar:{
+    x:2,
+    baz: function () {
+       console.log(this.x)
+     }
+    }
+}
+
+var a = foo.bar.baz
+foo.bar.baz() // 2
+a() //0
+</code></pre>
+
+<ul>
+<li>•this 永远指向函数运行时所在的对象，而不是函数创建时所在的对象</li>
+<li>•匿名函数和不处于任何对象中的函数，This指向window</li>
+<li>•call, apply, with指的This是谁就是谁。</li>
+<li>•普通函数调用，函数被谁调用，This就指向谁</li>
+</ul>
+
+<p><em>上面的例子中，baz被bar调用所以指向的指bar. a 运行时所在的对象是 window,所以指向的是window。</em></p>
+
+<h2 id="">作用域链?</h2>
+
+<p><em>理解执行环境和上下文</em></p>
+
+<p>函数调用都有与之相关的<code>作用域</code>和<code>上下文</code>。从根本上说，作用域是基于函数(function-based)而上下文是基于对象(object-based)。换句话说，作用域是和每次函数调用时变量的访问有关，并且每次调用都是独立的。上下文总是关键字 this 的值，是调用当前可执行代码的对象的引用。</p>
+
+<p>执行上下文分有global、function、eval，一个函数可以产生无数个执行上下文，一系列的执行上下文从逻辑上形成了 执行上下文栈，栈底总是全局上下文，栈顶是当前（活动的）执行上下文。</p>
+
+<p>执行上下文三属性：this指针，变量对象（数据作用域），作用域链</p>
+
+<p>作用域链 即：一变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。过程如下：
+•任何在执行上下文时刻的作用域都由作用域链来实现
+•在一个函数被定义的时候, 会将它定义时刻的scope chain链接到这个函数对象的[[scope]]属性
+•在一个函数对象被调用的时候，会创建一个活动对象(也就是一个对象), 然后对于每一个函数的形参，都命名为该活动对象的命名属性, 然后将这个活动对象做为此时的作用域链(scope chain)最前端, 并将这个函数对象的[[scope]]加入到scope chain中.</p>
+
+<p>上面的文字大家可以好好琢磨一下，可以更好的理解函数作用域。</p>
+
+<h2 id="hoisting">函数声明提升和变量声明提升(Hoisting) ？</h2>
+
+<p>我们先来了解js编译器在执行代码的过程：
+以执行一段function代码为例：
+第一步：创建可执行上下文（以下简称为EC），压入当前的EC栈中。EC中包括了以下信息：
+•词法环境（=环境记录项（保存变量、函数声明和形参）+ 外部词法环境（function的[[scope]]属性，作用域链的本质））
+•this的指针
+•变量环境（与环境记录项的值相同，但不再发生变动。）</p>
+
+<p>第二步：收集函数声明、变量声明和形参，保存在环境记录项内。这个收集的过程，就是一般所谓的声明提升现象的本质。如果发现了重复的标识符，则优先级为函数声明 、形参 、变量声明（优先级低的会被无视）。</p>
+
+<p>第三步：开始执行代码，环境记录项内没有的标识符会根据作用域链查找标识符对应的值，环境记录项亦有可能因赋值语句而被修改。</p>
+
+<p>第四步：函数执行完毕，EC栈被弹出、销毁。</p>
+
+<p>好了，第二步说的很清楚了 声明提升(Hoisting)现象就是在收集函数、变量声明和形参的过程会根据函数声明、形参、变量声明的顺序优先级来收集。</p>
+
+<p>例子：</p>
+
+<pre><code>var a = 1;  
+function b() {  
+    a = 10;  
+    return;  
+    function a() {}  
+}  
+b();  
+console.log(a); 
+// 输出1 由于函数声明提升，b内的实际是这样：
+// function b() {  
+//    var a = function a() {}; 这里是函数声明提升
+//    a = 10;  
+//    return;  
+//    function a() {}  
+// }
+
+``
+理解了吗？
+
+##什么是闭包，如何使用它，为什么要使用它？
+
+还是上面的题目，做个变形。
+</code></pre>
+
+<p>var x = 0;
+var foo = {
+    x:1,
+    bar:function () {
+        console.log(this.x);
+        var that = this;
+        return function () {
+           console.log(this.x)
+           console.log(that.x)
+        }
+    }
+}</p>
+
+<p>foo.bar()       // 1
+foo.bar()()     // this: 0, that: 1</p>
+
+<pre><code>上面的例子中ba'r里面返回了一个匿名函数，这个匿名函数可以在外部被调用即：foo.bar()() 读取到了bar的执行上下文的变量对象 that，这个函数就形成了一个闭包。
+
+
+好了，我们理解了上面的套路，下面来解释闭包就好理解了。
+
+闭包就是能够读取其它函数内部变量的函数
+
+在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成“定义在一个函数内部的函数”
+</code></pre>
+
+<p>var x = 0;
+var bar:function () {
+        var n = 999;
+        return function () {
+           return n;
+        }
+    }
+var outer = bar();
+outer() // 999</p>
+
+<p>``
+用途：
+1.读取函数内部的变量
+2.让这些变量的值始终保持在内存中</p>
+
+<p>我们修改一下上面的代码</p>
+
+<pre><code>var add;
+var bar = function () {
+        var n = 999;
+        add = function () {
+            n += 1;
+        }
+        return function () {
+           return n;
+        }
+    }
+var outer = bar();
+outer() // 999 
+add();
+outer(); // 1000
+</code></pre>
+
+<p>说明，n一直保存在内存当中，而没有在bar()执行完成之后被销毁；
+原因：
+bar里面的匿名函数被赋值给了outer，这个导致在outer没有被销毁的时候，该匿名函数一直存在内存当中，而匿名函数的存在依赖于bar，所以bar需要使用都在内存当中，所以bar并不会在调用结束后呗垃圾回收机制给收回。</p>
+
+<p>而上面的add接受的也是一个匿名函数，该匿名函数本身也是闭包，所以也可以在外部操作里面的变量。</p>
+
+<p>注意点
+1.会导致内存泄漏，慎用
+2.闭包会修改内部变量的值，所以在使用闭包作为对象的公用方法时要谨慎。
+闭包的一个应用，单例模式</p>
+
+<p>单例模式的定义是产生一个类的唯一实例</p>
+
+<p>单例模式在js中经常会遇到，比如 var a = {}; 其实就是一个单例子。</p>
+
+<p>但是我们写一个更有意义的单例：</p>
+
+<pre><code>var singleton = function( fn ){
+    var result;
+    return function(){
+        return result || ( result = fn .apply( this, arguments ) );
+    }
+}
+</code></pre>
+
+<p>更简洁一点的：</p>
+
+<pre><code>var singleton = (function () {
+    var instance;
+    return function (object) {
+        if(!instance){
+            instance = new object();
+        }
+        return instance;
+    }
+    })();
+</code></pre>
+
+<p>接下来的文章讲解一些关于js面向对象的东西，敬请关注我的专栏 《前端杂货铺》https://zhuanlan.zhihu.com/jscss</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "jspoint.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
