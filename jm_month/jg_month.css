@@ -1,0 +1,8 @@
+﻿ .jbox{ position:absolute; border:1px solid #bbb;  background:#fff;  width:180px; font-size:14px; height:auto; }
+    .jbox select{ width:80%; height:20px;  }
+    .jbut{ height:20px; border:1px solid #bbb; margin:4px; top:1px; position:relative; cursor:pointer; }
+    .jyear{ width:96px;}
+    .jreduce,.jadd{ height:24px; width:26px;  background-color:#bbb; color:#fff;  font-size:1.2em; }
+    .jms{ margin:3px;  height:28px; width:38px; color:#666; border:1px solid #bbb; background-color:#fff; cursor:pointer;}
+    .jms:hover{ background-color:#bbb;}
+    .jlnk{ float:right; margin:3px; font-family:Arial; font-size:0.9em;}
