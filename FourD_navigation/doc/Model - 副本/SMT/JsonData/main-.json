@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Backend",
+    "type": "main_area",
+    "isbuilding": true,
+    "color": "#d5d5d5",
+    "t": 0,
+    "l": 0,
+    "w": 75,
+    "h": 60
+  },
+
+  {
+    "name": "bk11",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 46.18,
+    "l": 19.6,
+    "w": 13.6,
+    "h": 2,
+    "linktop": "20%"
+  }
+]

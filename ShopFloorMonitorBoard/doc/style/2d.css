@@ -1,0 +1,8 @@
+﻿#box {
+    transform: skew(0deg);
+    -webkit-transform: skew(0deg);
+    -moz-transform: skew(0deg);
+    -o-transform: skew(0deg);
+    -ms-transform: skew(0deg);
+    transition: all 1.2s ease-in-out;
+}

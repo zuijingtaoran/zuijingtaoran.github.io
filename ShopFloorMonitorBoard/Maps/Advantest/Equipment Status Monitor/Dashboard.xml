@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DashboardName>Equipment Status Monitor</DashboardName>
+  <EndUser>xx</EndUser>
+  <Requester>xx</Requester>
+  <Description>xx</Description>
+  <DashboardMenues>
+    <DashboardMenue>
+      <Title>Equipment Status Summary</Title>
+      <URL>http://www.baidu.com</URL>
+    </DashboardMenue>
+    <DashboardMenue>
+      <Title>Equipment Down</Title>
+      <URL>xx</URL>
+    </DashboardMenue>
+    <DashboardMenue>
+      <Title>Equipment Idle</Title>
+      <URL>xx</URL>
+    </DashboardMenue>
+  </DashboardMenues>
+  <ColorCodeDefinitions>
+    <ColorCodeDefinition>
+      <DefinedItem>Production State</DefinedItem>
+      <Color>green</Color>
+    </ColorCodeDefinition>
+    <ColorCodeDefinition>
+      <DefinedItem>Idle State</DefinedItem>
+      <Color>gray</Color>
+    </ColorCodeDefinition>
+    <ColorCodeDefinition>
+      <DefinedItem>Down State</DefinedItem>
+      <Color>red</Color>
+    </ColorCodeDefinition>
+  </ColorCodeDefinitions>
+  <Query>
+    <ConnectionString>DBInfo_RPTDB</ConnectionString>
+    <SQLStatement>SELECT A.EQP_NAME,A.EQP_STATUS,A.EQP_TYPE FROM EQP_STATUS A</SQLStatement>
+    <CheckRequired />
+    <LastRefreshTime>
+      <DataSource>
+        <DataSourceName>Source Data</DataSourceName>
+        <Query>
+          <ConnectionString>DBInfo_RPTDB</ConnectionString>
+          <SQLStatement>select sysdate from dual</SQLStatement>
+        </Query>
+      </DataSource>
+    </LastRefreshTime>
+    <CostLimit>0</CostLimit>
+    <DVLayer>false</DVLayer>
+  </Query>
+  <RefreshIntervalMinute>60</RefreshIntervalMinute>
+</Dashboard>

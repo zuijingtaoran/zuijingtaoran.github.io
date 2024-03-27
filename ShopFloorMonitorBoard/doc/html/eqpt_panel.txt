@@ -1,0 +1,82 @@
+﻿ <ul class="panel">
+       <li>
+            <div class="row">
+                <div class="col-xs-6">Size</div>
+                <div class="col-xs-6"> W
+<input value='56' class="inp inp-narrow" id="areaWidth"/>
+          
+H<input value='21' class="inp inp-narrow" id="areaHeight"/></div>
+            </div>
+           <div class="row">
+                <div class="col-xs-12 no-visible">Enlarge
+				<select id='times'  class="inp  no-visible inp-narrow"> 
+			
+				</select><button class='but drawArea' id='drawArea' onclick='drawAreaAll()'>Draw</button>
+</div>
+            </div>
+        </li>
+       <li><div class="row">
+    <div class="col-xs-6">Object type</div>
+    <div class="col-xs-6">
+       <select class='inp' id='objtype'></select>
+
+    </div>
+</div>   
+        </li>
+        <li><div class="row">
+    <div class="col-xs-6">Eqpt type</div>
+    <div class="col-xs-6">
+       <select class='inp' id='eqptype'></select>
+
+    </div>
+</div>   
+        </li>
+        <li><div class="row">
+    <div class="col-xs-6">Eqpt name</div>
+    <div class="col-xs-6">
+         <input class='inp' id='name' />
+
+    </div>
+</div>
+        </li>
+        
+       
+		
+        <li>
+           
+			<div class="row">
+			<div class="col-xs-12 right"><input id='building' class='hide' type=checkbox />
+			<select id="color"></select>Img|
+
+			
+			<button class='but' id='createObj'>Create</button></div></div>
+    
+        </li>
+		 <li>
+            <div class="row">
+                <div class="col-xs-6">Eqpt Size</div>
+                <div class="col-xs-6">W:<input class="inp inp-narrow" value='0.5' id="eqptWidth" /> 
+                H:<input class="inp inp-narrow" value='0.618' id="eqptHeight" /></div>
+            </div>
+
+        </li>
+		 <li>
+            <div class="row">
+                <div class="col-xs-6">Eqpt Position</div>
+                <div class="col-xs-6">T:<input class="inp inp-narrow" id="eqptTop" /> 
+                L:<input class="inp inp-narrow" id="eqptLeft" /></div>
+            </div>
+
+        </li>
+		<li>
+            <div class="row">
+                <div class="col-xs-12 right">
+				<button class='but' id='adjust'>Adjust</button>
+				<button class='but save' id='save'>Save</button>
+				<button class='but ' id='delete'>Delete</button>
+				</div>
+                
+            </div>
+
+        </li>
+    </ul>

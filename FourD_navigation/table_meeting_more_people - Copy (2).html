@@ -1,0 +1,1469 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    <title>4D Navigation</title>
+    <link rel="shortcut icon" href="  http://cvprndip01.ad.shared:90/doc/menu-doc/net.png" type="image/x-icon" />
+
+    <script src="doc/JS/three.js"></script>
+    <script src="doc/JS/OBJLoader.js"></script>
+    <script src="doc/JS/MTLLoader.js"></script>
+    <script src="doc/JS/OrbitControls.js"></script>
+    <!--<script src="doc/JS/stats.min.js"></script>
+    <script src="doc/JS/axios.min.js"></script>-->
+    <script src="doc/JS/zepto.min.js"></script>
+    <script src="doc/JS/TextGeometry.js" type="module"></script>
+    <script src="doc/JS/FontLoader.js" type="module"></script>
+    <script src="http://yujiangong.com/jslib/vue/vue.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <script src="http://yujiangong.com/jslib/_.js"></script>
+    <!-- 引入样式 -->
+    <script src="http://yujiangong.com/jslib/vue/index.js"></script>
+    <script src="http://yujiangong.com/jslib/vue/en.js"></script>
+    <link rel="stylesheet" href="http://yujiangong.com/jslib/vue/index.css">
+    <style>
+        * {
+            font-family: Calibri;
+        }
+
+        [but] {
+            border: none;
+            width: 60px;
+            height: 20px;
+            border-radius: 2px;
+            width: 90px;
+            /* background-image:url(./doc/img/ball.png);
+             background-position:80% 80%;*/
+            border: none; /*solid #808080;*/
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            background-color: transparent;
+            margin-top:14px;
+            border-radius:10px 0px; transition:all .5s;
+        }
+            [but]:hover {
+                background-color: #27FAF3;
+                color: #fff;
+                border-radius: 0px 10px;
+            }
+        [att=Customer] {
+            /*  border-color: #2d8cf0;*/
+         color: #27FAF3;
+           background-color: #2d8cf0;
+        }
+
+        [att=Process] {
+            /* border-color: #19be6b;*/
+            color: #27FAF3;
+            background-color: #19be6b;
+        }
+
+        [att=Input] {
+            /*  border-color: #ff9900;*/
+            color: #27FAF3;
+            background-color: #ff9900;
+        }
+
+        [att=Source] {
+            /*    border-color: #808080;*/
+            color: #27FAF3;
+            background-color: #808080;
+        }
+
+        .el-card__header {
+            padding: 8px;
+        }
+
+        .el-card__body {
+            padding: 20px 8px;
+        }
+
+        .el-card span {
+            background-color: transparent;
+        }
+
+        body {
+            background-image: url(./doc/img/star.jpg); /*Pillars_of_creation.jpg*/
+            background-size: cover;
+            object-fit: cover;
+        }
+        .corner-cut {
+            position: fixed;
+            right: 1vw;
+            width: 43vw;
+            height:auto;
+            top: 10vh;
+            border: 1px solid #27FAF3;
+            border-radius: 20px;
+            color: #27FAF3;
+            margin: 20px 20px;
+           
+            background: #08283D;
+            opacity: .8;
+            /*  background: linear-gradient(-45deg,transparent 12px, #08283D 0) bottom right, linear-gradient(45deg,transparent 12px, #08283D 0) bottom left, linear-gradient(135deg,transparent 12px, #08283D 0) top left, linear-gradient(-135deg,transparent 12px,#08283D 0) top right;
+            background-size: 50% 50%;
+            background-repeat: no-repeat;*/
+            transition: all .8s;
+        }
+        .info-table { width:100%;
+            border-right: 1px solid #27FAF3;
+            border-bottom: 1px solid #27FAF3;
+        }
+            .info-table th { font-weight:bold;
+                border-left: 1px solid #27FAF3;
+                border-top: 1px solid #27FAF3;
+            }
+            .info-table td {
+                border-left: 1px solid #27FAF3;
+                border-top: 1px solid #27FAF3;
+            }
+        .kanban-div { padding:4px 15px;
+        }
+
+        .green td:nth-child(2) {
+            background-color: #00B050;
+            color: #fff;
+           
+        }
+
+        .el-table .grey td:nth-child(2), .grey, .Grey {
+            background-color: grey;
+            color: #fff;
+        }
+
+        .el-table .white td:nth-child(2), .white, .White {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .el-table .blue td:nth-child(2), .blue, .Blue {
+            background-color: #005EB8;
+            color: #fff;
+        }
+
+        .el-table .red td:nth-child(2), .red, .Red {
+            background-color: #EE2737;
+            color: #fff;
+        }
+
+        .el-table .yellow td:nth-child(2), .yellow, .Yellow {
+            background-color: #F2A900;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="right">
+        <!--<el-collapse-transition>-->
+        <transition name="el-zoom-in-top">
+            <div class="corner-cut" v-if="show">
+
+                <div class="kanban-div" style="font-size: 2em; color: #FA9F1B; ">
+                    Project info. <span style="float:right; cursor:pointer;" @click="slideup()">✕</span>
+                </div>
+                <div class="kanban-div">
+                    <table class="info-table" v-if="table_type=='PCL'">
+                        <!--["PHASE", "CHECK_ITEM", "OWNER_NAME", "STATUS", "ATTACHMENT"]-->
+                        <tr>
+                            <th>
+                                PHASE
+                            </th>
+                            <th>
+                                Check Item
+                            </th>
+                            <th>
+                                Owner Name
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Attachment
+                            </th>
+                        </tr>
+                        <tr v-for="td in table_data">
+
+                            <td>{{td.PHASE}}</td>
+                            <td>{{td.CHECK_ITEM}}</td>
+                            <td>{{td.OWNER_NAME}}</td>
+                            <td>{{td.STATUS}}</td>
+                            <td align="center">
+                                <a :href="td.ATTACHMENT.replace('ps://','https://')" style="color:white;" target="_blank">Box</a>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <table class="info-table" v-else-if="table_type=='NPE'">
+                        <!--["PHASE", "CHECK_ITEM", "OWNER_NAME", "STATUS", "ATTACHMENT"]-->
+
+                        <tr>
+                            <th>
+                                NPE_NAME
+                            </th>
+                            <th>
+                                Designs review and scoring
+                            </th>
+                            <th>
+                                Designs integration buying off
+                            </th>
+                            <th>
+                                Statistic controlling in R2R
+                            </th>
+                            <th>
+                                The successful pre-PQ
+                            </th>
+                            <th>
+                                The successful PQ
+                            </th>
+                            <th>
+                                The successful LVM exiting
+                            </th>
+                        </tr>
+                        <tr v-for="td in table_data">
+                            <!--["NPE_NAME", "D1_DUE", "D2_DUE", "D13_DUE", "D14_1_DUE", "D14_2_DUE", "D15_DUE"]-->
+                            <td V-HTML="td.NPE_NAME"></td>
+                            <td :class="td.D1_DUE.split('|')[1]">{{td.D1_DUE.split('|')[0]}}</td>
+                            <td :class="td.D2_DUE.split('|')[1]">{{td.D2_DUE.split('|')[0]}}</td>
+                            <td :class="td.D13_DUE.split('|')[1]">{{td.D13_DUE.split('|')[0]}}</td>
+                            <td :class="td.D14_1_DUE.split('|')[1]">{{td.D14_1_DUE.split('|')[0]}}</td>
+                            <td :class="td.D14_2_DUE.split('|')[1]">{{td.D14_2_DUE.split('|')[0]}}</td>
+                            <td :class="td.D15_DUE.split('|')[1]">{{td.D15_DUE.split('|')[0]}}</td>
+
+
+                        </tr>
+
+                    </table>
+
+                    <table class="info-table" v-else-if="table_type=='PRO'">
+                        <!--["PHASE", "CHECK_ITEM", "OWNER_NAME", "STATUS", "ATTACHMENT"]-->
+
+                        <tr>
+                            <th>
+                                Development-New Tech Program
+                            </th>
+                            <th>
+                                Capability researching/ acquisition
+                            </th>
+                            <th>
+                                CTF identity
+                            </th>
+                            <th>
+                                CTQ identity
+                            </th>
+                            <th>
+                                Statistic Score Card
+                            </th>
+
+                        </tr>
+                        <tr v-for="td in table_data">
+                            <!--["NEW TECH PROGRAM NAME", "0.Feasibility", "1.ACR", "2.OW", "3.TCS"]-->
+                            <td v-html="td['NEW TECH PROGRAM NAME']"></td>
+                            <td :class="td['0.Feasibility'].split('[')[1].replace(']','')">{{td['0.Feasibility'].split('[')[0]}}</td>
+                            <td :class="td['1.ACR'].split('[')[1].replace(']','')">{{td['1.ACR'].split('[')[0]}}</td>
+                            <td :class="td['2.OW'].split('[')[1].replace(']','')">{{td['2.OW'].split('[')[0]}}</td>
+                            <td :class="td['3.TCS'].split('[')[1].replace(']','')">{{td['3.TCS'].split('[')[0]}}</td>
+
+
+                        </tr>
+
+                    </table>
+                    <table class="info-table" v-else-if="table_type=='ERA'">
+                        <!--["PHASE", "CHECK_ITEM", "OWNER_NAME", "STATUS", "ATTACHMENT"]-->
+
+                        <tr>
+                            <th>
+                                Development-New Tech Program
+                            </th>
+                            <th>
+                                Capability researching/ acquisition
+                            </th>
+                            <th>
+                                CTF identity
+                            </th>
+                            <th>
+                                CTQ identity
+                            </th>
+                            <th>
+                                Statistic Score Card
+                            </th>
+
+                        </tr>
+                        <tr v-for="td in table_data">
+                            <!--["NEW TECH PROGRAM NAME", "0.Feasibility", "1.ACR", "2.OW", "3.TCS"]-->
+                            <td v-html="td['NEW TECH PROGRAM NAME']"></td>
+                            <td :class="td['0.Feasibility'].split('[')[1].replace(']','')">{{td['0.Feasibility'].split('[')[0]}}</td>
+                            <td :class="td['1.ACR'].split('[')[1].replace(']','')">{{td['1.ACR'].split('[')[0]}}</td>
+                            <td :class="td['2.OW'].split('[')[1].replace(']','')">{{td['2.OW'].split('[')[0]}}</td>
+                            <td :class="td['3.TCS'].split('[')[1].replace(']','')">{{td['3.TCS'].split('[')[0]}}</td>
+
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="kanban-div" align="right">
+                    <!--<span style="text-decoration:underline;cursor:pointer;">Go to Detail >></span>-->
+
+                </div>
+            </div>
+        </transition>
+            <!--</el-collapse-transition>-->
+
+
+    </div>
+    <div class="bottom-op"
+         style="position: fixed; opacity: .8; text-align: center; background-image: url(./doc/img/bottom-op.png); background-size: cover; width: 455px; height: 47px; margin-left: -277px; left: 50%; bottom: -3px; ">
+        <button but att='Customer' onclick="change_type('Customer')">Customer</button>
+        <button but att='Process' onclick="change_type('Process')">Process</button>
+        <button but att='Input' onclick="change_type('Input')">Input</button>
+        <button but att='Source' onclick="change_type('Source')">Source</button>
+
+    </div>
+    <div style="position:fixed; display:none;
+width:250px;
+height:auto;
+font-family:Calibri;
+left:40px;
+top:40px;
+font-size:20px;
+color:#ffffff;
+
+">
+
+        <!--<b>Izzie, Zhang</b>   NB_20200041
+        <br />CoMequasar: 14,021
+        <br />CHV $ 91,136.5-->
+        <b style="font-size:1.2em;">
+            CoMecube Statement
+        </b><br />
+
+        Izzie, Zhang<br />
+        <span id="pid">NB_20200041</span> (NFT)<br />
+        Quasar Scale: 14,021<br />
+        CHV $ 91,136.5
+        <br />
+
+
+
+        <div id="app"
+             v-if="show"
+             style="position: fixed; width: 100vw; height: 35vh; bottom:0px;z-index:1001; left:0px;
+background-color:#fff; font-family: Calibri;  font-size: 16px; ">
+            <template>
+                <div align="right" style="color:#000; cursor:pointer;" @click="show=false">✕ <i class="" style="cursor:pointer; margin:10px;"></i></div>
+                <!--<span>
+                    <i>{{program_id}} </i>
+                    <b>{{program_deliverable}}</b>
+                </span>-->
+                <el-table :data="table_data" :height="auto_height" v-if="src.length==0"
+                          border size="mini">
+                    <el-table-column v-for="clm in table_clm" :label="th(clm)" :width="clm.length*14">
+                        <template slot-scope="scope">
+                            <span v-html="html( (''+scope.row[clm]).split('[')[0].split('|')[0])"></span>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+                <iframe :src="src" v-else style="width:100%; height:100vh;" frameborder="0"></iframe>
+            </template>
+        </div>
+        <!--<div id='app' style="width:300px; padding:4px;
+        height:auto;
+        object-fit:contain; background-image:url(./doc/img/ball.png);
+        border:1px solid #fff;
+        border-radius:10px;
+        position:fixed;
+        top:2vh;
+        right:30px;
+
+        vertical-align:middle; padding-top:10px;
+
+        ">
+
+
+
+                    <el-card class="box-card" size="mini">
+                        <div slot="header" class="clearfix">
+                            <i class="el-icon-s-operation"></i> <span>Options</span>
+
+                        </div>
+                        <el-radio-group v-model="v_type" size="mini">
+                            <el-radio-button v-for="n in types" :label="n.name"
+                                             :att="n.name"></el-radio-button>
+
+                        </el-radio-group>
+                    </el-card>
+                    <el-card class="box-card" size="mini" v-if="table_data.length>0">
+                        <div slot="header" class="clearfix">
+                            <i class="el-icon-help"></i> <span>Overview</span>
+
+                        </div>
+                        <el-table :data="table_data"
+                                  size="mini">
+
+                            <el-table-column type="expand">
+                                <template slot-scope="props">
+                                    <el-form label-position="left" inline class="demo-table-expand">
+                                        <el-form-item :label="th('NEW_TECH_PROGRAM_NAME')">
+                                            <span>{{ props.row['NEW_TECH_PROGRAM_NAME'] }}</span>
+                                        </el-form-item>
+
+                                    </el-form>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="ID">
+                                <template slot-scope="scope">
+                                    {{(''+scope.row['N1_ID']).split('[')[0].split('|')[0]}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="FEASIBILITY">
+                                <template slot-scope="scope">
+                                    {{(''+scope.row['FEASIBILITY']).split('[')[0].split('|')[0]}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="ACR">
+                                <template slot-scope="scope">
+                                    {{(''+scope.row['ACR']).split('[')[0].split('|')[0]}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="OW">
+                                <template slot-scope="scope">
+                                    {{(''+scope.row['OW']).split('[')[0].split('|')[0]}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="TCS">
+                                <template slot-scope="scope">
+                                    {{(''+scope.row['TCS']).split('[')[0].split('|')[0]}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="PPP">
+                                <template slot-scope="scope">
+                                    {{(''+scope.row['PPP']).split('[')[0].split('|')[0]}}
+                                </template>
+                            </el-table-column>
+
+
+                        </el-table>
+                    </el-card>
+                </div>-->
+
+    </div>
+    <!--/*background-image:url(./doc/img/ball.png)*/-->
+
+    <script>
+            const radius = 800;
+
+        let types = [{ name: 'Customer', color: 0x2d8cf0, nickname: 'blue', space: "Customer Space", user: ['32623','1000275775'] },
+                { name: 'Process', color: 0x19be6b, nickname: 'green', space: "Processing Space",user:['1000256166','2426']},
+            { name: 'Input', color: 0xff9900, nickname: 'orange', space: "Inputting Space", user: [] },
+            { name: 'Source', color: 0x808080, nickname: 'grey', space: "Sourcing Space", user: ['31690']},
+            { name: 'all_people', color: 0x663300, nickname: 'brown', space: "Leadership Space", user: [] }, //bf3426
+            ]
+            let obj_base = ['14519', '5184', '16911', '31690', '32623', '2426', '24245', '2465'];
+            let name_base = ['14519', '5184', '16911', '31690', '32623', '2426', '24245', '2465'
+                , '1000275775', '20089', '5874', '1000277223', '1000256166'
+            ];
+            let counter = +(getQueryString('counter') || "0");
+            let common_color = 0xff9900;
+            let v_proj_prod_id = getQueryString('v_proj_prod_id') || "NB_20200041";
+            let v_owner = getQueryString('v_owner') || "30112";
+            window.v_type = types[4]['name'];
+            function change_type(name) {
+                app.show = false;
+                window.v_type = name;
+                load_3d();
+            }
+            //var Ctor = Vue.extend({
+            //    data() {
+            //        return {
+            //            show: false,
+            //            types, v_type,
+            //            table_data: [],
+            //            auto_height: window.innerHeight * 0.32
+            //        }
+            //    },
+            //    watch: {
+
+            //    },
+            //    computed: {
+            //        table_clm() {
+            //            if (this.table_data.length == 0) {
+            //                return [];
+            //            } else {
+            //                return Object.keys(this.table_data[0]).join(',').replace(',SYS_ID', '').replace('N1_ID', '').replace(',CHECKLIST_ID', '').split(',').filter(function (s) {
+            //                    return s && s.trim();
+            //                });;
+            //            }
+            //        }
+            //    },
+            //    methods: {
+            //        remove(arr, val) {
+            //            var index = arr.indexOf(val);
+            //            if (index > -1) {
+            //                arr.splice(index, 1);
+            //            }
+            //            return arr;
+            //        },
+            //        html(text) {
+            //            if (text.includes('ps://')) {
+            //                return `<a target='_blank' href='${text.replace('ps://', 'https://')}'>Box link</a>`
+            //            } else {
+            //                return text;
+            //            }
+            //        },
+            //        th(a) {
+            //            return a.replace(/^v_/g, '').replace(/_/g, ' ').toLowerCase().replace(/^\w|\s\w/g, w => w.toUpperCase());
+            //        },
+            //        td(a, flag = 0) {
+
+            //            if (flag) { return unescape(('' + a).split('[')[flag - 1]) }
+            //            else { return unescape(a); }
+            //        }
+            //    }
+            //})
+            //var app = new Ctor().$mount('#app');
+            var Ctor = Vue.extend({
+                data() {
+                    return {
+                        show: false,
+                        types, v_type,
+                        table_data: [],
+                        table_clm: [], table_type:"",
+                        auto_height: window.innerHeight * 0.32
+                    }
+                },
+                watch: {
+
+                },
+                computed: {
+                    
+                    //table_clm() {
+                    //    if (this.table_data.length == 0) {
+                    //        return [];
+                    //    } else {
+                    //        return Object.keys(this.table_data[0]).join(',').replace(',SYS_ID', '').replace('N1_ID', '').replace(',CHECKLIST_ID', '').split(',').filter(function (s) {
+                    //            return s && s.trim();
+                    //        });;
+                    //    }
+                    //}
+                },
+                methods: {
+                    slideup() {
+                        this.show = false;
+                        meeting.goto_fullview('center');
+                    },
+                    remove(arr, val) {
+                        var index = arr.indexOf(val);
+                        if (index > -1) {
+                            arr.splice(index, 1);
+                        }
+                        return arr;
+                    },
+                    html(text) {
+                        if (text.includes('ps://')) {
+                            return `<a target='_blank' href='${text.replace('ps://', 'https://')}'>Box link</a>`
+                        } else {
+                            return text;
+                        }
+                    }
+                }
+            })
+            var app = new Ctor().$mount('#right');
+
+            //C:\YUJG\E\daily\2021-12-28\3D Model
+            //
+            function getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return "";
+            }
+
+
+            let COLOR = {
+                'red': 0x9e2e23,
+                'yellow': 0xe2af42,
+                'blue': 0x418ab3,
+                'green': 0x407d53,
+                'blank': 0x404140,
+                'grey': 0xa5a5a5
+            }
+            let page_data = [];
+            let font = null;
+            var meeting; var loader = new THREE.FontLoader();
+            //get font
+            loader.load('./doc/fonts/Calibri_Regular.json',
+                function (response) {
+                    // get data
+                    font = response;
+                    load_3d();
+
+                });
+            function load_3d() {
+                //`./api.ashx?type=get_prog_prod_link&v_proj_prod_id=${v_proj_prod_id}&v_owner=${v_owner}&v_type=${v_type.toLowerCase()}`
+                //`data.json`
+                $.get(`./api.ashx?type=get_prog_prod_link&v_proj_prod_id=${v_proj_prod_id}&v_owner=${v_owner}&v_type=${v_type.toLowerCase()}`, function (data) {
+                    let leng = data[0].length;
+                    let ind = Math.floor(leng / 3);
+                    if (leng > 3) {
+                        data[0] = [...data[0].slice(ind, data[0].length), ...data[0].slice(0, ind)]
+                    }
+                    page_data = data;
+                    counter = data[0].length;
+                    common_color = types.filter(n => { return n.name.toLowerCase() == v_type.toLowerCase() })[0]['color']
+                    $('canvas').remove();
+                    meeting = null;
+                    meeting = new FLOOR_3D(font);
+                })
+
+            }
+            class FLOOR_3D {
+                constructor(font) {
+                    this.ele = {},
+                        this.position = {},
+                        this.font = font,
+                        this.threeD = {
+                            clickObjects: [],
+                            scene: new THREE.Scene(),
+                            renderer: new THREE.WebGLRenderer({
+                                //1217
+                                alpha: true,
+                                antialias: true
+                            }),
+
+                            object: {
+                                star: [],
+                                dmaic: [],
+                                mads: []
+                            },
+                            material:
+                            {
+                                a: new THREE.MeshBasicMaterial({
+                                    color: '#eeeeee', transparent: true,
+                                    opacity: 0.1
+                                })
+
+                            },
+                            font: null,
+                            OrthographicCamera: (function () {
+                                var width = window.innerWidth;
+                                var height = window.innerHeight
+                                var k = width / height;
+                                var s = radius;
+                                return new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+
+                            })(),
+                            camera: (function () {
+
+                                return new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 6000);//params
+
+                            })(),
+                            point: new THREE.PointLight(0xffffff, 1, 0, 3),
+                            ambient: new THREE.AmbientLight(0xffffff, 0.7),
+                            DirectionalLight: [new THREE.DirectionalLight(0xffffff, 1),
+                            new THREE.DirectionalLight(0xffffff),
+                            new THREE.DirectionalLight(),
+                            new THREE.DirectionalLight(),
+                            new THREE.DirectionalLight()],
+                            //0xffffff, 2, 100
+                            PointLight: new THREE.SpotLight(0xffffff, 2, 100), //new THREE.AmbientLight(0xffffff), //new THREE.SpotLight(0xffffff, 0.1),
+                            helper: new THREE.AxesHelper(radius),
+                            // 红线是X轴，绿线是Y轴，蓝线是Z轴
+                            definition: {
+                                Torus: new THREE.TorusGeometry(4, 1, 16, 18),
+                                Cylinder: new THREE.CylinderGeometry(1.5, 2, 9, 18, 10)
+
+                            },
+                            model: {},
+                            texture: {
+                                Pillars_of_creation: new THREE.ImageUtils.loadTexture('./doc/img/star.jpg'),//star
+                                star: new THREE.ImageUtils.loadTexture('./doc/img/the-milkyway-2k.jpg'),
+                                dalishi: new THREE.ImageUtils.loadTexture('./doc/img/dalishi1.png'),
+                                world: new THREE.ImageUtils.loadTexture('./doc/img/world_1.jpg'),
+                                dh: new THREE.ImageUtils.loadTexture('./doc/img/dh_name.png')
+                                ,
+                                arrow_img: new THREE.ImageUtils.loadTexture('./doc/img/wall_left.png')
+                                ,
+                                legend_img: new THREE.ImageUtils.loadTexture('./doc/img/wall_right.png')
+                                ,
+                                deliverable_img: new THREE.ImageUtils.loadTexture('./doc/img/wall_base.png')
+                                ,
+                                woodiness: new THREE.ImageUtils.loadTexture('./doc/img/woodiness.jpg')
+                                ,
+                                izzie_wall: new THREE.ImageUtils.loadTexture('./doc/img/izzie_wall.png')
+                                ,
+                                arrows: new THREE.ImageUtils.loadTexture('./doc/img/arrows.png')
+                            }
+
+                        }
+
+                    this.offset = 200;
+                    this.every_radian = 300;
+                    this.r = Math.max(160, 240 * counter / 3.14 / 2) | 0;//300 to
+                    this.box_width = 1000;
+
+                    this.init()
+
+                }
+                coordinate(center = [0, 0], r, radian) {
+
+                    return [center[0] + r * Math.cos(radian), 0 - center[1] + r * Math.sin(radian)]
+                }
+                load_model(type, scene) {
+                    var that = this;
+                    let OBJLoader1 = new THREE.OBJLoader();
+                    // female_face / female
+                    //./doc/Model/1227_2/Office Chair.mtl
+                    let config = {
+                        people: "./doc/Model/sx_obj/sx",
+                        wd: "./doc/Model/wd/wd",
+                        plant: "./doc/Model/plant/desk plant",
+                    }
+                    let MTLLoader1 = new THREE.MTLLoader();
+                    MTLLoader1.load(config[type] + `.mtl`, function (materials) {
+                        console.log(materials);
+                        OBJLoader1.setMaterials(materials);
+                        OBJLoader1.load(config[type] + `.obj`, function (obj) {
+                            that.threeD.model[type] = obj;
+                            switch (type) {
+                                case "wd":
+                                    that.ele["wd"] = that.threeD.model['wd'].clone();
+                                    // that.ele["wd"].children[0].material.side = THREE.FrontSide;
+                                    //// that.ele["wd"].rotation.x = -Math.PI / 2;
+                                    // that.ele["wd"].position.x = that.box_width / 2 - 140;
+
+                                    // that.ele["wd"].position.z = -that.box_width / 2+10;
+                                    // that.ele["wd"].position.y = that.box_width * 0.5 - 80
+                                    that.ele["wd"].rotation.x = -Math.PI / 2;
+                                    that.ele["wd"].position.x = that.box_width / 2 - 140;
+
+                                    that.ele["wd"].position.z = that.box_width / 2 - 60;
+
+                                    //that.ele["wd"].scale.x = counter / 4 ;
+                                    //that.ele["wd"].scale.y = counter / 4;
+                                    //that.ele["wd"].scale.z = counter / 4;
+                                    scene.add(that.ele["wd"]);
+                                    break;
+                                case "plant":
+                                    that.ele["plant"] = that.threeD.model['plant'].clone();
+                                    that.ele["plant"].rotation.x = -Math.PI / 2;
+
+                                    //that.ele["plant"].position.x = that.r * 2;
+                                    //that.ele["plant"].position.z =  that.r * 2;
+                                    that.ele["plant"].scale.x = Math.max(counter / 4, 2, 0.1);
+                                    that.ele["plant"].scale.y = Math.max(counter / 4, 2, 0.1);
+                                    that.ele["plant"].scale.z = Math.max(counter / 4, 2, 0.1);
+                                    scene.add(that.ele["plant"]);
+                                    break;
+                                case "people":
+                                    //that.ele["_1"] = that.threeD.model[type].clone();
+                                    //that.ele["_1"].rotation.x = -Math.PI / 2;
+                                    //that.ele["_1"].position.x = 300;
+                                    //that.ele["_1"].rotation.z = Math.PI*1.5;
+                                    //scene.add(that.ele["_1"]);
+                                    Array(counter).fill(0).map((n, index) => {
+                                        let radian = 2 * Math.PI / counter * index;
+                                        that.ele["_" + index] = that.threeD.model[type].clone();
+                                        that.ele["_" + index].rotation.x = -Math.PI / 2;
+
+
+                                        [that.ele["_" + index].position.x,
+                                        that.ele["_" + index].position.z
+                                        ] = that.coordinate([0, 0], that.r + 100, radian);
+                                        that.ele["_" + index].rotation.z = 2 * Math.PI - radian;
+                                        scene.add(that.ele["_" + index]);
+
+                                    })
+                                    break;
+                            }
+                        })
+                    })
+                }
+                load_people(position_xz, rotation_xz, name, path, scene, fullname) {
+                    let that = this;
+                    var OBJLoader1 = new THREE.OBJLoader();
+                    var MTLLoader1 = new THREE.MTLLoader();
+                    MTLLoader1.load(`./doc/Model/${path}.mtl`, function (materials) {
+                        console.log(materials);
+                        OBJLoader1.setMaterials(materials);
+                        OBJLoader1.load(`./doc/Model/${path}.obj`, function (obj) {
+                            that.ele[name] = that.threeD.model[name] = obj;
+
+
+                            [that.ele[name].position.x,
+                            that.ele[name].position.z
+                            ] = position_xz;
+                            [that.ele[name].rotation.x, that.ele[name].rotation.z] = rotation_xz;
+
+                            scene.add(that.ele[name]);
+                            if (page_data[0][0]['LEADER_ID'] == name) {
+                                that.ele[name + "_text"] = that.text_3d("Goodie Me");
+                                that.ele[name + "_text"].position.y = 400;
+                                [that.ele[name + "_text"].position.x,
+                                that.ele[name + "_text"].position.z
+                                ] = position_xz.map(n => { n = n * 1.1; return n; });
+                                //   that.ele[name + "_text"].rotation.x =-Math.PI/2;
+                                // that.ele[name + "_text"].rotation.z = rotation_xz[1] ;
+                                //that.ele[name + "_text"].rotation.y = -Math.PI/2
+                                that.ele[name + "_text"].rotation.y = rotation_xz[1] - Math.PI / 2;
+                                scene.add(that.ele[name + "_text"]);
+                            }
+
+                        })
+                    })
+
+
+
+
+                }
+                //yuanhuan
+                disk(scene, radius, color) {
+                    let that = this;
+                    // 一个外轮廓圆弧嵌套三个内圆弧轮廓
+                    var shape = new THREE.Shape(); //Shape对象
+                    //外轮廓
+                    shape.arc(0, 0, radius, 0, 2 * Math.PI);
+                    // 内轮廓1
+                    var path1 = new THREE.Path();
+                    path1.arc(0, 0, radius * 0.45, 0, 2 * Math.PI);//0.618
+
+                    //三个内轮廓分别插入到holes属性中
+                    shape.holes.push(path1);
+                    var geometry = new THREE.ExtrudeGeometry(//拉伸造型
+                        shape,//二维轮廓
+                        //拉伸参数
+                        {
+                            depth: 20,
+                            bevelEnabled: false
+                        });
+
+                    //bottom
+                    var shape1 = new THREE.Shape(); //Shape对象
+                    //外轮廓
+                    shape1.arc(0, 0, radius * 0.55, 0, 2 * Math.PI);
+                    // 内轮廓1
+                    var path11 = new THREE.Path();
+                    path11.arc(0, 0, radius * 0.45, 0, 2 * Math.PI);
+
+                    //三个内轮廓分别插入到holes属性中
+                    shape1.holes.push(path11);
+                    var geometry1 = new THREE.ExtrudeGeometry(//拉伸造型
+                        shape1,//二维轮廓
+                        //拉伸参数
+                        {
+                            depth: 200,
+                            bevelEnabled: false
+                        });
+
+                    //MeshLambertMaterial
+                    //MeshNormalMaterial
+                    var material_top = new THREE.MeshPhongMaterial({
+                        ambient: 0x050505, specular: 0x555555, shininess: 30,
+                        opacity: 1,
+                        color: common_color,
+                        side: THREE.DoubleSide//两面可见
+                    });//材质对象
+                    var material = new THREE.MeshLambertMaterial({
+
+                        color: common_color,
+                        side: THREE.DoubleSide//两面可见
+                    });//材质对象
+                    // material.map.repeat.set(0.1, 0.1)
+                    //material.wireframe = true;//线条模式渲染(查看细分数)
+                    that.ele['disk_top'] = new THREE.Mesh(geometry, material_top);//旋转网格模型对象
+                    that.ele['disk_top'].position.y = 200;
+                    that.ele['disk_top'].rotation.x = Math.PI / 2;
+
+                    that.ele['disk_bottom'] = new THREE.Mesh(geometry1, material);//旋转网格模型对象
+                    that.ele['disk_bottom'].position.y = 200;
+                    that.ele['disk_bottom'].rotation.x = Math.PI / 2;
+                    scene.add(that.ele['disk_top']); scene.add(that.ele['disk_bottom'])
+
+                }
+                text_3d(text = "", size = 18, height = 2, color = 0xffffff, border_color = 0xd5d5d5) {
+                    let that = this;
+                    var textGeo = new THREE.TextGeometry(text, {
+                        font: that.font,
+                        size: size,
+                        height: height
+
+                    });
+
+                    textGeo.computeBoundingBox();
+
+                    const centerOffset = - 0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+
+                    return new THREE.Mesh(textGeo, [
+                        new THREE.MeshPhongMaterial({ color: color, flatShading: true }), // front
+                        new THREE.MeshPhongMaterial({ color: border_color }) // side
+                    ]);
+                }
+                cell_group(arr = [[1, 0, 1], [1, 1, 0], [0, 1, 1]], name = "dh") {
+                    let that = this;
+                    var group = new THREE.Group();
+                    let cell_width = 30;
+                    let [cell_light_m, cell_black_m] = [new THREE.MeshLambertMaterial({
+                        color: 0x418ab3, side: THREE.DoubleSide,
+                        opacity: 0.8
+                    }), new THREE.MeshLambertMaterial({
+                        color: 0x999999, side: THREE.DoubleSide,
+                        opacity: 1
+                    })];
+                    var arr_lose_45 = []; //var arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+                    var arr_width = arr[0].length;
+
+                    arr[0].map((a, ai) => {
+                        var arrs = [];
+                        arr.map((n, ni) => {
+
+                            arrs.push(n[ai])
+                        })
+                        arr_lose_45.push(arrs);
+                    })
+
+
+
+                    let offset = [(cell_width * 3 + cell_width * 1.6) / 2, (cell_width * 3.5) / 2];
+
+                    arr_lose_45.map((n, ni) => {
+                        n.map((m, mi) => {
+                            if (m.length > 2) {
+                                that.ele['grid_' + m] = new THREE.Mesh(new THREE.BoxGeometry(cell_width - 4, cell_width, cell_width - 4), !!m ? cell_light_m : cell_black_m);
+                                that.ele['grid_' + m].position.set((2 - mi) * cell_width + 4 - offset[0], -cell_width / 2, (ni * cell_width + 4) + (cell_width - 4) / 2 - offset[1]);
+                                that.ele['grid_' + m].name = 'grid_' + m;
+                                that.threeD.clickObjects.push(that.ele['grid_' + m])
+                                group.add(that.ele['grid_' + m]);
+                            }
+                        })
+                    })
+                    //0xF6416C
+                    var name_box = new THREE.Mesh(new THREE.BoxGeometry(cell_width * 1.8, cell_width / 8, cell_width * 4 + 8), new THREE.MeshLambertMaterial({
+                        map: that.threeD.texture[name], side: THREE.DoubleSide, color: name == page_data[0][0]['LEADER_ID'] ?
+                            0xFFF6B7 : 0xFFF6B7
+
+
+                        , opacity: 0.9
+                    }));
+                    name_box.rotation.z = Math.PI / 2
+                    name_box.position.set(cell_width * 3 + 18 - offset[0], 0, (cell_width * 4 + 8) / 3 - offset[1]);
+
+
+                    group.add(name_box);
+                    return group;
+                }
+                goto_fullview(direct = 'left') {
+                    // 1451.9626427489884, y: 1659.1365542507192, z: 1342.180461200086
+                    let that = this, camera = that.threeD.camera, frame_rate = 20,
+                        camera_now = {
+                            position: [that.threeD.camera.position.x, that.threeD.camera.position.y, that.threeD.camera.position.z],
+                            rotation: [that.threeD.camera.rotation.x, that.threeD.camera.rotation.y, that.threeD.camera.rotation.z]
+                        },
+
+                        camera_target = [];
+                    let coordinate = {
+                        left: {
+                            position: [1808, 1660, 714],
+                            rotation: [-0.848, 0.542, 0.529]
+                        },
+                        right: {
+                            //position: [459,1660,2088],
+                            //rotation: [-0.329,0.254,0.092]
+                            position: [950, 1660, 1340],
+                            rotation: [-1, 0.6, 0.74]
+                        },
+                        center: {
+                            position: [1450, 1660, 1340],
+                            rotation: [-1, 0.6, 0.74]
+                        }
+                    }
+                    camera_target = coordinate[direct];
+                    let interval_pos = Array(3).fill(0).map((n, index) => {
+                        return ((camera_target.position[index] - camera_now.position[index]) / frame_rate) | 0
+
+                    })
+                    let interval_rot = Array(3).fill(0).map((n, index) => {
+                        return (camera_target.rotation[index] - camera_now.rotation[index]) / frame_rate
+
+                    })
+                    camera.rotation.set(-1, 0.6, 0.74)
+                    for (let i = 0; i < frame_rate; i++) {
+                        setTimeout(function (D) {
+                            camera.position.set(...camera_now.position.map((n, index) => {
+                                return n + interval_pos[index] * i;
+                            }))
+                            camera.rotation.set(...camera_now.rotation.map((n, index) => {
+                                return n + interval_rot[index] * i;
+                            }))
+                            D.renderer.render(D.scene, camera);
+                        }, (i + 2) * 25, that.threeD)
+                    }
+
+                }
+                initThreeClickEvent() {
+                    //点击射线
+                    let that = this;
+                    var raycaster = new THREE.Raycaster();
+                    var mouse = new THREE.Vector2();
+                    document.body.addEventListener('mousedown', onDocumentMouseDown, false);
+                    //new THREE.MeshLambertMaterial({
+                    //    color: COLOR['grey'], side: THREE.DoubleSide,
+                    //    opacity: 0.5,
+                    //    wireframe: true
+
+                    //})
+                    function onDocumentMouseDown(event) {
+                        event.preventDefault();
+                        mouse.x = (event.clientX / that.threeD.renderer.domElement.clientWidth) * 2 - 1;
+                        mouse.y = -(event.clientY / that.threeD.renderer.domElement.clientHeight) * 2 + 1;
+
+                        raycaster.setFromCamera(mouse, that.threeD.camera);
+
+                        //总结一下，这里必须装网格，mesh，装入组是没有效果的
+                        //所以我们将所有的盒子的网格放入对象就可以了
+                        // 需要被监听的对象要存储在clickObjects中。
+                        var intersects = raycaster.intersectObjects(that.threeD.clickObjects);
+
+                        // console.log(intersects)
+                        if (intersects.length > 0) {
+                            // 在这里填写点击代码
+                            console.log(intersects);
+
+                            let id = intersects[0].object.name.replace('grid_', '');
+                            app.show = true;
+                            that.goto_fullview();
+                          
+                            //click name
+                            if (id.includes('Customer')) {
+                                app.table_type = "NPE";
+                                app.table_clm = ["NPE_NAME", "D1_DUE", "D2_DUE", "D13_DUE", "D14_1_DUE", "D14_2_DUE", "D15_DUE"];
+                                app.table_data = [
+                                    {
+                                        "PROJECT_ID": "NPE002-20210193",
+                                        "NPE_NAME": "NPE reviews TRA to access D007-000076 that engage necessary Envelopped program NB_20200041 NPE translates RMS of D007-000076 from RBL1( NB_20200041 ) that a Control Plan deals with a OEM sagement enables the 1st productization of ESS BGA_12 x 18_BiCS5 1Tb eX3_8D_NA_ESS Coffee Bay 8D",
+                                        "PROJECT_MANAGER_NAME": "Jiang, Vincent (Vincent)",
+                                        "STAKEHOLDER_NAME": "",
+                                        "D1_DUE": "Nov/01 '21|blue",
+                                        "D2_DUE": "|grey",
+                                        "D13_DUE": "Feb/28 '22|grey",
+                                        "D14_1_DUE": "|grey",
+                                        "D14_2_DUE": "|grey",
+                                        "D15_DUE": "Feb/28 '22|grey",
+                                        "PROGRESS_UP_TO_TODAY": "[Link]",
+                                        "WEEKLY_UPDATE": "Progress Refresh[Button WeeklyUpdate]",
+                                        "HISTORY": "History[Button History]",
+                                        "FLAG": "1"
+                                    }
+                                ];
+                            }
+                            else if (id.includes('Input')) {
+                                app.table_type = "PRO";
+                                app.table_clm = ["NEW TECH PROGRAM NAME", "0.Feasibility", "1.ACR", "2.OW", "3.TCS"];
+                                app.table_data = [{ "PROGRAM ID": "NR_20200075", "NEW TECH PROGRAM NAME": "CEM-WB develops RBLx, which re-uses capex , which aligned scope with CPI NAND of BiCS5 1Tb ex3 2p (Existing platform Vs RapidMEM)<br><br>VAQ: Quality <br>Xiao, Jason [rocket] NR_20200075", "SITE": "SDSS", "0.Feasibility": "---[Link Gray]", "1.ACR": "Oct/20 '20[Link Blue]", "2.OW": "Feb/05 '21[Link Blue]", "3.TCS": "Apr/26 '21[Link Blue]", "PPP": "[Link Green]", "FW27 WEEKLY MESSAGE": "Apr/27 '21:<br><ul class=\" list-paddingleft-2\" style=\"width: 792.297px; white-space: normal;\"><li><p><span style=\"font-family: Arial;\"></span></p><p>TCS DCCB meeting alignment:</p></li><li><p>RBL1 for bonding-<span style=\"font-size: 1em;\">Release RBL1 of B5 1Tb which same as RBL1 of B5 512Gb，no gating action.</span></p></li><li><p>Vulcan 16D long wire-<span style=\"font-size: 1em;\">Release WB recipe ,  for MD part(big wire sweep at corner)  need MD engr to call special meeting to cover, no gating action.</span></p></li><li><p><span style=\"font-size: 1em;\"></span></p><p>VSSB for S5E 8D-<span style=\"font-size: 1em;\">Team aligned  QS continue to use VSSB as default,  PSA-SSB as backup plan by CCB1(CCB2 base on TCS result).&nbsp;</span><span style=\"font-size: 1em;\">Gating at TCS, TDCN scope pending for VSSB until MTBA pass, then update at further DCCB meeting.</span></p></li></ul><p><span style=\"color: rgb(0, 176, 80); font-family: Verdana;\"><br/></span></p>[Link]", "TECHNOLOGY": "Others:Data summary need more time per alignment with CPI", "STATUS": "Close [Link Blue]", "PROGRAM MANAGER": "Xiao, Jason (Jason)", "PILLAR": null, "WEEKLY UPDATE": "Progress Refresh[Button WeeklyUpdate]", "HISTORY": "History[Button History]" }];
+
+                            }
+                            else if (id.includes('Source')) {
+                                app.table_type = "ERA";
+                                app.table_clm = ["NEW TECH PROGRAM NAME", "0.Feasibility", "1.ACR", "2.OW", "3.TCS"];
+                                app.table_data = [{
+                                    '0.Feasibility': "Dec/20 '21[Link Blue]",
+                                    '1.ACR': "Jan/12 '22[Link Yellow]",
+                                    '2.OW': "Feb/14 '22[Link Green]",
+                                    '3.TCS': "Feb/28 '22[Link Green]",
+                                    'FW27 WEEKLY MESSAGE': "[Link]",
+                                    'HISTORY': "History[Button History]",
+                                    'NEW TECH PROGRAM NAME': "ERA simulator develops ultra big DAR procession and small tunnel configuration that E0-21-D0030 requires S5E, B6 512Gb, 1D, enable for Bruce, potential productization opportunity<br><br>Shi, Sara  ERA_210033",
+                                    'PROGRAM ID': "ERA_210026",
+                                    'PROGRAM MANAGER': "Shi, Sara (Sara)",
+                                    'SITE': "SDSS",
+                                    'STATUS': "Holding ",
+                                    'WEEKLY UPDATE': "WeeklyUpdate[Button WeeklyUpdate]"
+                                }]
+                            } else if (id.length > 0) {
+                                app.table_type = "PCL";
+                                app.table_clm = ["PHASE", "CHECK_ITEM", "OWNER_NAME", "STATUS", "ATTACHMENT"];
+                                app.table_data = [{ "N1_ID": "1000277223", "CHECKLIST_ID": "PCL_00036320", "PROGRAM_ID": "NB_20200041", "PROGRAM_NAME": "CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex3 2p; RPG/OEM/Automotive 1-16D; with DBG 36-61um; EM760 DAF; DB700/800/830", "PROGRAM_MANAGER": "Zhang, Izzie (Izzie)", "PROGRAM_CATEGORY": "New Fab node of Nand", "PHASE": "ACR", "CHECK_ITEM": "PNTF", "STATUS": "Pass Delay", "ATTACHMENT": "ps://wdc.box.com/s/3nbztdxc07xt88xjc1j7csjt86xvulmj[Attach]", "OWNER_NAME": "Li, Glory (Glory)", "COMMENTS": "DP, WB related PNtF items already have regression action, will align PNtF actions for DA and CPI before OW kickoff|", "SUBMIT_TIME": "2020-10-23 5:46:29 PM", "LEVEL1_APPROVER": "Sun, Kandy (Kandy)", "LEVEL1_STATUS": "Validated", "COMMENTS1": "", "APPROVE_TIME1": "2020-10-27 1:28:00 PM", "LEVEL2_APPROVER": "Li, Glory (Glory)", "LEVEL2_STATUS": "Validated", "COMMENTS2": "", "APPROVE_TIME2": "2020-10-27 1:28:00 PM" }, { "N1_ID": "24245", "CHECKLIST_ID": "PCL_00036323", "PROGRAM_ID": "NB_20200041", "PROGRAM_NAME": "CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex3 2p; RPG/OEM/Automotive 1-16D; with DBG 36-61um; EM760 DAF; DB700/800/830", "PROGRAM_MANAGER": "Zhang, Izzie (Izzie)", "PROGRAM_CATEGORY": "New Fab node of Nand", "PHASE": "ACR", "CHECK_ITEM": "RBL0/Simulator SC", "STATUS": "Pass Delay", "ATTACHMENT": "ps://wdc.box.com/s/ck87c4s0s7bahiji79l3pxnu7np2l9p7[Attach]", "OWNER_NAME": "Zhang, Izzie (Izzie)", "COMMENTS": "BiCS5 1Tb X3 2P SC|", "SUBMIT_TIME": "2020-10-26 1:59:33 PM", "LEVEL1_APPROVER": "", "LEVEL1_STATUS": "", "COMMENTS1": "", "APPROVE_TIME1": "", "LEVEL2_APPROVER": "Li, Glory (Glory)", "LEVEL2_STATUS": "Validated", "COMMENTS2": "", "APPROVE_TIME2": "2020-10-26 3:27:08 PM" }]
+                            }
+                            return;
+                            //click grid
+                           
+                            app.src = "";
+                            if (id.includes('PCL')) {
+                                app.table_type = "PCL";
+                                app.table_clm = ["PHASE", "CHECK_ITEM", "OWNER_NAME","STATUS","ATTACHMENT"];
+                                app.table_data = page_data[2].filter(n => { return n.CHECKLIST_ID.includes(id) })
+                            }
+                            else if (id.includes('NPE')) {
+                                app.table_type = "NPE";
+                                app.table_clm = ["NPE_NAME", "D1_DUE", "D2_DUE", "D13_DUE", "D14_1_DUE", "D14_2_DUE", "D15_DUE"];
+                                app.table_data = [
+                                    {
+                                        "PROJECT_ID": "NPE002-20210193",
+                                        "NPE_NAME": "NPE reviews TRA to access D007-000076 that engage necessary Envelopped program NB_20200041 NPE translates RMS of D007-000076 from RBL1( NB_20200041 ) that a Control Plan deals with a OEM sagement enables the 1st productization of ESS BGA_12 x 18_BiCS5 1Tb eX3_8D_NA_ESS Coffee Bay 8D",
+                                        "PROJECT_MANAGER_NAME": "Jiang, Vincent (Vincent)",
+                                        "STAKEHOLDER_NAME": "",
+                                        "D1_DUE": "Nov/01 '21|blue",
+                                        "D2_DUE": "|grey",
+                                        "D13_DUE": "Feb/28 '22|grey",
+                                        "D14_1_DUE": "|grey",
+                                        "D14_2_DUE": "|grey",
+                                        "D15_DUE": "Feb/28 '22|grey",
+                                        "PROGRESS_UP_TO_TODAY": "[Link]",
+                                        "WEEKLY_UPDATE": "Progress Refresh[Button WeeklyUpdate]",
+                                        "HISTORY": "History[Button History]",
+                                        "FLAG": "1"
+                                    }
+                                ];
+                                //$.get('./api.ashx?type=get_npe_deck_overview&v_project_id=' + id, function (data) {
+                                //    app.table_data = data;
+                                //})
+                                //app.src = "../npe2.0/get_npe_deck_overview_for_3d.html?v_project_id=" + id;
+                            }
+                            else if (id.includes('ERA')) {
+                                app.table_type = "ERA";
+                                app.table_clm = ["NEW TECH PROGRAM NAME", "0.Feasibility", "1.ACR", "2.OW", "3.TCS"];
+                                app.table_data = [{
+                                    '0.Feasibility': "Dec/20 '21[Link Blue]",
+                                    '1.ACR': "Jan/12 '22[Link Yellow]",
+                                    '2.OW': "Feb/14 '22[Link Green]",
+                                    '3.TCS': "Feb/28 '22[Link Green]",
+                                'FW27 WEEKLY MESSAGE': "[Link]",
+                                'HISTORY': "History[Button History]",
+                                    'NEW TECH PROGRAM NAME': "ERA simulator develops ultra big DAR procession and small tunnel configuration that E0-21-D0030 requires S5E, B6 512Gb, 1D, enable for Bruce, potential productization opportunity<br><br>Shi, Sara  ERA_210033",
+                                'PROGRAM ID': "ERA_210026",
+                                'PROGRAM MANAGER': "Shi, Sara (Sara)",
+                                'SITE': "SDSS",
+                                'STATUS': "Holding ",
+                                'WEEKLY UPDATE': "WeeklyUpdate[Button WeeklyUpdate]"
+                                }]
+                            }
+                            else  {
+                                app.table_type = "PRO";
+                                app.table_clm = ["NEW TECH PROGRAM NAME", "0.Feasibility", "1.ACR", "2.OW", "3.TCS"];
+                                app.table_data = [{ "PROGRAM ID": "NR_20200075", "NEW TECH PROGRAM NAME": "CEM-WB develops RBLx, which re-uses capex , which aligned scope with CPI NAND of BiCS5 1Tb ex3 2p (Existing platform Vs RapidMEM)<br><br>VAQ: Quality <br>Xiao, Jason [rocket] NR_20200075", "SITE": "SDSS", "0.Feasibility": "---[Link Gray]", "1.ACR": "Oct/20 '20[Link Blue]", "2.OW": "Feb/05 '21[Link Blue]", "3.TCS": "Apr/26 '21[Link Blue]", "PPP": "[Link Green]", "FW27 WEEKLY MESSAGE": "Apr/27 '21:<br><ul class=\" list-paddingleft-2\" style=\"width: 792.297px; white-space: normal;\"><li><p><span style=\"font-family: Arial;\"></span></p><p>TCS DCCB meeting alignment:</p></li><li><p>RBL1 for bonding-<span style=\"font-size: 1em;\">Release RBL1 of B5 1Tb which same as RBL1 of B5 512Gb，no gating action.</span></p></li><li><p>Vulcan 16D long wire-<span style=\"font-size: 1em;\">Release WB recipe ,  for MD part(big wire sweep at corner)  need MD engr to call special meeting to cover, no gating action.</span></p></li><li><p><span style=\"font-size: 1em;\"></span></p><p>VSSB for S5E 8D-<span style=\"font-size: 1em;\">Team aligned  QS continue to use VSSB as default,  PSA-SSB as backup plan by CCB1(CCB2 base on TCS result).&nbsp;</span><span style=\"font-size: 1em;\">Gating at TCS, TDCN scope pending for VSSB until MTBA pass, then update at further DCCB meeting.</span></p></li></ul><p><span style=\"color: rgb(0, 176, 80); font-family: Verdana;\"><br/></span></p>[Link]", "TECHNOLOGY": "Others:Data summary need more time per alignment with CPI", "STATUS": "Close [Link Blue]", "PROGRAM MANAGER": "Xiao, Jason (Jason)", "PILLAR": null, "WEEKLY UPDATE": "Progress Refresh[Button WeeklyUpdate]", "HISTORY": "History[Button History]" }];
+                                //$.get('./api.ashx?type=GET_PROJECT_ALL_CHECKLIST_STATUS&v_project_id=' + id, function (data) {
+                                //    app.table_data = data;
+                                //})
+                               // app.src = `http://cvpmdsip03/tollgate-dy/tgsdome_for_3d.html?v_project_id=${id}`;
+                            }
+                            if (app.table_data.length == 0) {
+
+                                app.table_data = [{ 'No data': 'No data' }];
+                            }
+
+                        }
+                    }
+                }
+                init() {
+                    let that = this;
+                    let { scene, renderer, point, ambient, material, helper, definition, DirectionalLight, PointLight } = this.threeD;
+                    let OrthographicCamera = this.threeD.camera;
+                    const distance = radius,//控制整体尺寸
+                        c_zoom = 2;//控制初始化时的球的的大小
+
+                    /*******************render*****************/
+                    //renderer.shadowMapEnabled = true;
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    document.body.appendChild(renderer.domElement);
+                    //add milkyway//paras
+                    let mesh_box = new THREE.Mesh(new THREE.SphereGeometry(distance * 3, distance / 10, distance / 10), new THREE.MeshLambertMaterial({
+                        color: '#DFE1E0', side: THREE.BackSide,
+                        opacity: 1,
+                        map: that.threeD.texture['Pillars_of_creation']
+                    }));
+                    mesh_box.geometry.verticesNeedUpdate = true;
+                    mesh_box.geometry.normalsNeedUpdate = true;
+                    //1217
+                    scene.add(mesh_box);
+                    //add earth
+                    var earth = new THREE.Mesh(new THREE.SphereGeometry(100, 40, 40),
+                        new THREE.MeshStandardMaterial({
+                            color: 0xffffff, side: THREE.DoubleSide,
+
+                            map: that.threeD.texture['world']
+                        })
+                    );
+                    earth.position.x = 0;
+                    // console.log('h', top)
+                    earth.position.y = 700;
+                    //   earth.position.z = -1800;
+                    earth.position.x = 2200;
+
+
+                    scene.add(earth);
+                    /*******************helper*****************/
+                    // scene.add(helper);
+
+                    //地板
+                    //let box width meeting room size
+                    that.box_width = ((a, b) => {
+                        return a * ((8.5 - (b / 3)) | 0)
+                    })(that.r, counter)
+                    var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(that.box_width, that.box_width), new THREE.MeshPhongMaterial({
+                        color: 0xb0b0b0, depthWrite: true,
+                        side: THREE.DoubleSide, map: that.threeD.texture['woodiness']
+                    }));//
+                    mesh.rotation.x = - Math.PI / 2;
+                    mesh.receiveShadow = true;
+                    ;
+                    //wall left
+                    //, map: that.threeD.texture['deliverable_img']
+                    var wall_left = new THREE.Mesh(new THREE.PlaneBufferGeometry(that.box_width, that.box_width * 0.5),
+                        new THREE.MeshPhongMaterial({ depth: 10, color: 0xe5e5e5, opacity: 1, map: that.threeD.texture['izzie_wall'] }));//
+                    //  mesh.rotation.x = - Math.PI / 2;
+                    wall_left.position.y = that.box_width * 0.5 / 2
+                    wall_left.position.z = 0 - that.box_width / 2
+                    wall_left.receiveShadow = true;
+                    //wall right
+                    var wall_right = new THREE.Mesh(new THREE.PlaneBufferGeometry(that.box_width, that.box_width * 0.5),
+                        new THREE.MeshPhongMaterial({ color: 0xe5e5e5, opacity: 0.7, depth: 10, opacity: 1, map: that.threeD.texture['arrows'] }));//, map: that.threeD.texture['arrow_img']
+                    //  mesh.rotation.x = - Math.PI / 2;
+                    wall_right.position.y = that.box_width * 0.5 / 2
+                    wall_right.rotation.y = Math.PI / 2
+                    wall_right.position.x = 0 - that.box_width / 2
+                    wall_right.receiveShadow = true;
+
+                    //add space name
+                    that.ele["space"] = that.text_3d(types.filter(n => { return n.name.toLowerCase() == v_type.toLowerCase() })[0]['space'], 30);
+                    that.ele["space"].position.y = that.box_width * 0.5 - 40;
+                    that.ele["space"].position.x = 0 - that.box_width / 2;
+                    that.ele["space"].rotation.y = Math.PI / 2
+                    that.ele["space"].position.z = that.box_width / 2 - 10;
+                    //add user name box
+                    //let types = [{ name: 'Customer', color: 0x2d8cf0, nickname: 'blue', space: "Customer Space", user: ['32623', '1000275775'] },
+                    //{ name: 'Process', color: 0x19be6b, nickname: 'green', space: "Processing Space", user: ['1000256166', '2426'] },
+                    //{ name: 'Input', color: 0xff9900, nickname: 'orange', space: "Inputting Space", user: [] },
+                    //{ name: 'Source', color: 0x808080, nickname: 'grey', space: "Sourcing Space", user: ['31690'] },
+                    //var name_box = new THREE.Mesh(new THREE.BoxGeometry(cell_width * 1.8, cell_width / 8, cell_width * 4 + 8), new THREE.MeshLambertMaterial({
+                    //    map: that.threeD.texture[name], side: THREE.DoubleSide, color: name == page_data[0][0]['LEADER_ID'] ?
+                    //        0xFFF6B7 : 0xFFF6B7
+
+
+                    //    , opacity: 0.9
+                    //}));
+                    //name_box.rotation.z = Math.PI / 2
+                    //name_box.position.set(cell_width * 3 + 18 - offset[0], 0, (cell_width * 4 + 8) / 3 - offset[1]);
+
+
+                   
+                    var cell_width = 30;
+                    switch (v_type) {
+                        case "Customer":
+                            var ps = [32623, 1000275775];
+                            that.ele[v_type + "_" + ps[0]] = that.text_3d('Jiang,Vincent', 20); that.ele[v_type + "_" + ps[0]].name = v_type + "_" + ps[0];
+                            /*    that.ele[v_type + "_" + ps[0]].rotation.z = Math.PI / 2;*/
+                            that.ele[v_type + "_" + ps[0]].rotation.y = Math.PI / 2
+                            that.ele[v_type + "_" + ps[0]].position.x = 0 - that.box_width / 2;
+                            that.ele[v_type + "_" + ps[0]].position.z = 120;
+                            that.ele[v_type + "_" + ps[0]].position.y = that.box_width * 0.5 - 60;
+                           
+                            scene.add(that.ele[v_type + "_" + ps[0]])
+
+                            that.ele[v_type + "_" + ps[1]] = that.text_3d('Ng,Shin Lun', 20); that.ele[v_type + "_" + ps[1]].name = v_type + "_" + ps[1];
+                            /*    that.ele[v_type + "_" + ps[0]].rotation.z = Math.PI / 2;*/
+                            that.ele[v_type + "_" + ps[1]].rotation.y = Math.PI / 2
+                            that.ele[v_type + "_" + ps[1]].position.x = 0 - that.box_width / 2;
+                            that.ele[v_type + "_" + ps[1]].position.z = -60;
+                            that.ele[v_type + "_" + ps[1]].position.y = that.box_width * 0.5 - 60;
+                            scene.add(that.ele[v_type + "_" + ps[1]])
+                            that.threeD.clickObjects.push(that.ele[v_type + "_" + ps[0]])
+                            that.threeD.clickObjects.push(that.ele[v_type + "_" + ps[1]])
+                            break;
+                        case "Input":
+                            var ps = [1000256166, 2426];
+                            that.ele[v_type + "_" + ps[0]] = that.text_3d('Xue,Clock', 20); that.ele[v_type + "_" + ps[0]].name = v_type + "_" + ps[0];
+                            /*    that.ele[v_type + "_" + ps[0]].rotation.z = Math.PI / 2;*/
+                            that.ele[v_type + "_" + ps[0]].rotation.y = Math.PI / 2
+                            that.ele[v_type + "_" + ps[0]].position.x = 0 - that.box_width / 2;
+                            that.ele[v_type + "_" + ps[0]].position.z = 105;
+                            that.ele[v_type + "_" + ps[0]].position.y = that.box_width * 0.5 - 60 - 60 - 100;
+                            scene.add(that.ele[v_type + "_" + ps[0]])
+
+                            that.ele[v_type + "_" + ps[1]] = that.text_3d('Chen,Honny', 20); that.ele[v_type + "_" + ps[1]].name = v_type + "_" + ps[1];
+                            /*    that.ele[v_type + "_" + ps[0]].rotation.z = Math.PI / 2;*/
+                            that.ele[v_type + "_" + ps[1]].rotation.y = Math.PI / 2
+                            that.ele[v_type + "_" + ps[1]].position.x = 0 - that.box_width / 2;
+                            that.ele[v_type + "_" + ps[1]].position.z = -60;
+                            that.ele[v_type + "_" + ps[1]].position.y = that.box_width * 0.5 - 60 - 60 - 100;
+                            scene.add(that.ele[v_type + "_" + ps[1]])
+                            that.threeD.clickObjects.push(that.ele[v_type + "_" + ps[0]])
+                            that.threeD.clickObjects.push(that.ele[v_type + "_" + ps[1]])
+                            break;
+                        case "Source":
+                            var ps = [31690];
+                            that.ele[v_type + "_" + ps[0]] = that.text_3d('Shi,Sara', 20);
+                            that.ele[v_type + "_" + ps[0]].name = v_type + "_" + ps[0];
+                            /*    that.ele[v_type + "_" + ps[0]].rotation.z = Math.PI / 2;*/
+                            that.ele[v_type + "_" + ps[0]].rotation.y = Math.PI / 2
+                            that.ele[v_type + "_" + ps[0]].position.x = 0 - that.box_width / 2;
+                            that.ele[v_type + "_" + ps[0]].position.z = 105;
+                            that.ele[v_type + "_" + ps[0]].position.y = that.box_width * 0.5 - 60 - 60 - 100  - 100 ;
+                            scene.add(that.ele[v_type + "_" + ps[0]])
+
+                            that.threeD.clickObjects.push(that.ele[v_type + "_" + ps[0]])
+                          
+                            break;
+                    }
+                    /*                         定义地板割线                      */
+                    var grid = new THREE.GridHelper(that.box_width, 12, 0xdddddd, 0xdddddd);
+                    grid.material.opacity = 0.7;
+                    grid.material.transparent = true
+
+                    scene.add(mesh); scene.add(wall_left);
+                    scene.add(wall_right);
+                    scene.add(grid);
+                    scene.add(that.ele["space"]);
+                    /*******************light 2*****************/
+                    //DirectionalLight[2].position.set(1000, 200, 1000);
+                    //scene.add(DirectionalLight[2]);
+                    //DirectionalLight[3].position.set(-1000, 200, -1000);
+                    //scene.add(DirectionalLight[3]);
+                    //DirectionalLight[0].position.set(0, 400, 0);
+                    //scene.add(DirectionalLight[0]);
+
+                    let directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+                    directionalLight.position.set(-400, 800, 400);
+                    let dhelper = new THREE.DirectionalLightHelper(directionalLight, 5, 0xff0000);
+
+                    let hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.9);
+                    hemisphereLight.position.set(0, 800, 0);
+                    let hHelper = new THREE.HemisphereLightHelper(hemisphereLight, 5);
+
+                    scene.add(directionalLight);
+                    scene.add(hemisphereLight);
+
+                    //add desk
+                    let desktop = new THREE.Mesh(new THREE.CylinderGeometry(that.r, that.r, 20, 40, 20), new THREE.MeshStandardMaterial({
+                        color: 0xb3b3b3,
+                        //roughness: .9,
+                        //    emissive: 0xd5d5d5,
+                        //shading: THREE.FlatShading,
+                    }))
+                    desktop.position.y = 200;
+
+
+                    that.disk(scene, Math.max(200, that.r), COLOR['red']);
+                    // scene.add(desktop);
+                    let deskbottom = new THREE.Mesh(new THREE.CylinderGeometry(that.r / 2.4, that.r / 2.4, 200, 18, 3), new THREE.MeshStandardMaterial({
+                        color: 0xa0a0a0,
+                        //roughness: .9,
+                        //emissive: 0xd5d5d5,
+                        //shading: THREE.FlatShading,
+                        map: that.threeD.texture['dalishi']
+                    }))
+                    deskbottom.position.y = 100;
+                    // scene.add(deskbottom);
+
+                    //that.ele.deskcolor = new THREE.Mesh(new THREE.CylinderGeometry(that.r / 2.4, that.r / 2.4, 3, 38, 3), new THREE.MeshStandardMaterial({
+                    //       color: COLOR.green,
+                    //       opacity:.7
+
+
+                    //   }))
+                    //   that.ele.deskcolor.position.y = 210;
+                    //   scene.add(that.ele.deskcolor);
+
+
+                    OrthographicCamera.position.set(200 * c_zoom*2, 300 * c_zoom*2, 200 * c_zoom*2);
+                    OrthographicCamera.lookAt(scene.position);
+                    var animate = function () {
+
+                        renderer.render(scene, OrthographicCamera);
+
+
+                    };
+
+                    animate();
+                    setTimeout(function () { animate(); }, 700);
+                    setTimeout(function () { animate(); }, 1800);
+                    setTimeout(function () {
+                        animate();
+                     //   that.goto_fullview('center');
+                    }, 3000);
+                    var controls = new THREE.OrbitControls(OrthographicCamera, renderer.domElement);
+
+                    controls.maxDistance = 1800 + 1000;
+                    controls.minDistance = 500;// 300;
+                    controls.minPolarAngle = Math.PI * (60 / 180);
+                    controls.maxPolarAngle = Math.PI * (60 / 180);
+                    controls.addEventListener('change', animate);
+                    //
+                    // that.load_model("people", scene);
+
+                    that.load_model("wd", scene);
+                    that.load_model("plant", scene);
+                    //let peoples = ['jacky_obj', 'sx_obj']//, 'vincent_obj', 'Honny','dh_obj' ];
+                    //let people_name = ['Wu,Donghua', 'Liu,Jacky', 'Zhu,Shixing', 'Jiang,Vincent', 'Chen,Honny'];
+
+                    let peoples = [], people_name = [];
+                    page_data[0].map(n => {
+                        peoples.push(n.N1_ID);
+                        people_name.push(n.N1_ID_NAME);
+                        let c_id = n.N1_ID;
+                        if (!name_base.includes(n.N1_ID)) {
+                            c_id = "base";//没有就展示一个模型 2426
+                            console.log('base', n.N1_ID)
+                        }
+                        that.threeD.texture[n.N1_ID] = new THREE.ImageUtils.loadTexture('./doc/name_img/' + c_id + '.png')
+                        return n;
+                    })
+                    Array(counter).fill(0).map((n, index) => {
+                        let radian = 2 * Math.PI / counter * index;
+                        let current_id = peoples[index];
+                        if (!obj_base.includes(current_id)) {
+                            current_id = "2426";//没有就展示一个模型 2426
+                        }
+                        that.load_people(that.coordinate([0, 0], that.r + 70, radian), [-Math.PI / 2, 2 * Math.PI - radian],
+                            current_id, current_id + '_obj/sx', scene, people_name[index] || people_name[0])
+
+                        //add point
+                        let items = page_data[1].filter(n => { return n.N1_ID == peoples[index] });
+                        let itemarrs = Array(9).fill(0);
+                        items.map((n, i) => {
+                            itemarrs[i] = n.REL_ID;
+                            return n;
+                        })
+                        var g = that.cell_group([[itemarrs[0], itemarrs[1], itemarrs[2]],
+                        [itemarrs[3], itemarrs[4], itemarrs[5]],
+                        [itemarrs[6], itemarrs[7], itemarrs[8]]], peoples[index] || peoples[0]);
+                        [g.position.x, g.position.z, g.position.y] = [...that.coordinate([0, 0], that.r - 80 * (counter / 12), radian),
+                            220];
+                        //  [g.rotation.x, g.rotation.z] = [-Math.PI / 2, 2 * Math.PI - radian]; //0105 80 to 80
+                        g.rotation.y = 2 * Math.PI - radian;
+                        g.scale.set(...Array(3).fill(Math.max(5, counter) / 12));//0105 4 to 5
+                        scene.add(g);
+
+                    })
+
+
+
+                    that.disk(scene);
+                    that.initThreeClickEvent();
+
+
+                }
+            }
+
+
+
+
+
+            function disk_color(color) {
+                meeting.ele['disk_top'].material.color = new THREE.Color(color)
+
+            }
+    </script>
+</body>
+</html>

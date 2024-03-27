@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MapObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AreaName>Advantest</AreaName>
+  <DashboardName>Equipment Status Monitor</DashboardName>
+  <Menues>
+    <MapObjectMenueItem>
+      <Menue>Equipment Info</Menue>
+      <URL>mastr.html?eqpid=</URL>
+    </MapObjectMenueItem>
+    <MapObjectMenueItem>
+      <Menue>Current Process</Menue>
+      <URL>currentprocess.html</URL>
+    </MapObjectMenueItem>
+  </Menues>
+  <MapObjectSubs>
+    <MapObjectSub>
+      <ObjectName>EQP</ObjectName>
+      <ColoringObject>Background</ColoringObject>
+      <ColoringType>Normal</ColoringType>
+    </MapObjectSub>
+    <MapObjectSub>
+      <ObjectName>AREA</ObjectName>
+      <ColoringObject>Border</ColoringObject>
+      <ColoringType>Blinking</ColoringType>
+    </MapObjectSub>
+  </MapObjectSubs>
+</MapObject>

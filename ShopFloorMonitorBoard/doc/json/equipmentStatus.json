@@ -1,0 +1,26 @@
+﻿{
+  
+  "EquipmentStatusSummary ": {
+
+    "Production State": "[meter 60]",
+    "Idle State": "[meter 10]",
+    "Down State": "[meter 20]"
+
+  },
+  "Equipments Down (3)": {
+
+    "EQP Name": "Down Minutes ",
+    "DEK01": 16,
+    "DEK02": 10,
+    "DEK03": 15
+
+  },
+  "Equipments Idle (3)": {
+
+    "EQP Name": "Down Minutes ",
+    "DEK01": 16,
+    "DEK02": 10,
+    "DEK03": 15
+
+  }
+}

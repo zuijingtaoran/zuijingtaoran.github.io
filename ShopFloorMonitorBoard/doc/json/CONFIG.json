@@ -1,0 +1,40 @@
+﻿{
+  "OBJ": [
+    {
+      "type": "Building",
+      "BGcolor": "whitesmoke",
+      "border": "darkgreen"
+    },
+    {
+      "type": "Facility",
+      "BGcolor": "whitesmoke",
+      "border": "orange"
+    },
+    {
+      "type": "Equipment",
+      "BGcolor": "white",
+      "border": "blank"
+    }
+  ],
+  "EQP": [
+    {
+      "type": "Traceable",
+      "BGcolor": "white",
+      "border": "Black"
+       
+
+    },
+    {
+      "type": "Untraceable",
+      "BGcolor": "white",
+      "border": "gray"
+
+    }
+  ]
+
+}
+
+
+
+
+

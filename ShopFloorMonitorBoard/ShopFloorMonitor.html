@@ -1,0 +1,640 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8,IE=11" />
+
+    <link rel="shortcut icon" href="" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.53, maximum-scale=1.0, minimum-scale=0.53">
+
+    <title>ShopFloorMonitor</title>
+    <link href="doc/style/common.css?v=" rel="stylesheet" />
+    <style type="text/css">
+        body {
+            overflow: hidden;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box; /* Firefox */
+            -webkit-box-sizing: border-box; /* Safari */
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+
+        #title {
+            position: relative;
+            height: 70px;
+            border-bottom: 1px solid steelblue;
+        }
+
+        .areaTitle {
+            color: steelblue;
+            top: 10px;
+            position: relative;
+        }
+
+            .areaTitle > * {
+                font-size: 1.6em;
+            }
+
+        #menu {
+            position: relative;
+            height: 50px;
+            width: 50px;
+            border: none;
+            background-color: steelblue;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+
+        #menuUl {
+            position: fixed;
+            z-index: 200011;
+            top: 10px;
+            left: 60px;
+            border-radius: 5px;
+            width: 210px;
+            height: auto;
+            background-color: #fdfdfd;
+            color: steelblue;
+            list-style-type: none;
+            border: 1px solid steelblue;
+            border-top-left-radius: 0px !important;
+        }
+
+            #menuUl > Li {
+                font-size: 12px;
+                height: 25px;
+                border-top: 1px solid #dfdfdf;
+                padding: 5px;
+            }
+
+                #menuUl > Li:first-child {
+                    border-top: none;
+                }
+
+                #menuUl > Li:hover {
+                    cursor: pointer;
+                    background-color: #ff6a00;
+                    color: #fff;
+                }
+
+        #menu:hover {
+        }
+
+        #ifr {
+            width: 100%;
+            position: relative;
+            border-left: 1px solid steelblue;
+        }
+
+        #searchBox {
+            position: relative;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+        }
+
+        .sear {
+            height: 24px;
+            border: 1px solid steelblue;
+            color: steelblue;
+            position: relative;
+        }
+
+        select, select[size="0"], select[size="1"] {
+            border: none;
+        }
+
+        #searchBtn {
+            width: 24px;
+            background-image: url(/doc/icon/search.png);
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-color: #fff;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            left: -5px;
+            border-left: none;
+            color: #00b88c;
+        }
+
+            #searchBtn:hover {
+                cursor: pointer;
+            }
+
+        #searchItem {
+            width: 160px;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            border-right: none;
+        }
+
+        select {
+            /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+            border: solid 1px #000;
+            /*很关键：将默认的select选择框样式清除*/
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            /*在选择框的最右侧中间显示小箭头图片*/
+            /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+            padding-left: 5px;
+        }
+
+
+            /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+            select::-ms-expand {
+                display: none;
+            }
+
+        .show {
+            border-radius: 5px !important;
+            border-top-right-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+
+        #dash {
+            padding: 0.5%;
+            overflow-y: scroll;
+            padding-bottom: 20px;
+        }
+
+        .statusInfo {
+            position: relative;
+            width: 100%;
+            background-color: steelblue;
+            color: #333;
+            border: none;
+            font-weight: bold;
+            overflow: hidden;
+            box-shadow: 2px 2px 2px #999;
+            z-index: 2000;
+            margin-bottom: 4px;
+        }
+
+        .statusInfo-drag {
+            position: fixed;
+            width: 200px;
+            z-index: 2001;
+        }
+
+        #shade {
+            width: 100%;
+            height: 1920px;
+            background-color: #fdfdfd;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            display: none;
+            z-index: 1999;
+            opacity: .5;
+        }
+
+        .statusInfo-title {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background-color: steelblue;
+            color: #fff;
+            padding: 3px;
+            padding-left: 7px;
+            cursor: move;
+            font-size: 0.95em;
+        }
+        /*.statusInfo-title::before {
+                width:4px;
+                position:absolute;
+                top:0px;
+                 left:0px;
+                 content:'';
+                 background-color:#00b88c;
+                 height:100%;
+            }*/
+        .statusInfo-body {
+            position: relative;
+            background-color: #fff;
+            width: 100%;
+            height: auto;
+            max-height: 230px;
+            color: #000;
+            font-size: 0.7em;
+            min-height: 50px;
+        }
+
+            .statusInfo-body > ul {
+                padding: 2px;
+            }
+
+                .statusInfo-body > ul > li:nth-child(2n) {
+                    background-color: aliceblue;
+                }
+
+        .colorBox {
+            display: inline-block;
+            width: 20px;
+            height: 13px;
+            border-radius: 2px;
+            margin-left: 4px;
+            margin-right: 10px;
+        }
+
+        .col_green {
+            background-color: darkgreen;
+        }
+
+        .col_gray {
+            background-color: darkgray;
+        }
+
+        .col_red {
+            background-color: red;
+        }
+
+        .meter {
+            width: 70%;
+        }
+
+        .fold {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: transparent;
+            color: #fff;
+            margin: 2px;
+            cursor: pointer;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-image: url(doc/icon/menu.png)
+        }
+
+            .fold:hover {
+                background-image: url(doc/icon/menu-hover.png)
+            }
+
+        progress {
+            color: #00b88c; /*兼容IE10的已完成进度背景*/
+            border: none;
+            background: #eee; /*这个属性也可当作Chrome的已完成进度背景，只不过被下面的::progress-bar覆盖了*/
+        }
+
+            progress::-webkit-progress-bar {
+                background: #eee;
+            }
+
+            progress::-webkit-progress-value,
+            progress::-moz-progress-bar {
+                background: #00b88c;
+            }
+    </style>
+
+    <script src="doc/jquery-1.11.3.js"></script>
+    <script src="doc/layer/layer.js"></script>
+    <!--<script src="Scripts/jquery-1.11.1.min.js"></script>-->
+    <script src="Js/DCoolWeb.JScript.js"></script>
+    <script src="Js/DCoolWeb.DivCover.js"></script>
+</head>
+
+<body>
+
+    <div id="success" style="position: absolute; z-index: 30000; height: 120px; width: 284px; left: 50%; top: 50%; margin-left: -150px; margin-top: -80px; display: none;">
+        <p style="line-height: 32px;">
+            <img src="Images/ajax_loading.gif" />
+            <font style="height: 30px; vartical-algin: center; padding-left: 5px"> Data loading, please wait...</font>
+        </p>
+    </div>
+    <script>objHiddle('success');</script>
+    <div id="shade"></div>
+    <div id="title" class="row">
+        <div class="col-xs-3"><button id="menu" class="float">Menu</button></div>
+        <div class="col-xs-6 center">
+            <b class="areaTitle"><span class="areaName"></span> <span class="areaInfo">Equipment Status Monitor</span></b>
+
+        </div>
+        <div class="col-xs-3 right">
+            <div id="searchBox">
+                <input value="SMT" class="sear" id="searchItem"/>
+                <input id="searchBtn" value="search" class="sear" />
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="box row">
+        <div class="col-xs-2" id="dash">
+
+
+        </div>
+        <div class="col-xs-10">
+            <div class="row">
+                <div class="col-xs-12 right">
+                    <table width="100%" style="float:right">
+                        <tr>
+                            <td>
+                                <div id="divForInfo">
+
+                                </div>
+                            </td>
+                            <td align="right" style="font-size:10px;font-weight:bold;">
+                                Color Code Definition:
+                            </td>
+                            <td id="tdForColorCodeDefination" style="width:30%;">
+                                <span style="font-size:10px;">Production State</span><i class='colorBox col_green'></i>
+                                <span style="font-size:10px;">Idle State</span><i class='colorBox col_gray'></i>
+                                <span style="font-size:10px;">Down State</span><i class='colorBox col_red'></i>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xs-12 right">
+                    <!--"Color Code Definition": {
+                    "Production State": "[color green]",
+                    "Idle State": "[color gray]",
+                    "Down State": "[color red]"
+
+                    },-->
+                </div>
+            </div>
+            <iframe id="ifr" frameborder="0" src="#"></iframe>
+        </div>
+    </div>
+    <ul id="menuUl" class="hide"></ul>
+    <script>
+        String.prototype.retElem = function () {
+            var that = this;
+            var retVal = "<i class=textNode>" + that + "</i>";
+            if (/\[.*\]/.test(that)) {
+                var arr = that.match(/(?!\[|\s)\w+/g);
+                //if (arr[0] === "color") {
+                //    retVal = "<i class='colorBox col_" + arr[1] + "'></i>";
+                //}
+                //else
+                if (arr[0] === "meter") {
+
+                    retVal = "<progress class='meter' value='" + +arr[1] + "' max=\"100\"></progress><i class=textNode>" + arr[1] + "</i>";
+                }
+                else {
+                     retVal = "<i class=textNode>" + arr[1] + "</i>";
+                }
+
+
+            }
+            return retVal;
+        }
+
+    </script>
+    <script>
+        var menuObj = [
+            {
+                'name': 'Map'
+                , 'url': 'zoom.html'
+            },
+            {
+                'name': 'Create&Edit Map'
+                , 'url': 'areamap.html'
+            }
+        ]
+        window.onload = function () {
+
+            $('#ifr,#dash').height($(window).height() - 70);
+
+            //for (var a = 0; len = menuObj.length, a < len; a++) {
+            //    $('#menuUl').append("<li url='" + menuObj[a]['url'] + "'>" + menuObj[a]['name'] + "</li>");
+            //}
+            //get history
+            var inp1 = document.getElementById('searchItem');
+            $.get('get.ashx?type=GET_HIS_DATA&_=' + Math.random(), function (data) {
+                var arr = data.split('|');
+                var len = arr.length - 1;
+                if (len > 0) {
+                    for (var i = 0; i < len; i++) {
+                        inp1.options.add(new Option(arr[i], arr[i]));
+                    }
+                }
+                $('#searchBtn').trigger('click');
+            })
+
+
+            ////load status
+            $.ajax({
+                url: "doc/xml/eqpstatus.xml?v=" + new Date(),
+                dataType: 'xml',
+                type: 'GET',
+                timeout: 2000,
+                error: function (xml) {
+
+                },
+                success: function (xml) {
+                    $(xml).find("Configs").each(function (i) {
+
+                        // var lower = $(this).children("lower").text();
+
+                        $('#dash').append("<div class=statusInfo><div class=statusInfo-title>" + $(this).children("Name").text() + "<i class=fold></i></div><div class=statusInfo-body> </div></div>");
+
+                    });
+                }
+            });
+
+        }
+        $(function () {
+            $('#menu').click(function () {
+                $('#menuUl').slideToggle(500);
+                $(this).toggleClass('show');
+            })
+            $('#searchBtn').click(function () {
+                var that = $(this).siblings('input').val();
+                $('#ifr').attr('src', 'zoom.html?area=' + that);
+                $('#title h2 .areaName').text(that);
+                loadDashboards(that);
+            })
+            $('body').delegate('#menuUl>li', 'click', function () {
+                $('#title h2 .areaInfo').html($(this).html());
+                var v = $(this).getText();
+                $('#ifr').attr('src', $(this).attr('url') + '?area=' + $('#searchItem').val() + '&dashboard=' + v + '&_=' + Math.random().toString(36).substr(2));
+                $('#menu').trigger('click');
+                loadDashboardMenus(v);
+                loadDashboardColorCodeDefinition(v);
+            })
+            $('body').delegate('.fold', 'click', function (e) {
+                e.stopPropagation();
+                $(this).parent()[0].onmousedown = null;
+                $(this).parents('.statusInfo').find('.statusInfo-body').eq(0).slideToggle(300);
+            })
+            $('body').delegate('.statusInfo-title', 'mousedown', function (ev) {
+
+
+                var oevent = ev || event;
+                var thisElem = oevent.target || oevent.srcElement;
+
+                if (thisElem.nodeName === "I") { return; }
+                //var div1 = oevent.target || oevent.srcElement;
+                //if ($(div1).attr("class") != classname) {
+                //    div1 = div1.parentNode;
+                //}
+                $('#shade').show();
+                var div1 = $(this).parent()[0];
+
+                $(div1).addClass('statusInfo-drag');
+
+
+                var distanceX = oevent.clientX - div1.offsetLeft;
+                var distanceY = oevent.clientY - div1.offsetTop;
+
+                document.onmousemove = function (ev) {
+                    var oevent = ev || event;
+                    var l = oevent.clientX - distanceX,
+                        t = oevent.clientY - distanceY;
+
+                    div1.style.left = l + 'px';
+                    div1.style.top = t + 'px';
+
+
+
+
+                };
+                document.onmouseup = function () {
+                    $("#shade").hide();
+                    if (+($(div1).css('left').replace("px", "")) < 100) {
+                        $(div1).removeClass('statusInfo-drag');
+                        $(div1).removeAttr('style');
+                    }
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+
+                };
+            })
+
+        })
+    </script>
+
+
+    <p id="lbl_Error" style="color: darkred; display: none"></p>
+    <p id="lbl_ChartRefreshTime" style="color: darkred; display: none;"></p>
+    <script>
+        function Init(chartType, parameters, parametersValue, successFunc) {
+            $.ajax({
+                type: "get",
+                url: "Utility/ConfigParser.ashx",
+                data: { 'ChartType': chartType, 'ConfigPath': GetChartConfigName('ChartConfigPath'), 'Parameters': parameters, 'ParametersValue': parametersValue },
+                dataType: "json",
+                cache: false,
+                beforeSend: function () {
+                    //JqueryShow(getTipsId());
+                },
+                success: function (xml) {
+                    successFunc(xml);
+                },
+                error: function () {
+                    //var lbl_Error = document.getElementById("lbl_Error");
+                    //lbl_Error.style.display = "";
+                    //lbl_Error.innerHTML = "ajax request error!";
+                    //alert("ajax request error!");
+                }
+            });
+        }
+        function GetChartConfigName(para) {
+            return decodeURIComponent("".dcGetQueryStringUrlByName(para));
+        }
+        function showError(data) {
+            var lbl_Error = document.getElementById("lbl_Error");
+
+            if (data.DataType === "Error") {
+                lbl_Error.style.display = "";
+                lbl_Error.innerHTML = data.ExceptionMessage;
+            }
+            else {
+                lbl_Error.style.display = "none";
+            }
+        }
+
+        function loadDashboards(v) {
+            $('#menuUl').setHtml('');
+            for (var a = 0; len = menuObj.length, a < len; a++) {
+                $('#menuUl').append("<li url='" + menuObj[a]['url'] + "'>" + menuObj[a]['name'] + "</li>");
+            }
+            Init('LoadDashboards', 'AreaName', v, function (data) {
+                showError(data);
+
+                for (var i = 0; i < data.Configs.length; i++) {
+                    var c = data.Configs[i];
+                    $('#menuUl').append("<li url='" + c.URL + "'>" + c.DashboardName + "</li>");
+                }
+            });
+        }
+        function loadDashboardMenus(v) {
+            var pars = [];
+            var parvs = [];
+            pars.push('AreaName');
+            pars.push('DashboardName');
+            parvs.push($('#searchItem').getValue());
+            parvs.push(v);
+            var o = $('#dash');
+            o.setHtml('');
+            Init('LoadDashboardMenus', pars.join(), parvs.join('×'), function (data) {
+                showError(data);
+
+                for (var i = 0; i < data.DashboardMenues.length; i++) {
+                    var c = data.DashboardMenues[i];
+                    o.append("<div class=statusInfo><div class=statusInfo-title>" + c.Title + "<i class=fold></i></div><div class=statusInfo-body> </div></div>");
+                }
+            });
+        }
+        function loadDashboardColorCodeDefinition(v) {
+            var pars = [];
+            var parvs = [];
+            pars.push('AreaName');
+            pars.push('DashboardName');
+            parvs.push($('#searchItem').getValue());
+            parvs.push(v);
+            var o = $('#tdForColorCodeDefination');
+            o.setHtml('');
+            Init('loadDashboardColorCodeDefinition', pars.join(), parvs.join('×'), function (data) {
+                showError(data);
+
+                for (var i = 0; i < data.ColorCodeDefinitions.length; i++) {
+                    var c = data.ColorCodeDefinitions[i];
+                    o.append("<span style='font-size:10px;'>" + c.DefinedItem + "</span><i class='colorBox' style='background-color:" + c.Color + "'></i>");
+                }
+                createShowInfoHtml(data, data);
+            });
+        }
+        function createShowInfoHtml(data, datalist) {
+            var d = new Date();
+            $('#lbl_ChartRefreshTime').setHtml((d.getMonth() + 1) + '/' + (d.getDate()) + '/' + d.getFullYear() + ' ' + (d.getHours() >= 13 ? (d.getHours() - 12) : d.getHours()) + ':' + d.getMinutes() + ':' + d.getSeconds() + ' ' + (d.getHours() >= 13 ? 'PM' : 'AM'));
+            var html =
+                '<table cellspacing="0" cellpadding="2" style="border-width: 0px; border-collapse: collapse; width: 100%;font-size:10px;"><tbody>' +
+                '<tr style="border-bottom: 0px solid steelblue;">' +
+                '<td style="border-right: 0px solid steelblue;text-align:right;font-size:10px;">Chart Refresh:</td>' +
+                '<td style="border-right: 0px solid steelblue;font-weight:bold;text-align:left;font-size:10px;">' +
+                $('#lbl_ChartRefreshTime').getHtml() +
+                '</td>' +
+                '<td style="border-right: 0px solid steelblue;text-align:right;font-size:10px;">Refresh Interval:</td>' +
+                '<td style="font-weight:bold;text-align:left;font-size:10px;">' +
+                data.RefreshIntervalMinute + ' mins' +
+                '</td>'
+                ;
+            for (var j = 0; j < datalist.Query.LastRefreshTime.length; j++) {
+                html +=
+                    '<td style="text-align:right;font-size:10px;">' +
+                    datalist.Query.LastRefreshTime[j].DataSourceName +
+                    ':</td>' +
+                    '<td style="font-weight:bold;text-align:left;font-size:10px;">' +
+                    datalist.Query.LastRefreshTime[j].LastRefreshTime +
+                    '</td>'
+                    ;
+            }
+            html +=
+                '</tr>' +
+                '</tbody></table>';
+            $('#divForInfo').setHtml(html);
+        }
+    </script>
+</body>
+</html>

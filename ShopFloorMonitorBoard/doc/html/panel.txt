@@ -1,0 +1,80 @@
+﻿ <ul class="panel">
+       <li>
+            <div class="row">
+                <div class="col-xs-6">Area Size</div>
+                <div class="col-xs-6"> W
+<input value='56' class="inp inp-narrow" id="areaWidth"/>
+          
+H<input value='21' class="inp inp-narrow" id="areaHeight"/></div>
+            </div>
+           <div class="row">
+                <div class="col-xs-12">Enlarge
+				<select id='times'  class="inp inp-narrow"> 
+			
+				</select><button class='but drawArea' id='drawArea' onclick='drawAreaAll()'>Draw Area</button>
+</div>
+            </div>
+        </li>
+      
+        <li><div class="row">
+    <div class="col-xs-6">Resource Family</div>
+    <div class="col-xs-6">
+        <select id="resFamily" class="inp"><option value=''></option></select>
+
+    </div>
+</div>   
+        </li>
+        <li><div class="row">
+    <div class="col-xs-6">Resource Group</div>
+    <div class="col-xs-6">
+        <select id="resGroup" class="inp" ><option value=''></option></select>
+
+    </div>
+</div>
+        </li>
+        <li>
+            <div class="row">
+                <div class="col-xs-6">eqpt Name</div>
+                <div class="col-xs-6"><input class="inp" id="eqptName" /></div>
+            </div>
+
+        </li>
+        <li>
+            <div class="row">
+                <div class="col-xs-6">eqpt Size</div>
+                <div class="col-xs-6">W:<input class="inp inp-narrow" id="eqptWidth" /> 
+                H:<input class="inp inp-narrow" id="eqptHeight" /></div>
+            </div>
+
+        </li>
+		
+        <li>
+            <div class="row">
+                <div class="col-xs-6">eqpt Image</div>
+                <div class="col-xs-6">
+                    <img class="eqptIMG" src="#" alt="Alternate Text" />
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-xs-12 right"><button class='but' id='createObj'>Create Object</button></div></div>
+    
+        </li>
+		 <li>
+            <div class="row">
+                <div class="col-xs-6">eqpt Position</div>
+                <div class="col-xs-6">T:<input class="inp inp-narrow" id="eqptTop" /> 
+                L:<input class="inp inp-narrow" id="eqptLeft" /></div>
+            </div>
+
+        </li>
+		<li>
+            <div class="row">
+                <div class="col-xs-12 right">
+				<button class='but' id='adjust'>Adjust</button>
+				<button class='but save' id='save'>Save</button>
+				</div>
+                
+            </div>
+
+        </li>
+    </ul>

@@ -1,0 +1,262 @@
+﻿[
+  [
+    {
+      "INPUT_USER": "30112",
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "24245",
+      "N1_ID_NAME": "Zhang, Izzie (Me)",
+      "REL_FLAG": "",
+      "REL_CLOUR": "",
+      "MADS_FLAG": "",
+      "MADS_CLOUR": "",
+      "INPUT_TIME": "2021-12-30 3:38:08 PM",
+      "SYS_ID": "D45922BAEE9B473DE0537536470AC208",
+      "ROLE": "",
+      "CHI": "",
+      "STDEV": "",
+      "LI": "",
+      "PHOTOFILE_FROM": "employees",
+      "PHOTOFILE": "P_24245_24601026.jpg",
+      "ARROWS_FLAG": "",
+      "TABLE_CLOUR": "orange"
+    },
+    {
+      "INPUT_USER": "30112",
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "2426",
+      "N1_ID_NAME": "Chen, Honny ",
+      "REL_FLAG": "",
+      "REL_CLOUR": "",
+      "MADS_FLAG": "",
+      "MADS_CLOUR": "",
+      "INPUT_TIME": "2021-12-30 3:38:08 PM",
+      "SYS_ID": "D45922BAEE95473DE0537536470AC208",
+      "ROLE": "",
+      "CHI": "",
+      "STDEV": "",
+      "LI": "",
+      "PHOTOFILE_FROM": "employees",
+      "PHOTOFILE": "P_2426_18867227.jpg",
+      "ARROWS_FLAG": "",
+      "TABLE_CLOUR": "orange"
+    },
+    {
+      "INPUT_USER": "30112",
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "31690",
+      "N1_ID_NAME": "Shi,Sara ",
+      "REL_FLAG": "",
+      "REL_CLOUR": "",
+      "MADS_FLAG": "",
+      "MADS_CLOUR": "",
+      "INPUT_TIME": "2021-12-30 3:38:08 PM",
+      "SYS_ID": "D45922BAEE96473DE0537536470AC208",
+      "ROLE": "",
+      "CHI": "",
+      "STDEV": "",
+      "LI": "",
+      "PHOTOFILE_FROM": "employees",
+      "PHOTOFILE": "P_20089_66726621.jpg",
+      "ARROWS_FLAG": "",
+      "TABLE_CLOUR": "orange"
+    },
+    {
+      "INPUT_USER": "30112",
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "5184",
+      "N1_ID_NAME": "Liu, Jacky ",
+      "REL_FLAG": "",
+      "REL_CLOUR": "",
+      "MADS_FLAG": "",
+      "MADS_CLOUR": "",
+      "INPUT_TIME": "2021-12-30 3:38:08 PM",
+      "SYS_ID": "D45922BAEE97473DE0537536470AC208",
+      "ROLE": "",
+      "CHI": "",
+      "STDEV": "",
+      "LI": "",
+      "PHOTOFILE_FROM": "employees",
+      "PHOTOFILE": "P_5184_40734308.jpg",
+      "ARROWS_FLAG": "",
+      "TABLE_CLOUR": "orange"
+    },
+    {
+      "INPUT_USER": "30112",
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "5874",
+      "N1_ID_NAME": "Xiao, Jason ",
+      "REL_FLAG": "",
+      "REL_CLOUR": "",
+      "MADS_FLAG": "",
+      "MADS_CLOUR": "",
+      "INPUT_TIME": "2021-12-30 3:38:08 PM",
+      "SYS_ID": "D45922BAEE98473DE0537536470AC208",
+      "ROLE": "",
+      "CHI": "",
+      "STDEV": "",
+      "LI": "",
+      "PHOTOFILE_FROM": "employees",
+      "PHOTOFILE": "P_5874_99433993.jpg",
+      "ARROWS_FLAG": "",
+      "TABLE_CLOUR": "orange"
+    },
+
+    {
+      "INPUT_USER": "30112",
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "1000256166",
+      "N1_ID_NAME": "Xue, Clock ",
+      "REL_FLAG": "",
+      "REL_CLOUR": "",
+      "MADS_FLAG": "",
+      "MADS_CLOUR": "",
+      "INPUT_TIME": "2021-12-30 3:38:08 PM",
+      "SYS_ID": "D45922BAEE9A473DE0537536470AC208",
+      "ROLE": "",
+      "CHI": "",
+      "STDEV": "",
+      "LI": "",
+      "PHOTOFILE_FROM": "employees",
+      "PHOTOFILE": "P_1000256166_79036640.jpg",
+      "ARROWS_FLAG": "",
+      "TABLE_CLOUR": "orange"
+    },
+    {
+      "INPUT_USER": "30112",
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "16911",
+      "N1_ID_NAME": "Tang, Jerry ",
+      "REL_FLAG": "",
+      "REL_CLOUR": "",
+      "MADS_FLAG": "",
+      "MADS_CLOUR": "",
+      "INPUT_TIME": "2021-12-30 3:38:08 PM",
+      "SYS_ID": "D45922BAEE99473DE0537536470AC208",
+      "ROLE": "",
+      "CHI": "",
+      "STDEV": "",
+      "LI": "",
+      "PHOTOFILE_FROM": "employees",
+      "PHOTOFILE": "P_16911_42870343.jpg",
+      "ARROWS_FLAG": "",
+      "TABLE_CLOUR": "orange"
+    }
+  ],
+  [
+    {
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "2426",
+      "N1_ID_NAME": "",
+      "REL_ID": "DI_20200062"
+    },
+    {
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "5184",
+      "N1_ID_NAME": "",
+      "REL_ID": "NR_20200087"
+    },
+    {
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "16911",
+      "N1_ID_NAME": "",
+      "REL_ID": "NR_20200127"
+    },
+    {
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "5874",
+      "N1_ID_NAME": "",
+      "REL_ID": "NR_20200075"
+    },
+    {
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "1000256166",
+      "N1_ID_NAME": "",
+      "REL_ID": "NR_20190029"
+    },
+    {
+      "LEADER_ID": "24245",
+      "LEADER_ID_NAME": "Zhang, Izzie ",
+      "N1_ID": "20089",
+      "N1_ID_NAME": "",
+      "REL_ID": "NM_20170063"
+    }
+  ],
+  [
+    {
+      "N1_ID": "20089",
+      "NEW_TECH_PROGRAM_NAME": "long gel time/low viscosity CTE 13 EMC KE-G2250AH-W3E-E V1-K1 to solve die bending issue\u003cbr\u003e\u003cbr\u003eVAI: Innovation ,VAY(Value Added by Yield)\u003cbr\u003eYang, Linda [rocket] NM_20170063",
+      "FEASIBILITY": "---[Link Gray]",
+      "ACR": "Jul/29 \u002720[Link Blue]",
+      "OW": "Nov/25 \u002720[Link Blue]",
+      "TCS": "Mar/10 \u002721[Link Blue][M Blue Blue]",
+      "PPP": "Nov/02 \u002721[Link Blue]"
+    },
+    {
+      "N1_ID": "16911",
+      "NEW_TECH_PROGRAM_NAME": "CEM-MD develops RBLx, which re-usess capex of PMC2030D dedicatedly , which aligned scope with CPI-NAND for S5E B5 1Tb ex3 8D; with V1K1 EMC\u003cbr\u003e\u003cbr\u003eVAY(Value Added by Yield)\u003cbr\u003eTang, Jerry [rocket] NR_20200127",
+      "FEASIBILITY": "---[Link Gray]",
+      "ACR": "Oct/28 \u002720[Link Blue]",
+      "OW": "Feb/06 \u002721[Link Blue]",
+      "TCS": "Apr/21 \u002721[Link Blue]",
+      "PPP": "[Link Green]"
+    },
+    {
+      "N1_ID": "5874",
+      "NEW_TECH_PROGRAM_NAME": "CEM-WB develops RBLx, which re-uses capex , which aligned scope with CPI NAND of BiCS5 1Tb ex3 2p (Existing platform Vs RapidMEM)\u003cbr\u003e\u003cbr\u003eVAQ: Quality \u003cbr\u003eXiao, Jason [rocket] NR_20200075",
+      "FEASIBILITY": "---[Link Gray]",
+      "ACR": "Oct/20 \u002720[Link Blue]",
+      "OW": "Feb/05 \u002721[Link Blue]",
+      "TCS": "Apr/26 \u002721[Link Blue]",
+      "PPP": "[Link Green]"
+    },
+    {
+      "N1_ID": "1000256166",
+      "NEW_TECH_PROGRAM_NAME": "CEM-DP develops RBLx, which re-uses capex, which aligned scope with CPI-NAND of BiCS5 1Tb ex3 2p DBG (36~61um).\u003cbr\u003e\u003cbr\u003eQuality\u003cbr\u003eXue, Clock [rocket] NR_20190029",
+      "FEASIBILITY": "---[Link Gray]",
+      "ACR": "Oct/19 \u002720[Link Blue]",
+      "OW": "Feb/02 \u002721[Link Blue]",
+      "TCS": "Apr/28 \u002721[Link Blue]",
+      "PPP": "[Link Green]"
+    },
+    {
+      "N1_ID": "5184",
+      "NEW_TECH_PROGRAM_NAME": "CEM-DA develops RBLx, which re-uses capex, which aligned scope with CPI-NAND of BiCS5 1Tb ex3 2p; 1-16D stacking; 36um\u0026lt=THK\u0026lt=61um; with DBG; with EM760\u003cbr\u003e\u003cbr\u003eVAQ: Quality \u003cbr\u003eLiu, Jacky [rocket] NR_20200087",
+      "FEASIBILITY": "---[Link Gray]",
+      "ACR": "Oct/23 \u002720[Link Blue]",
+      "OW": "Feb/08 \u002721[Link Blue]",
+      "TCS": "Apr/30 \u002721[Link Blue]",
+      "PPP": "[Link Green]"
+    },
+    {
+      "N1_ID": "2426",
+      "NEW_TECH_PROGRAM_NAME": "TDQA develops packaging hard bin pareto, which re-usess capex, which aligned scope with CPI-NAND BiCS5 1Tb ex3 2p DBG\u0026sDBG (OEM/RPG 1~16D 36\u0026lt=THK.\u0026lt=61µm) EM760\u003cbr\u003e\u003cbr\u003eVAQ: Quality \u003cbr\u003eChen, Honny [rocket] DI_20200062",
+      "FEASIBILITY": "---[Link Gray]",
+      "ACR": "Oct/21 \u002720[Link Blue]",
+      "OW": "Feb/08 \u002721[Link Blue]",
+      "TCS": "May/01 \u002721[Link Blue]",
+      "PPP": "[Link Green]"
+    }
+  ],
+  [
+    {
+      "1": "1"
+    }
+  ],
+  [
+    {
+      "1": "1"
+    }
+  ]
+]

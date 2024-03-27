@@ -1,0 +1,99 @@
+[
+  {
+    "name": "line5",
+    "type": "",
+    "isbuilding": true,
+    "t": 0,
+    "l": 0,
+    "w": 19.75,
+    "h": 1.93
+  },
+  {
+    "name": "ADVMPT3K33",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.37,
+    "l": 0.69,
+    "w": 1,
+    "h": 1
+  },
+  {
+    "name": "ADVMPT3K34",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.37,
+    "l": 2.96,
+    "w": 1,
+    "h": 1
+  },
+  {
+    "name": "ADVMPT3K35",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.37,
+    "l": 5.42,
+    "w": 1,
+    "h": 1
+  },
+  {
+    "name": "ADVMPT3K36",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.36,
+    "l": 8.06,
+    "w": 1,
+    "h": 1
+  },
+  {
+    "name": "ADVMPT3K37",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.37,
+    "l": 10.65,
+    "w": 1,
+    "h": 1
+  },
+  {
+    "name": "ADVMPT3K38",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.37,
+    "l": 13.12,
+    "w": 1,
+    "h": 1
+  },
+  {
+    "name": "ADVMPT3K39",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.37,
+    "l": 15.71,
+    "w": 1,
+    "h": 1
+  },
+  {
+    "name": "ADVMPT3K40",
+    "objtype": "Equipment",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "Advantest.png",
+    "t": 0.37,
+    "l": 17.91,
+    "w": 1,
+    "h": 1
+  }
+]

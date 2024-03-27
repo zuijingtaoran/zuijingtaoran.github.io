@@ -1,0 +1,31 @@
+﻿#view {
+   
+}
+#box {
+    transform: skew(20deg);
+    -webkit-transform: skew(20deg);
+    -moz-transform: skew(20deg);
+    -o-transform: skew(20deg);
+    -ms-transform: skew(20deg);
+  
+}
+
+.eqp {
+    box-shadow: -3px 3px 0px #ddd;
+    -moz-box-shadow: -3px 3px 0px #ddd;
+    -webkit-box-shadow: -3px 3px 0px #ddd;
+    box-shadow: -3px 3px 0px #ddd;
+}
+    .eqp:hover {
+        box-shadow: -4px 4px 0px #ffd800;
+        /*-moz-box-shadow: -2px 2px 0px #ffd800;
+        -webkit-box-shadow: -2px 2px 0px #ffd800;
+        box-shadow: -2px 2px 0px #ffd800;*/
+    }
+
+body .eqpStatusBox::before {
+    left: 60px;
+}
+body .eqpStatusBox::after {
+    left: 60px;
+}

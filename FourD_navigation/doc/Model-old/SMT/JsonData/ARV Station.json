@@ -1,0 +1,81 @@
+[
+  {
+    "name": "ARV Station",
+    "type": "",
+    "isbuilding": true,
+    "t": 0,
+    "l": 0,
+    "w": 17.43,
+    "h": 3.68
+  },
+  {
+    "name": "generic",
+    "objtype": "MovingObject",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "trolly2.gif",
+    "color1": "trolly1.gif",
+    "shape": "null",
+    "rotate": "0",
+    "t": 0.41,
+    "l": 0.2,
+    "w": 2,
+    "h": 1
+  },
+  {
+    "name": "1",
+    "objtype": "MovingObject",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "trolly1.gif",
+    "color1": "trolly2.gif",
+    "shape": "null",
+    "rotate": "0",
+    "t": 0.41,
+    "l": 0.2,
+    "w": 2,
+    "h": 1
+  },
+  {
+    "name": "2",
+    "objtype": "MovingObject",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "trolly1.gif",
+    "color1": "trolly2.gif",
+    "shape": "null",
+    "rotate": "0",
+    "t": 0.4,
+    "l": 2.79,
+    "w": 2,
+    "h": 1
+  },
+  {
+    "name": "4",
+    "objtype": "MovingObject",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "trolly1.gif",
+    "color1": "trolly2.gif",
+    "shape": "null",
+    "rotate": "0",
+    "t": 2.17,
+    "l": 0.2,
+    "w": 2,
+    "h": 1
+  },
+  {
+    "name": "5",
+    "objtype": "MovingObject",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "trolly1.gif",
+    "color1": "trolly2.gif",
+    "shape": "null",
+    "rotate": "0",
+    "t": 2.17,
+    "l": 2.78,
+    "w": 2,
+    "h": 1
+  }
+]

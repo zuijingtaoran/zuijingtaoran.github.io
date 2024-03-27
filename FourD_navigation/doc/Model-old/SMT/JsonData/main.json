@@ -1,0 +1,144 @@
+[
+  {
+    "name": "SMT",
+    "type": "main_area",
+    "isbuilding": true,
+    "color": "#d5d5d5",
+    "t": 0,
+    "l": 0,
+    "w": 93,
+    "h": 55
+  },
+  {
+    "name": "BK7.1",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 3.5,
+    "l": 49.05,
+    "w": 42,
+    "h": 4.5,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK5.1",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 16.82,
+    "l": 50.58,
+    "w": 40.5,
+    "h": 4.5,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK5.2",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 16.8,
+    "l": 5.86,
+    "w": 40,
+    "h": 4.5,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK6.1",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 24.31,
+    "l": 50.65,
+    "w": 40.5,
+    "h": 3,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK6.2",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 24.3,
+    "l": 5.86,
+    "w": 40,
+    "h": 3,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK3.1",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 28,
+    "l": 50.52,
+    "w": 40.5,
+    "h": 3,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK3.2",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 28,
+    "l": 5.86,
+    "w": 40,
+    "h": 3,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK2.2",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 33.8,
+    "l": 5.92,
+    "w": 40,
+    "h": 4.5,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK2.1",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 33.8,
+    "l": 50.58,
+    "w": 40.5,
+    "h": 4.5,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK4",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 41.67,
+    "l": 29.14,
+    "w": 62,
+    "h": 4.5,
+    "linktop": "20%"
+  },
+  {
+    "name": "BK1",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 48.81,
+    "l": 29.14,
+    "w": 62,
+    "h": 4.5,
+    "linktop": "20%"
+  },
+  {
+    "name": "ARV Station",
+    "type": "",
+    "isbuilding": false,
+    "color": "#fdfdfd",
+    "t": 1.29,
+    "l": 21.72,
+    "w": 17.43,
+    "h": 3.68,
+    "linktop": "20%"
+  }
+]

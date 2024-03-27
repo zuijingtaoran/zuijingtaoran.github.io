@@ -1,0 +1,35 @@
+[
+  {
+    "name": "MovingObject",
+    "type": "",
+    "isbuilding": true,
+    "t": 0,
+    "l": 0,
+    "w": 20.02,
+    "h": 3.88
+  },
+  {
+    "name": "1",
+    "objtype": "Building",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "trolly1.gif",
+    "color1": "trolly2.gif",
+    "t": 0.56,
+    "l": 1.45,
+    "w": 0.5,
+    "h": 0.62
+  },
+  {
+    "name": "generic",
+    "objtype": "Building",
+    "eqptype": "Traceable",
+    "isbuilding": false,
+    "color": "trolly2.gif",
+    "color1": "trolly1.gif",
+    "t": 0.56,
+    "l": 1.45,
+    "w": 0.5,
+    "h": 0.62
+  }
+]

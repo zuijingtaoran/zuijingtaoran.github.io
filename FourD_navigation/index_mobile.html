@@ -1,0 +1,1743 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="wechat-enable-text-zoom-em" content="true">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+
+    <meta property="og:title" content="4D Navigation" />
+    <meta property="og:url" content="http://www.yujiangong.com/FourD_navigation/index_mobile.html" />
+    <meta property="og:image" content="http://www.yujiangong.com/FourD_navigation/doc/img/net.png" />
+    <meta property="og:description" content="Welcome to the 4D world" />
+    <meta property="og:site_name" content="Three.js" />
+    <meta property="og:type" content="article" />
+    <meta property="og:article:author" content="" />
+
+    <!--<link rel="shortcut icon" href="  http://cvprndip01.ad.shared:90/doc/menu-doc/net.png" type="image/x-icon" />-->
+
+    <title>4D Navigation</title>
+    <script src="doc/JS/three.js"></script>
+    <script src="doc/JS/OBJLoader.js"></script>
+    <script src="doc/JS/MTLLoader.js"></script>
+    <script src="doc/JS/OrbitControls.js"></script>
+    <!--<script src="doc/JS/stats.min.js"></script>
+    <script src="doc/JS/axios.min.js"></script>-->
+    <script src="doc/JS/zepto.min.js"></script>
+    <script src="doc/JS/TextGeometry.js" type="module"></script>
+    <script src="doc/JS/FontLoader.js" type="module"></script>
+
+
+
+
+
+    <script src="http://cvpmdsip03/tools/js/vue.js"></script>
+
+    <script src="http://cvpmdsip03/tools/js/axios.min.js"></script>
+    <script src="http://yujiangong.com/jslib/_.js"></script>
+    <!-- 引入样式 -->
+    <script src="http://yujiangong.com/jslib/vue/index.js"></script>
+    <script src="http://yujiangong.com/jslib/vue/en.js"></script>
+    <link rel="stylesheet" href="http://yujiangong.com/jslib/vue/index.css">
+
+    <!--<script src="doc/JS/Projector.js"></script>
+    <script src="doc/JS/CanvasRenderer.js"></script>-->
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            /*background: linear-gradient(180deg, #373773, #235689, #2a9096, #364a7b, #4a367b, #5e3665, #2c294b, #31437a);*/
+            background-image: url('./doc/img/the-milkyway-2k.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center 0;
+            background-size: 100% 100%;
+            /* background-size: 1600% 1600%;*/
+            /* -webkit-animation: skygradient 180s ease infinite;
+            -moz-animation: skygradient 180s ease infinite;
+            -o-animation: skygradient 180s ease infinite;
+            animation: skygradient 180s ease infinite;*/
+        }
+
+        @-webkit-keyframes skygradient {
+            0% {
+                background-position: 50% 0%
+            }
+
+            50% {
+                background-position: 50% 100%
+            }
+
+            100% {
+                background-position: 50% 0%
+            }
+        }
+
+        @-moz-keyframes skygradient {
+            0% {
+                background-position: 50% 0%
+            }
+
+            50% {
+                background-position: 50% 100%
+            }
+
+            100% {
+                background-position: 50% 0%
+            }
+        }
+
+        @-o-keyframes skygradient {
+            0% {
+                background-position: 50% 0%
+            }
+
+            50% {
+                background-position: 50% 100%
+            }
+
+            100% {
+                background-position: 50% 0%
+            }
+        }
+
+        @keyframes skygradient {
+            0% {
+                background-position: 50% 0%
+            }
+
+            50% {
+                background-position: 50% 100%
+            }
+
+            100% {
+                background-position: 50% 0%
+            }
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            /* -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            -o-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            -ms-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000;
+            -moz-perspective: 1000;
+            -ms-perspective: 1000;
+            perspective: 1000;*/
+            /* Other transform properties here */
+        }
+
+
+        .loader {
+            position: absolute;
+            top: calc(50% - 1.25em);
+            left: calc(50% - 1.25em);
+        }
+
+        .loader {
+            position: relative;
+            width: 2.5em;
+            height: 2.5em;
+            transform: rotate( 165deg);
+        }
+
+            .loader:before {
+                animation: before 2s infinite;
+            }
+
+            .loader:before, .loader:after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                display: block;
+                width: 0.5em;
+                height: 0.5em;
+                border-radius: 0.25em;
+                transform: translate(-50%, -50%);
+            }
+
+            .loader:after {
+                animation: after 2s infinite;
+            }
+
+            .loader:before, .loader:after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                display: block;
+                width: 0.5em;
+                height: 0.5em;
+                border-radius: 0.25em;
+                transform: translate(-50%, -50%);
+            }
+
+        .loader {
+            position: relative;
+            width: 2.5em;
+            height: 2.5em;
+            transform: rotate(165deg);
+        }
+
+            .loader:before, .loader:after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                display: block;
+                width: 0.5em;
+                height: 0.5em;
+                border-radius: 0.25em;
+                transform: translate(-50%, -50%);
+            }
+
+            .loader:before {
+                animation: before 2s infinite;
+            }
+
+            .loader:after {
+                animation: after 2s infinite;
+            }
+
+        @keyframes before {
+            0% {
+                width: 0.5em;
+                box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+            }
+
+            35% {
+                width: 2.5em;
+                box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75), 0 0.5em rgba(111, 202, 220, 0.75);
+            }
+
+            70% {
+                width: 0.5em;
+                box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75), 1em 0.5em rgba(111, 202, 220, 0.75);
+            }
+
+            100% {
+                box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75), -1em 0.5em rgba(111, 202, 220, 0.75);
+            }
+        }
+
+        @keyframes after {
+            0% {
+                height: 0.5em;
+                box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+            }
+
+            35% {
+                height: 2.5em;
+                box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75), -0.5em 0 rgba(233, 169, 32, 0.75);
+            }
+
+            70% {
+                height: 0.5em;
+                box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75), -0.5em 1em rgba(233, 169, 32, 0.75);
+            }
+
+            100% {
+                box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75), -0.5em -1em rgba(233, 169, 32, 0.75);
+            }
+        }
+        /**
+        * Attempt to center the whole thing!
+        */
+
+
+        .loader {
+            position: absolute;
+            top: calc(50% - 1.25em);
+            left: calc(50% - 1.25em);
+        }
+    </style>
+    <link href="doc/CSS/common.css" rel="stylesheet" />
+    <script src="doc/JS/RPN_DATA.js"></script>
+    <script src="doc/JS/okr_data.js"></script>
+</head>
+<body>
+    <div id="app"
+         v-if="show"
+        >
+        <template>
+            <transition name="el-zoom-in-top">
+                <div class="corner-cut" v-if="show">
+                    <div class="kanban-div" style="font-size: 2em; color: #FA9F1B;">
+                        <span v-if="v_type=='GET_PROJECT_OVERVIEW_MADS_DETAIL'">Epic Information</span>
+                        <span v-if="v_type=='GET_programs_DETAIL'">Program Information</span>
+
+                        <span v-if="v_type=='GET_PROJECT_OVERVIEW_DMAIC_DETAIL'">Inverse Development</span>
+                        <span style="float:right; cursor:pointer;" @click="show=false">✕</span>
+                    </div>
+                
+                    <span>
+                        <i>{{program_id}} </i>
+                        <b>{{program_deliverable}}</b>
+                    </span>
+                    <table class="info-table" v-if="v_type=='GET_PROJECT_OVERVIEW_MADS_DETAIL'" >
+                        <tr>
+                            <th>Epic ID</th>
+                            <th>Time Conflict</th>
+                            <th>Status</th>
+                            <th>Epic Description</th>
+                        </tr>
+                        <tr v-for="td in table_data">
+
+                            <td>{{td.MADS_ID.split('[')[0]}}</td>
+                            <td>{{td.TRIGGER_PHASE}}</td>
+                            <td>{{td.STATUS}}</td>
+                            <td v-html="td.TRIGGER_PRODUCT_PROJECT"></td>
+                        </tr>
+                    </table>
+                    <table class="info-table" v-if="v_type=='GET_PROJECT_OVERVIEW_DMAIC_DETAIL'">
+                        <!--app.table_clm = ["DMAIC_ID", "ISSUE_DESCIPTION", "STATUS", "TRIGGER_PHASE","TRIGGER_PRODUCT_PROJECT"];-->
+                        <tr>
+                            <th>Inverse Development ID</th>
+                            <th>Issue Description</th>
+                            <th>Status</th>
+                            <!--<th>Trigger Node</th>-->
+                            <th>Trigger Event</th>
+                        </tr>
+                        <tr v-for="td in table_data">
+
+                            <td>{{td.DMAIC_ID.split('[')[0]}}</td>
+                            <td>{{td.ISSUE_DESCIPTION}}</td>
+                            <td>{{td.STATUS}}</td>
+                            <!--<td>{{td.TRIGGER_PHASE}}</td>-->
+                            <td>{{td.TRIGGER_PRODUCT_PROJECT}}</td>
+                        </tr>
+                    </table>
+                    <!--app.v_type = "GET_programs_DETAIL";
+    app.table_clm = ["PROGRAM NAME", "PHASE", "STATUS", "PROGRAM CATEGORY","PROGRAM MANAGER"];-->
+                    <table class="info-table" v-if="v_type=='GET_programs_DETAIL'" >
+                        <!--app.table_clm = ["PHASE", "CHECK_ITEM", "OWNER_NAME", "STATUS","ATTACHMENT"];-->
+                        <tr>
+                            <th>  PROGRAM ID
+                            </th>
+                            <th>
+                                Node
+                            </th>
+                            <th>
+                                Deliverable
+                            </th>
+                            <th>
+                                Accountable
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Attachment
+                            </th>
+                        </tr>
+                        <tr v-for="td in table_data">
+                            <td>{{td['PROGRAM ID']}}</td>
+                            <td>
+
+                                <span v-if="td.PHASE=='ACR'">1</span>
+                                <span v-else-if="td.PHASE=='OW'">2</span>
+                                <span v-else-if="td.PHASE=='TCS'">3</span>
+                            </td>
+                            <td>{{td.CHECK_ITEM}}</td>
+                            <td>{{td.OWNER_NAME||'System facilitated'}}</td>
+                            <td>{{td.STATUS.replace('Pass Delay',' Suspended Pass')}}</td>
+                            <td align="center">
+                                <!--.replace('ps://','https://')-->
+                                <a :href="td.ATTACHMENT.replace('ps://','https://').split('[')[0]" style="color:white;" target="_blank">{{td.ATTACHMENT.includes('box')?'Box':''}}</a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!--<el-table :data="table_data" :height="auto_height" v-loading="loading"
+              border size="mini">
+        <el-table-column v-for="clm in table_clm" :label="th(clm)" :width="get_width(clm)">
+            <template slot-scope="scope">
+                {{(''+scope.row[clm]).split('[')[0].split('|')[0]}}
+            </template>
+        </el-table-column>
+
+    </el-table>-->
+
+                </div>
+            </transition>
+            <!--
+                             style="position: fixed; width: 100vw; height: 42vh; bottom:0px;z-index:1001;
+    background-color:#fff; font-family: Calibri;  font-size: 16px; "
+                            <div align="right"> <i class="el-icon-close" style="cursor:pointer; margin:10px;" @click="show=false"></i></div>
+                <span>
+                    <i>{{program_id}} </i>
+                    <b>{{program_deliverable}}</b>
+                </span>
+                <el-table :data="table_data" :height="auto_height" v-loading="loading"
+                          border size="mini">
+                    <el-table-column v-for="clm in table_clm" :label="th(clm)"  :width="get_width(clm)">
+                        <template slot-scope="scope">
+                            {{(''+scope.row[clm]).split('[')[0].split('|')[0]}}
+                        </template>
+                    </el-table-column>
+
+                </el-table>-->
+        </template>
+    </div>
+    <div style="position:fixed; display:none;
+width:250px;
+height:auto;
+font-family:Calibri;
+left:40px;
+top:40px;
+font-size:20px;
+color:#ffffff;
+
+">
+
+        <!--<b>Izzie, Zhang</b>   NB_20200041
+    <br />CoMequasar: 14,021
+    <br />CHV $ 91,136.5-->
+        <b style="font-size:1.2em;">
+            CoMequasar Statement
+        </b><br/>
+
+            Izzie, Zhang<br/>
+                        <span id="pid"></span> (NFT)<br />
+            Quasar Scale: 5,714<br />
+            CHV $ 91,136.5
+            <br />
+            <img src="./doc/img/legend-opc.PNG" style="width:220px; margin-top:60px; height:auto;" alt="Alternate Text" />
+
+</div>
+    <div id="tips" style="position: fixed; display:none;
+      border: 1px solid #27FAF3; width: 200px; height: 30px;
+      top:50vh;
+      left:45vw;
+      font-size:1.3em; text-align:center;
+      background-color: #08283D; color: #FA9F1B ">
+        Going to CoMecube...
+    </div>
+    <div id="loading" style="position:fixed;z-index:1000; display:inline-block;
+width:10vw;
+height:120px;
+left:45vw;
+top:40vh;
+text-align:center;
+">
+        <div class="loader"></div>
+        <span style="color:white; font-size:0.8em;">Welcome to the <b style="color:orange;">4D</b> World<br />Loading...</span>
+
+    </div>
+    <!--<div id="models" style="height: 100vh;width: 100vw;"></div>-->
+    <script>
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return "";
+        }
+        const program_id = getQueryString('program_id') || "NB_20200041";
+        document.getElementById('pid').innerHTML = program_id;
+        const radius = 800;
+        const text_switch = true;
+        class NAVIGATION_4D {
+            constructor(container = "#models", font = null, callback = function () { }) {
+                this.font = font;
+                this.mouse_xy = {};
+                this.threeD = {
+                    clickObjects: [],
+                    scene: new THREE.Scene(),
+                    renderer: new THREE.WebGLRenderer({
+                        //1217
+                        alpha: true,
+                        antialias: true
+                    }),
+                    object: {
+                        star: [],
+                        dmaic: [],
+                        mads: []
+                    },
+                    material:
+                    {
+                        a: new THREE.MeshBasicMaterial({
+                            color: '#eeeeee', transparent: true,
+                            opacity: 0.1
+                        }),
+
+                        b: new THREE.MeshPhongMaterial({
+                            color: '#409EFF', side: THREE.DoubleSide,
+                            opacity: 1//blue
+                        }),
+                        c: new THREE.MeshPhongMaterial({
+                            color: '#67C23A', side: THREE.DoubleSide,
+                            opacity: 1//green
+                        }),
+                        d: new THREE.MeshPhongMaterial({
+                            color: '#E6A23C', side: THREE.DoubleSide,
+                            opacity: 1//orange
+                        }),
+                        e: new THREE.MeshPhongMaterial({
+                            color: '#F56C6C', transparent: true,
+                            opacity: 0.8//red
+
+                        }),
+                        f: new THREE.MeshPhongMaterial({
+                            color: '#b5b5b5', transparent: true,
+                            opacity: 1
+                        }),
+                        g: new THREE.MeshLambertMaterial({
+                            color: 0xffff00,
+                            emissive: 0xff0000
+                        }),
+                        h: new THREE.MeshBasicMaterial({
+                            color: 0xF56C6C,
+                            opacity: 0.2
+                        }),
+                        i: new THREE.MeshLambertMaterial({
+                            color: '#b5b5b5', side: THREE.DoubleSide,
+                            opacity: 1
+                        }),
+                        g: new THREE.MeshPhongMaterial({
+                            color: '#E6A23C', transparent: true,
+                            opacity: 1
+                        }),
+                        b_op05: new THREE.MeshPhongMaterial({
+                            color: '#409EFF', transparent: true, side: THREE.DoubleSide,
+                            opacity: 0.5
+                        }),
+                        c_op05: new THREE.MeshPhongMaterial({
+                            color: '#67C23A', transparent: true, side: THREE.DoubleSide,
+                            opacity: 0.5
+                        }),
+                        d_op05: new THREE.MeshPhongMaterial({
+                            color: '#E6A23C', transparent: true, side: THREE.DoubleSide,
+                            opacity: 0.5
+                        }),
+                        i_op05: new THREE.MeshPhongMaterial({
+                            color: '#b5b5b5', transparent: true, side: THREE.DoubleSide,
+                            opacity: 0.8
+                        }),
+                    },
+                    font: null,
+                    OrthographicCamera: (function () {
+                        var width = window.innerWidth;
+                        var height = window.innerHeight
+                        var k = width / height;
+                        var s = radius;
+                        return new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+
+                    })(),
+                    camera: (function () {
+
+                        return new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 4000);
+
+                    })(),
+                    point: new THREE.PointLight(0xffffff, 1, 0, 3),
+                    ambient: new THREE.AmbientLight(0xffffff, 0.7),
+                    DirectionalLight: [new THREE.DirectionalLight(), new THREE.DirectionalLight(), new THREE.DirectionalLight(), new THREE.DirectionalLight(), new THREE.DirectionalLight()],
+
+                    PointLight: new THREE.SpotLight(0xffff00, 1, 100, Math.PI / 6, 25),
+                    helper: new THREE.AxesHelper(radius),
+                    // 红线是X轴，绿线是Y轴，蓝线是Z轴
+                    definition: {
+                        Torus: new THREE.TorusGeometry(4, 1, 16, 18),
+                        Cylinder: new THREE.CylinderGeometry(1.5, 2, 9, 18, 10)
+
+                    },
+                    model: {},
+                    texture: {
+                        //xz_axis: new THREE.ImageUtils.loadTexture('./doc/img/xz_axis_img.png'),
+                        //cls: new THREE.ImageUtils.loadTexture('./doc/img/cls.png'),
+                        //dmm: new THREE.ImageUtils.loadTexture('./doc/img/dmm.png'),
+                        //dts: new THREE.ImageUtils.loadTexture('./doc/img/dts.png'),
+                        //eis: new THREE.ImageUtils.loadTexture('./doc/img/eis.png'),
+                        //ess: new THREE.ImageUtils.loadTexture('./doc/img/ess.png'),
+                        //L3_1: new THREE.ImageUtils.loadTexture('./doc/img/L3_1.png'),
+                        //L3_2: new THREE.ImageUtils.loadTexture('./doc/img/L3_2.png'),
+                        //L3_3: new THREE.ImageUtils.loadTexture('./doc/img/L3_3.png'),
+
+                        //L2_5_1: new THREE.ImageUtils.loadTexture('./doc/img/L2_5_1.png'),
+                        //L2_5_2: new THREE.ImageUtils.loadTexture('./doc/img/L2_5_2.png'),
+                        //L2_5_3: new THREE.ImageUtils.loadTexture('./doc/img/L2_5_3.png'),
+
+                        //L2_1: new THREE.ImageUtils.loadTexture('./doc/img/L2_1.png'),
+                        //L2_2: new THREE.ImageUtils.loadTexture('./doc/img/L2_2.png'),
+                        //L2_3: new THREE.ImageUtils.loadTexture('./doc/img/L2_3.png'),
+
+                        //L4_1: new THREE.ImageUtils.loadTexture('./doc/img/L4_1.png'),
+                        //L4_2: new THREE.ImageUtils.loadTexture('./doc/img/L4_2.png'),
+                        //L4_3: new THREE.ImageUtils.loadTexture('./doc/img/L4_3.png'),
+                        //L4_4: new THREE.ImageUtils.loadTexture('./doc/img/L4_4.png')
+
+                        //,
+                        //blank: new THREE.ImageUtils.loadTexture('./doc/img/L4_4.png')
+
+                        //,
+                        //kr: new THREE.ImageUtils.loadTexture('./doc/img/kr.png')
+                        //,
+                        //okr: new THREE.ImageUtils.loadTexture('./doc/img/okr.png') ,
+                        ball: new THREE.ImageUtils.loadTexture('./doc/img/ball.png')//ball.png  world_1')
+                        , milkyway: new THREE.ImageUtils.loadTexture('./doc/img/the-milkyway-2k.jpg')
+                        , dalishi: new THREE.ImageUtils.loadTexture('./doc/img/dalishi.png')
+                    }
+
+                }
+                //this.render_4d();
+                this.demo()
+            }
+            demo() {
+                let that = this;
+                let { scene, renderer, point, ambient, material, helper, definition, DirectionalLight, PointLight } = this.threeD;
+                let OrthographicCamera = this.threeD.camera;
+                const distance = radius,//控制整体尺寸
+                    c_zoom = 2;//控制初始化时的球的的大小
+
+                /*******************render*****************/
+                //renderer.shadowMapEnabled = true;
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+                //add milkyway
+                let mesh_box = new THREE.Mesh(new THREE.SphereGeometry(distance * 2, distance / 10, distance / 10), new THREE.MeshLambertMaterial({
+                    color: '#DFE1E0', side: THREE.BackSide,
+                    opacity: 1,
+                    map: that.threeD.texture['milkyway']
+                }));
+                mesh_box.geometry.verticesNeedUpdate = true;
+                mesh_box.geometry.normalsNeedUpdate = true;
+                //1217
+                scene.add(mesh_box);
+
+
+
+                //for (var i = 0, l = mesh_box.geometry.vertices.length; i < l; i++) {
+
+                //    var vertex = mesh_box.geometry.vertices[i];
+
+                //    vertex.normalize();
+                //    vertex.multiplyScalar(550);
+
+                //}
+                /*******************helper*****************/
+                // scene.add(helper);
+                /******************helper -y axis*/
+                var line_geo = new THREE.Geometry();
+
+                line_geo.vertices.push(new THREE.Vector3(0, radius, 0));
+                line_geo.vertices.push(new THREE.Vector3(0, 0 - radius, 0));
+                var line = new THREE.Line(line_geo, new THREE.LineBasicMaterial({ opacity: 0.2, transparent: true, color: 0xDAE4E6 }));
+                scene.add(line);
+                /******************helper -x axis*/
+                var line_geox = new THREE.Geometry();
+
+                line_geox.vertices.push(new THREE.Vector3(radius, 0, 0));
+                line_geox.vertices.push(new THREE.Vector3(0 - radius, 0, 0));
+                var linex = new THREE.Line(line_geox, new THREE.LineBasicMaterial({ opacity: 0.2, transparent: true, color: 0xDAE4E6 }));
+                scene.add(linex);
+                /******************helper -z axis*/
+                var line_geoz = new THREE.Geometry();
+
+                line_geoz.vertices.push(new THREE.Vector3(0, 0, radius));
+                line_geoz.vertices.push(new THREE.Vector3(0, 0, 0 - radius));
+                var linez = new THREE.Line(line_geoz, new THREE.LineBasicMaterial({ opacity: 0.2, transparent: true, color: 0xDAE4E6 }));
+                scene.add(linez);
+
+                /*******************light*****************/
+                //DirectionalLight[0].position.set(radius * 0.6, radius * 1.1, radius * 1.1);
+
+                //scene.add(DirectionalLight[0]);
+                ////DirectionalLight[2].position.set(0, radius / 1.1, radius / 1.1);
+
+                ////scene.add(DirectionalLight[2]);
+
+                //DirectionalLight[1].position.set(0 - radius * 0.2, 0 - radius * 1.1, 0 - radius * 1.1);
+
+                //scene.add(DirectionalLight[1]);
+
+
+
+
+                /*******************light 2*****************/
+                DirectionalLight[2].position.set(1000, 200, 1000);
+
+                scene.add(DirectionalLight[2]);
+                //DirectionalLight[2].position.set(0, radius / 1.1, radius / 1.1);
+
+                //scene.add(DirectionalLight[2]);
+
+                DirectionalLight[3].position.set(-1000, -1000, -1000);
+
+                scene.add(DirectionalLight[3]);
+
+
+
+                DirectionalLight[0].position.set(200, 200, 200);
+
+                scene.add(DirectionalLight[0]);
+
+
+                DirectionalLight[1].position.set(-100, -100, -100);
+
+                scene.add(DirectionalLight[1]);
+
+                // transparent: true,
+
+                let ball = new THREE.Mesh(new THREE.SphereGeometry(distance, distance / 10, distance / 10), new THREE.MeshLambertMaterial({
+                    color: '#DFE1E0',
+                    opacity: 0.6, transparent: true,
+                    map: that.threeD.texture['ball']
+                }));
+                ball.geometry.verticesNeedUpdate = true;
+                ball.geometry.normalsNeedUpdate = true;
+
+                scene.add(ball);
+
+                /*********init data************/
+                let counter = 0;
+                const ratio = 1, cardinal_number = 80;// control node size and top-margin
+                let sprint = {
+                    l0: {
+                        name: "Pathfinding",
+                        offset: 0 * cardinal_number,
+                        nodes: [{
+                            id: 'α', color: 'gray-0.5'
+                        }, {
+                            id: 'β', color: 'gray-0.5'
+                        }, {
+                            id: 'γ', color: 'gray-0.5'
+                        }]
+                    },
+                    l1: {
+                        name: "Designer",
+                        offset: 1 * cardinal_number,
+                        nodes: [{
+                            id: 'A', color: 'blue', deliverable: 'A-a', sup_left: "A0"
+                        }, {
+                            id: 'B', color: 'blue', deliverable: 'B-a', sup_left: "E0"
+                        }, {
+                            id: 'C', color: 'blue', deliverable: 'C-a', sup_left: "E1", sup_right: "E2"
+                        }]
+                    },
+                    l2: {
+                        name: "ERA",
+                        offset: 2 * cardinal_number,
+                        nodes: [{
+                            id: '0', color: 'gray-0.5'
+                        }, {
+                            id: '1', color: 'blue', deliverable: '1-L2-a 1-L2-b 1-L2-c\n1-L2-d 1-L2-e\n1-L2-f 1-L2-g'
+                            , sup_left: "E3"
+
+                        }, {
+                            id: '2', color: 'blue', deliverable: '2-L2-a 2-L2-b 2-L2-c\n2-L2-d 2-L2-e 2-L2-f\n2-L2-g 2-L2-h 2-L2-i', ball: 'yellow'
+                        }, {
+                            id: '3', color: 'blue', deliverable: '3-L2-a 3-L2-b 3-L2-c\n3-L2-d3-L2-e\n3-L2-f 3-L2-g', ball: 'yellow'
+                        }, {
+                            id: '4', color: 'gray-0.5'
+                        }]
+                    },
+                    l3: {
+                        name: "TRA",
+                        offset: 3 * cardinal_number,
+                        nodes: [{
+                            id: 'D2', color: 'blue', deliverable: 'D1-a\nD2-a', sup_left: "D1"
+                        }, {
+                            id: '13', color: 'green', deliverable: '13-a\n13-b\n13-c'
+                        }, {
+                            id: '14', color: 'blank', deliverable: '14-a\n14-b'
+                        }, {
+                            id: '15', color: 'blank', deliverable: '15-a\n15-b'
+                        }]
+                    }
+                }
+                let COLOR = {
+                    'red': 0x9e2e23,
+                    'yellow': 0xe2af42,
+                    'blue': 0x418ab3,
+                    'green': 0x407d53,
+                    'blank': 0x404140,
+                    'grey': 0xa5a5a5
+                }//0xDAE4E6
+                Object.keys(sprint).map((s, i) => {
+                    /*
+                     @[s] l0,1,2,3
+                     @[i] 0,1,2,3
+                     @{sprint[s]} name and nodes and offset
+                     */
+                    var group = new THREE.Group();
+                    var arrow_text = new THREE.Group();
+                    var arrow_body = new THREE.Group();
+                    var deliver_body = new THREE.Group();
+                    sprint[s].nodes.map((n, index) => {
+                        /*
+                         @[n] node item
+                         @[index] node index
+                         @[counter]
+                         */
+                        let [left, top, before] = [
+                            sprint[s].offset + index * ratio * cardinal_number * 1.5,
+                            i * cardinal_number * ratio,
+                            i * cardinal_number * ratio
+                        ];
+                        // ratio = 1, depth = 5, material
+                        /*************************   x-y axis    ******************************* */
+                        /////////////add   arrow
+
+                        var arrow = that.arrow(1, n.color.includes('-') ? null : 10, (c => {
+                            let [color, opicity] = (c + '-1').split('-'); opicity = + opicity;
+                            //MeshPhongMaterial
+                            //MeshLambertMaterial
+                            return new THREE.MeshPhongMaterial({
+                                color: COLOR[color], side: THREE.DoubleSide,
+                                //opacity: opicity,
+                                wireframe: opicity != 1
+                                // transparent: opicity != 1,
+                            });
+
+                        })(n.color));
+                        arrow.position.x = left;
+
+                        arrow.position.y = top;
+                        arrow.position.z = -15;
+                        arrow_body.add(arrow);
+                        /////////////add   symbol
+                        var symbol = that.text_3d(n.id, 20, 3, n.ball ? COLOR.yellow : 0xffffff);
+                        symbol.position.x = left + 50;
+
+                        symbol.position.y = top + 13;
+                        symbol.position.z = 1;
+                        //1217
+                        arrow_text.add(symbol);
+                        /////////////add   left right symbol
+                        if (n.sup_left) {
+                            var symbol_left = that.text_3d(n.sup_left, 20, 3)
+                            symbol_left.position.x = left;
+
+                            symbol_left.position.y = top + 40;
+                            symbol_left.position.z = 1;
+                            arrow_text.add(symbol_left);
+                        }
+                        if (n.sup_right) {
+                            var symbol_right = that.text_3d(n.sup_right, 20, 3)
+                            symbol_right.position.x = left + cardinal_number * ratio;
+
+                            symbol_right.position.y = top + 40;
+                            symbol_right.position.z = 1;
+                            arrow_text.add(symbol_right);
+                        }
+                        //add ball at x-y-z
+                        if (n.ball) {
+                            var ball_x_y_z = new THREE.Mesh(new THREE.SphereGeometry(cardinal_number * ratio / 3, 20, 20),
+                                new THREE.MeshPhongMaterial({
+                                    color: COLOR['yellow'], side: THREE.DoubleSide,
+                                    opacity: 0.5,
+                                    map: that.threeD.texture['dalishi']
+                                })
+                            );
+                            ball_x_y_z.position.x = left;
+                            // console.log('h', top)
+                            ball_x_y_z.position.y = top;
+                            ball_x_y_z.position.z = top;
+                            ball_x_y_z.name = "Scrum_" + n.id;
+                            that.threeD.object.mads.push(ball_x_y_z);
+                            that.threeD.clickObjects.push(ball_x_y_z);
+                            scene.add(ball_x_y_z);
+
+                            var scrum = that.text_3d('Epic', 10, 2, COLOR['gray'], COLOR['blank'])
+                            scrum.position.x = left - 27;
+
+                            scrum.position.y = top;
+                            scrum.position.z = top + 27;
+                            scrum.name = "Scrum_" + n.id;
+                            that.threeD.clickObjects.push(scrum);
+                            // 1217
+                            scene.add(scrum);
+                        }
+                        //add deliverable at x-z axiz
+                        //cell grid
+                        //[0, 80, 160, 240, 320].map((g,gi) => {
+                        //    var gx = new THREE.Geometry();
+                        //    gx.vertices.push(new THREE.Vector3(0, 0,g));
+                        //    gx.vertices.push(new THREE.Vector3(300, 0,g));
+                        //    var gxs = new THREE.Line(gx, new THREE.LineBasicMaterial({ opacity: 0.2, transparent: true, color: 0xDAE4E6 }));
+                        //    scene.add(gxs);
+                        //})
+                        var blank = new THREE.Mesh(new THREE.PlaneBufferGeometry(cardinal_number * ratio*1.4, cardinal_number * ratio * 0.8),
+                            new THREE.MeshLambertMaterial({
+                                color: n.deliverable ? 0x1a1a1a : COLOR['grey'], side: THREE.DoubleSide,
+                                opacity: 0.6,
+                                wireframe: !n.deliverable
+
+                            })
+                        );
+                        blank.position.x = left + cardinal_number * ratio;
+                        blank.rotation.x = -Math.PI / 2;
+                        blank.position.z = top + cardinal_number * ratio * 0.25 + 20;
+                        blank.position.y = 0;
+                        blank.name = "blank_" + n.id;
+                        that.threeD.clickObjects.push(blank);//211222
+                        deliver_body.add(blank);
+                        //211221
+                        setTimeout(function () {
+                            if (n.deliverable) {
+
+                                //add deliverable at x-z axis
+
+                                var deliverable = that.text_3d(n.deliverable, (del => {
+                                    var size = 10;
+                                    //if (del < 22) { size = 3 }
+                                    //if (del < 13) { size = 7 }
+                                    //if (del < 4) {
+                                    //    size = 14
+                                    //}
+
+
+
+                                    return size;
+                                })(n.deliverable.length), 0.5, COLOR[n.color])
+                                deliverable.name = "blank_" + n.id;
+                                that.threeD.clickObjects.push(deliverable);
+                                deliverable.position.x = left+25 ;//+50
+                                deliverable.rotation.x = -Math.PI / 2;
+                                deliverable.position.z = top + 20;
+                                deliverable.position.y = 1;
+
+                                group.add(deliverable);
+                            }
+                        }, index * 70 + 3500, n, group)
+
+
+
+
+
+
+                    })
+                    text_switch && setTimeout(function (group, scene) { scene.add(group); }, 6300, group, scene);
+                    //arrow_text
+                    text_switch && setTimeout(function (arrow_text, scene) { scene.add(arrow_text); }, 3700, arrow_text, scene);
+                    //arrow_body
+                    text_switch && setTimeout(function (arrow_body, scene) { scene.add(arrow_body); }, 1200, arrow_body, scene);
+                    //deliver_body
+                    text_switch && setTimeout(function (deliver_body, scene) { scene.add(deliver_body); }, 3000, deliver_body, scene);
+                    //add group at 220111 21:09 by JG Yu
+                }
+                )
+                /**********************  losex y axis  big arrow****************************/
+
+                var big_arrow = that.arrow_losex_y(7, null, new THREE.MeshPhongMaterial({
+                    color: COLOR['gray'], side: THREE.DoubleSide,
+                    opacity: 1, wireframe: true
+                }))
+                big_arrow.position.x = 0;
+                big_arrow.position.y = 0;
+                big_arrow.position.z = -5;
+                big_arrow.rotation.y = Math.PI;
+                scene.add(big_arrow);
+                //add rpn text
+                var big_text = that.text_3d('Inverse\nDevelopment', 20, 2, COLOR['gray'], COLOR['blank'])
+
+                big_text.position.x = -500;
+                big_text.position.y = 170;
+                big_text.position.z = 1;
+                scene.add(big_text);
+
+
+                /**********************  losex z axis ****************************/
+                let losex_y_center_position = [[
+                    0 - radius / 10 * 2, radius / 10 * 2
+                ], [
+                    0 - radius / 10 * 4, radius / 10 * 4
+                ], [
+                    0 - radius / 10 * 6, radius / 10 * 6
+                ]];
+                let losex_y_center_text = [`17273\n336\n79`, `20269\n336\n96`, `14021\n336\n60`]
+                losex_y_center_text = [`5315\n200\n28`, `7165\n400\n31`, `5714\n245\n22`]
+                losex_y_center_position.map((lxy, li) => {
+                    //add rpn box
+                    var rpn = new THREE.Mesh(new THREE.CubeGeometry(radius / 10, cardinal_number / 2, radius / 10),
+                        new THREE.MeshPhongMaterial({
+                            color: 0x1a1a1a, side: THREE.DoubleSide,
+                            opacity: 0.05
+
+
+                        }));
+                    rpn.position.x = lxy[0];
+                    rpn.position.y = cardinal_number / 2 / 2;
+                    rpn.position.z = lxy[1];
+                    scene.add(rpn);
+                    //add rpn text
+                    var rpn_text = that.text_3d(losex_y_center_text[li], 10, 1, COLOR['gray'], COLOR['gray'])
+                    rpn_text.rotation.x = -Math.PI / 2;
+                    rpn_text.position.x = lxy[0] - 10;
+                    rpn_text.position.y = cardinal_number / 2;
+                    rpn_text.position.z = lxy[1] - 10;
+                    scene.add(rpn_text);
+
+                })
+                var ball_losex_y_z = new THREE.Mesh(new THREE.SphereGeometry(cardinal_number * ratio / 3, 20, 20),
+                    new THREE.MeshPhongMaterial({
+                        color: COLOR['red'], side: THREE.DoubleSide,
+                        opacity: 0.5,
+                        map: that.threeD.texture['dalishi']
+                    })
+                );
+                ball_losex_y_z.name = "DMAIC_3";
+                that.threeD.object.dmaic.push(ball_losex_y_z);
+                that.threeD.clickObjects.push(ball_losex_y_z);
+                ball_losex_y_z.position.x = 0 - radius / 10 * 2 + 10;
+
+                ball_losex_y_z.position.y = 160;
+                ball_losex_y_z.position.z = radius / 10 * 2 - 7;
+                scene.add(ball_losex_y_z);
+                //add DMAIC-\n20210006
+                var redball_text = that.text_3d('QAD-\n210004', 6, 1, COLOR['gray'], COLOR['gray']);
+                redball_text.position.x = 0 - radius / 10 * 2;
+
+                redball_text.position.y = 160;
+                redball_text.position.z = radius / 10 * 2 + 20;
+
+
+                scene.add(redball_text);
+
+                /********add losex losez y axis add a big ball**********/
+                var ball_losex_y_losez = new THREE.Mesh(new THREE.SphereGeometry(120, 20, 20),
+                    new THREE.MeshPhongMaterial({
+                        color: COLOR['blue'], side: THREE.DoubleSide,
+                        opacity: 1
+                    })
+                );
+                ball_losex_y_losez.position.x = -220;
+
+                ball_losex_y_losez.position.y = 160;
+                ball_losex_y_losez.position.z = -200 - 140;
+                scene.add(ball_losex_y_losez);
+
+                //add OY22_574-KR5
+
+                var okr_info = that.text_3d('OKR', 30, 1, COLOR['gray'], COLOR['gray']);
+                okr_info.position.x = -150;
+                okr_info.rotation.y = -Math.PI;
+                okr_info.position.y = 160;
+                okr_info.position.z = -200 - 140 - 140;
+                scene.add(okr_info);
+
+                /**************add losex losez losey axis add a big ball*******************/
+                let okr = `OY22_640,OY22_603,OY22_600,OY22_598,OY22_574,OY22_595,OY22_587`.split(',');
+                //211221
+                var group = new THREE.Group();
+                okr.map((o, oi) => {
+                    setTimeout(function (o, group) {
+
+                        var okr_text = that.text_3d(o, 10, 1, COLOR['gray'])
+                        okr_text.rotation.y = -Math.PI;
+                        okr_text.rotation.x = Math.PI / 2;
+                        okr_text.position.x = -180;
+                        okr_text.position.y = 0;
+                        okr_text.position.z = 0 - 40 * (oi) - 220 - 60;
+                        group.add(okr_text);
+                        //BiCS6 512Gb ex3 4P RBL0 delivery
+                        var kr_text = that.text_3d(o == 'OY22_574' ? 'KR1\nKR2\nKR3\nKR4\nKR5: BiCS6 512Gb ex3 4P RBL0 delivery' : 'KR1\nKR2\nKR3\nKR4\nKR5', 4, 1, COLOR['gray'])
+                        kr_text.rotation.y = -Math.PI;
+                        kr_text.rotation.x = Math.PI / 2;
+                        kr_text.position.x = -260;
+                        kr_text.position.z = 0 - 40 * (oi) - 200 - 60;
+                        kr_text.position.y = 0;
+                        group.add(kr_text);
+                    }, 3000 + oi * 50, o, group);
+
+
+
+
+                })
+                text_switch && setTimeout(function (group, scene) { scene.add(group); }, 5000, group, scene);
+
+                /********add x losez y axis add a big ball**********/
+                var ball_x_y_losez = new THREE.Mesh(new THREE.SphereGeometry(40, 20, 20),
+                    new THREE.MeshPhongMaterial({
+                        color: COLOR['green'], side: THREE.DoubleSide,
+                        opacity: 1
+                    })
+                );
+                ball_x_y_losez.position.x = 360;
+
+                ball_x_y_losez.position.y = 200;
+                ball_x_y_losez.position.z = - 240;
+                scene.add(ball_x_y_losez);
+                //add OY22_574-KR5
+                var kr_info = that.text_3d('OY22_574-KR5', 6, 1, COLOR['gray'], COLOR['gray']);
+                kr_info.position.x = 370;
+                kr_info.rotation.y = -Math.PI;
+                kr_info.position.y = 200;
+                kr_info.position.z = -280;
+
+
+                scene.add(kr_info);
+
+                //add star at sky 
+                var Colors = {
+                    red: 0xf85051,
+                    orange: 0xea8962,
+                    yellow: 0xdacf75,
+                    beige: 0xccc58f,
+                    grey: 0xbab7a1,
+                    blue: 0x4379a8,
+                    ocean: 0x4993a8,
+                    green: 0x24a99b
+                };
+                let s = 30;
+
+                let star1 = new THREE.Mesh(new THREE.SphereGeometry(10, 6, 6), new THREE.MeshStandardMaterial({
+                    color: Colors[Object.keys(Colors)[(Math.random() * 8) | 0]],
+                    roughness: .9,
+
+                    emissive: 0x270000,
+                    shading: THREE.FlatShading
+                }))
+                star1.position.x = 400;
+                star1.position.y = 450;
+                star1.position.z = 100;
+                that.threeD.object.star.push(star1);
+                scene.add(star1);
+
+                let star2 = new THREE.Mesh(new THREE.SphereGeometry(13, 6, 6), new THREE.MeshStandardMaterial({
+                    color: Colors[Object.keys(Colors)[(Math.random() * 8) | 0]],
+                    roughness: .9,
+
+                    emissive: 0x270000,
+                    shading: THREE.FlatShading
+                }))
+                star2.position.x = 20;
+                star2.position.y = 550;
+                star2.position.z = 50;
+                that.threeD.object.star.push(star2);
+                scene.add(star2);
+                let star3 = new THREE.Mesh(new THREE.SphereGeometry(10, 6, 6), new THREE.MeshStandardMaterial({
+                    color: Colors[Object.keys(Colors)[(Math.random() * 8) | 0]],
+                    roughness: .9,
+
+                    emissive: 0x270000,
+                    shading: THREE.FlatShading
+                }))
+                star3.position.x = 100;
+                star3.position.y = 400;
+                star3.position.z = 20;
+                that.threeD.object.star.push(star3);
+                scene.add(star3);
+
+                //add milestone
+                let m1 = new THREE.Mesh(new THREE.CylinderGeometry(4, 0, 6, 18, 3), new THREE.MeshStandardMaterial({
+                    color: 0xf85051,
+                    roughness: .9,
+                    emissive: COLOR['green'],
+                    shading: THREE.FlatShading
+                }))
+                m1.position.x = 80;
+                m1.position.z = -2;
+                m1.position.y = 3;
+                scene.add(m1);
+                let m2 = new THREE.Mesh(new THREE.CylinderGeometry(4, 0, 6, 18, 3), new THREE.MeshStandardMaterial({
+                    color: 0xf85051,
+                    roughness: .9,
+                    emissive: COLOR['green'],
+                    shading: THREE.FlatShading
+                }))
+                m2.position.z = -2; m2.position.x = 120 * 6; m2.position.y = 3;
+                scene.add(m2);
+
+                let m3 = new THREE.Mesh(new THREE.CylinderGeometry(4, 0, 6, 18, 3), new THREE.MeshStandardMaterial({
+                    color: 0xf85051,
+                    roughness: .9,
+                    emissive: COLOR['green'],
+                    shading: THREE.FlatShading
+                }))
+                m3.position.z = -2; m3.position.x = 120 * 5; m3.position.y = 3;
+                scene.add(m3);
+                //var ball_x_y_losez1 = new THREE.Mesh(new THREE.SphereGeometry(40, 20, 20),
+                //    new THREE.MeshPhongMaterial({
+                //        color: COLOR['yellow'], side: THREE.DoubleSide,
+                //        opacity: 1
+                //    })
+                //);
+                //ball_x_y_losez1.position.x = 160;
+
+                //ball_x_y_losez1.position.y = 220;
+                //ball_x_y_losez1.position.z = - 140;
+                //scene.add(ball_x_y_losez1);
+
+                /*******************geometry*****************/
+
+                /*******************camera*****************/
+                OrthographicCamera.position.set(-790, 845, 775);
+                OrthographicCamera.rotation.set(-0.828,-0.603,-0.554);
+                OrthographicCamera.lookAt(scene.position);
+                that.initThreeClickEvent();
+                var controls;
+                let jsq = 0;
+                var animate = function () {
+                    jsq++;
+                    //  console.log(jsq);
+                    if (jsq == 10) { jsq = 0; }
+
+                    // controls.update();
+                    //  ball.rotation.x += 0.001;
+                    // ball.rotation.y += 0.001;
+                    //console.log(controls)
+
+                    that.threeD.object.mads.map(n => {
+                        //     n.rotation.x += 0.01;
+                        n.rotation.y += 0.02 * 10;
+                    })
+                    that.threeD.object.dmaic.map(n => {
+                        //  n.rotation.x += 0.01;
+                        n.rotation.y += 0.02 * 10;
+                    })
+                    that.threeD.object.star.map(n => {
+                     //   console.log(jsq);
+                         n.material.opacity = jsq%2;
+                        n.material.color = new THREE.Color((Math.random() * 8|0) % 2 == 1 ? Colors[Object.keys(Colors)[(Math.random() * 8) | 0]] : 0x000000);
+                      //  n.material.wireframe = !!(jsq%2);
+                    })
+                    renderer.render(scene, OrthographicCamera);
+                    setTimeout(function () {
+                        animate();
+                    }, 1000)
+                    //211221
+                    //  var  timer= setInterval(animate, 1000);
+                    //   requestAnimationFrame(animate);
+                };
+
+                animate();
+                controls = new THREE.OrbitControls(OrthographicCamera, renderer.domElement);
+                //  controls.autoRotate = true;
+                //controls.minZoom = 0.9;
+                //controls.maxZoom = 1.1;
+                //211221
+                controls.maxDistance = 1800;
+                controls.minDistance = 300;
+                //controls.minPolarAngle = 0;
+                //controls.maxPolarAngle = Math.PI * (60 / 180);
+                //// 左右旋转范围
+                //controls.minAzimuthAngle = -Math.PI * (45 / 180);
+                //controls.maxAzimuthAngle = Math.PI * (45 / 180);
+                controls.addEventListener('change', function () {
+                    renderer.render(scene, OrthographicCamera);
+                });
+                // that.load_model("Light Gray Sphere", scene);
+                //add others 220111 21:28 BY JG Yu
+                that.load_element("table", scene);
+                //remove loading
+                var box = document.getElementById("loading");
+                box.parentNode.removeChild(box);
+
+            }
+            load_element(type, scene) {
+                var that = this;
+                switch (type) {
+                    case "table":
+                        var table = new THREE.Mesh(new THREE.CubeGeometry(radius / 8 * 1, radius / 8 * 1, radius / 100),
+                            new THREE.MeshPhongMaterial({
+                                side: THREE.FrontSide,
+                                opacity: 1,
+                                map: new THREE.ImageUtils.loadTexture('./doc/img/table_60deg.png')
+
+
+                            }));
+                        table.position.z = -radius / 100 * 4;
+                        table.name = "tablelink";
+                        that.threeD.clickObjects.push(table);
+                        scene.add(table);
+                        break;
+                }
+            }
+            load_model(type, scene) {
+                var that = this;
+                let OBJLoader1 = new THREE.OBJLoader();
+                // female_face / female
+                //./doc/Model/1227_2/Office Chair.mtl
+                let config = {
+                    "Light Gray Sphere": "./doc/Model/ball/Light Gray Sphere",
+                    wd: "./doc/Model/wd/wd",
+                    plant: "./doc/Model/plant/desk plant",
+                }
+                let MTLLoader1 = new THREE.MTLLoader();
+                MTLLoader1.load(config[type] + `.mtl`, function (materials) {
+                    console.log(materials);
+                    OBJLoader1.setMaterials(materials);
+                    OBJLoader1.load(config[type] + `.obj`, function (obj) {
+                        that.threeD.model[type] = obj;
+                        switch (type) {
+                            case "Light Gray Sphere":
+                                //   that.ele["Light Gray Sphere"] = that.threeD.model['Light Gray Sphere'];
+
+
+                                scene.add(that.threeD.model['Light Gray Sphere']);
+                                break;
+
+                        }
+                    })
+                })
+            }
+            dist(arr = [{ x: 0, y: 0 }, { x: 1, y: 1 }]) {
+
+                var p1 = arr[0];
+                var p2 = arr[1];
+                var a = p2.x - p1.x;
+                var b = p2.y - p1.y;
+                return Math.sqrt(a * a + b * b);
+
+            }
+            initThreeClickEvent() {
+                //点击射线
+                let that = this;
+                var raycaster = new THREE.Raycaster();
+                var mouse = new THREE.Vector2();
+                document.body.addEventListener('mousedown', onDocumentMouseDown, false);
+                document.body.addEventListener('mouseup', onDocumentMouseUp, false);
+                //new THREE.MeshLambertMaterial({
+                //    color: COLOR['grey'], side: THREE.DoubleSide,
+                //    opacity: 0.5,
+                //    wireframe: true
+
+                //})
+                function onDocumentMouseUp(event) {
+                    event.preventDefault();
+                    mouse.x = (event.clientX / that.threeD.renderer.domElement.clientWidth) * 2 - 1;
+                    mouse.y = -(event.clientY / that.threeD.renderer.domElement.clientHeight) * 2 + 1;
+                    console.log(mouse.x, mouse.y, 'up')
+                    var dist = that.dist([that.mouse_xy, { x: mouse.x, y: mouse.y }]);
+                    if (dist < 0.01) {
+                        raycaster.setFromCamera(mouse, that.threeD.camera);
+
+                        //总结一下，这里必须装网格，mesh，装入组是没有效果的
+                        //所以我们将所有的盒子的网格放入对象就可以了
+                        // 需要被监听的对象要存储在clickObjects中。
+                        var intersects = raycaster.intersectObjects(that.threeD.clickObjects);
+
+                        // console.log(intersects)
+                        if (intersects.length > 0) {
+                            // 在这里填写点击代码
+                            app.table_data = [];
+                            console.log("dianji");
+                            app.show = true; app.loading = true;
+                            let click_id = intersects[0].object.name;
+                            app.program_deliverable = click_id.split('_').slice(-1)[0];
+                            if (click_id.includes('Scrum')) {//MADS
+                                //   app.table_data = mads_data;
+                                //http://localhost:62188/FourD_navigation/api.ashx?type=GET_programs_DETAIL&v_owner=30113&v_project_id=NB_20200041&v_phase=1
+                                //$.get(`./api.ashx?type=GET_PROJECT_OVERVIEW_MADS_DETAIL&v_owner=30113&v_project_id=${app.program_id}&v_phase=${app.program_deliverable}`,
+
+                                //    function (data) {
+                                //        if (data.length == 0) { data = [{ "nodata": "no data" }] }
+                                //        app.loading = false;
+                                //        app.v_type = "GET_PROJECT_OVERVIEW_MADS_DETAIL";
+                                //        app.table_clm = ["MADS_ID", "TRIGGER_PHASE", "STATUS", "TRIGGER_PRODUCT_PROJECT"];
+                                //        app.table_data = data;
+                                //    })
+                                app.loading = false;
+                                        app.v_type = "GET_PROJECT_OVERVIEW_MADS_DETAIL";
+                                        app.table_clm = ["MADS_ID", "TRIGGER_PHASE", "STATUS", "TRIGGER_PRODUCT_PROJECT"];
+                                app.table_data = [{
+                                    "MADS_ID": "OMADS-20200250",
+                                    "TRIGGER_PHASE":"Close",
+                                    "STATUS":"TCS:2020-10-28(QS Start:2020-05-28)",
+                                    "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20210014 CPI-NAND BiCS5 512Gb ex3 2p DB700/800/830 THK=61µm with EM761 and HR310 up to RBL0/RBL1 IMPACTED: NP002 - 20200209 ECB- Enterprise Component_12 x 18_BiCS5 512Gb eX3_2D_NA"
+                                    ,"category":"3"//tcs
+                                }, {
+                                    "MADS_ID": "MADS-20200452",
+                                    "TRIGGER_PHASE": "Close",
+                                    "STATUS": "OW:2020-07-16(PQ start:2020-07-11)",
+                                    "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20210014 CPI-NAND BiCS5 512Gb ex3 2p DB700/800/830 THK=61µm with EM761 and HR310 up to RBL0/RBL1 IMPACTED: NP002 - 20200252 CSS BGA_14 X 18_BiCS5 512Gb eX3_16D_NA"
+                                        , "category": "2"//ow
+                                    }].filter(n => { return click_id.includes(n.category) });
+
+                            }
+                            else if (click_id.includes('blank')) {//OVERVIEW
+                                // app.table_data = overview_data;
+                                //$.get(`./api.ashx?type=GET_programs_DETAIL&v_owner=30113&v_project_id=${app.program_id}&v_phase=${app.program_deliverable}`,
+
+                                //    function (data) {
+                                //        if (data.length == 0) { data = [{ "nodata": "no data" }] }
+                                //        app.loading = false;
+                                //        app.v_type = "GET_programs_DETAIL";
+                                //        app.table_clm = ["PHASE", "CHECK_ITEM", "OWNER_NAME", "STATUS", "ATTACHMENT"];
+                                //        app.table_data = data;
+                                //    })
+
+                                app.table_clm = ["MADS_ID", "TRIGGER_PHASE", "STATUS", "TRIGGER_PRODUCT_PROJECT"];
+                                app.table_data = [{
+                                    "MADS_ID": "OMADS-20200250",
+                                    "TRIGGER_PHASE": "Close",
+                                    "STATUS": "TCS:2020-10-28(QS Start:2020-05-28)",
+                                    "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20210014 CPI-NAND BiCS5 512Gb ex3 2p DB700/800/830 THK=61µm with EM761 and HR310 up to RBL0/RBL1 IMPACTED: NP002 - 20200209 ECB- Enterprise Component_12 x 18_BiCS5 512Gb eX3_2D_NA"
+                                    , "category": "3"//tcs
+                                }, {
+                                    "MADS_ID": "MADS-20200452",
+                                    "TRIGGER_PHASE": "Close",
+                                    "STATUS": "OW:2020-07-16(PQ start:2020-07-11)",
+                                    "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20210014 CPI-NAND BiCS5 512Gb ex3 2p DB700/800/830 THK=61µm with EM761 and HR310 up to RBL0/RBL1 IMPACTED: NP002 - 20200252 CSS BGA_14 X 18_BiCS5 512Gb eX3_16D_NA"
+                                    , "category": "2"//ow
+                                }];
+                            }
+                            else if (click_id.includes('DMAIC')) {
+                                // app.table_data = overview_data;
+                                //$.get(`./api.ashx?type=GET_PROJECT_OVERVIEW_DMAIC_DETAIL&v_owner=30113&v_project_id=${app.program_id}&v_phase=${app.program_deliverable}`,
+
+                                //    function (data) {
+                                //        if (data.length == 0) { data = [{ "nodata": "no data" }] }
+                                //        app.loading = false;
+                                //        app.v_type = "GET_PROJECT_OVERVIEW_DMAIC_DETAIL";
+                                //        app.table_clm = ["DMAIC_ID", "ISSUE_DESCIPTION", "STATUS", "TRIGGER_PHASE", "TRIGGER_PRODUCT_PROJECT"];
+                                //        app.table_data = data;
+                                //    })
+                                app.loading = false;
+                                        app.v_type = "GET_PROJECT_OVERVIEW_DMAIC_DETAIL";
+                                        app.table_clm = ["DMAIC_ID", "ISSUE_DESCIPTION", "STATUS", "TRIGGER_PHASE", "TRIGGER_PRODUCT_PROJECT"];
+                                app.table_data = [{
+                                    "DMAIC_ID":"QAD_210004",
+                                    "ISSUE_DESCIPTION": "	OMADS for NB_20210014 CPI-NAND BiCS5 512Gb ex3 2p DB700/800/830 THK=61µm with EM761 and HR310 up to RBL0/RBL1 TCS and NP002-20200209 ECB-Enterprise Component_12 x 18_BiCS5 512Gb eX3_2D_NA QS conflict",
+                                    "STATUS": "Close",
+                                    "TRIGGER_PHASE": "",
+                                    "TRIGGER_PRODUCT_PROJECT": "NB_20210014 CPI-NAND BiCS5 512Gb ex3 2p DB700/800/830 THK=61µm with EM761 and HR310 up to RBL0/RBL1"
+                                }];
+                            }
+                            else if (click_id.includes('tablelink')) {
+                                $('#tips').show(); app.show = false; app.loading = false;
+                                setTimeout(function () {
+                                   
+                                    $('#tips').hide();
+                                    window.open('./table_meeting_more_people_phone.html','_self');
+                                }, 1100);
+
+                                
+                            }
+                            console.log(intersects[0].object)
+                            console.log(intersects[0].object.name);
+
+                        }
+
+                    }
+                }
+
+
+                function onDocumentMouseDown(event) {
+                    event.preventDefault();
+                    mouse.x = (event.clientX / that.threeD.renderer.domElement.clientWidth) * 2 - 1;
+                    mouse.y = -(event.clientY / that.threeD.renderer.domElement.clientHeight) * 2 + 1;
+                    console.log(mouse.x, mouse.y, 'down')
+                    that.mouse_xy = { x: mouse.x, y: mouse.y };
+                    return;
+
+                }
+            }
+
+            arrow(ratio = 1, depth = 5, material) {
+                let that = this;
+                var rectShape = new THREE.Shape();
+                rectShape.moveTo(0, 0);
+
+
+                rectShape.lineTo(100 * ratio, 0);
+                rectShape.lineTo(120 * ratio, 20 * ratio);
+                rectShape.lineTo(100 * ratio, 40 * ratio);
+                rectShape.lineTo(0, 40 * ratio);
+                rectShape.lineTo(20 * ratio, 20 * ratio);
+                rectShape.lineTo(0, 0);
+                //MeshPhongMaterial
+                //ExtrudeGeometry
+                var geometry1 = new THREE.ExtrudeGeometry(//拉伸造型
+                    rectShape,//二维轮廓
+                    //拉伸参数
+                    {
+                        depth: depth,
+                        bevelEnabled: false
+                    });
+
+                return new THREE.Mesh(geometry1, material);
+
+            }
+            arrow_losex_y(ratio = 1, depth = null, material) {
+                let that = this;
+                var rectShape = new THREE.Shape();
+                rectShape.moveTo(0, 0);
+
+
+                rectShape.lineTo((60 + 13) * ratio, 0);
+                rectShape.lineTo((80 + 13) * ratio, 20 * ratio);
+                rectShape.lineTo((60 + 13) * ratio, 40 * ratio);
+                rectShape.lineTo(0, 40 * ratio);
+                rectShape.lineTo(20 * ratio, 20 * ratio);
+                rectShape.lineTo(0, 0);
+                var geometry1 = new THREE.ExtrudeGeometry(//拉伸造型
+                    rectShape,//二维轮廓
+                    //拉伸参数
+                    {
+                        depth: depth,
+                        bevelEnabled: false
+                    });
+
+                return new THREE.Mesh(geometry1, material);
+
+            }
+            arrow_wall(index = 'i', ratio = 1, img_id) {
+                let that = this;
+                var rectShape = new THREE.Shape();
+                rectShape.moveTo(0, 0);
+
+
+                rectShape.lineTo(200 * ratio, 0);
+                rectShape.lineTo(325 * ratio, 125 * ratio);
+                rectShape.lineTo(200 * ratio, 250 * ratio);
+                rectShape.lineTo(0, 250 * ratio);
+                //rectShape.lineTo(125 * ratio, 125 * ratio);
+                rectShape.lineTo(0, 0);
+                var geometry1 = new THREE.ExtrudeGeometry(//拉伸造型
+                    rectShape,//二维轮廓
+                    //拉伸参数
+                    {
+                        // amount: 20,//拉伸长度
+                        depth: 5,
+                        bevelEnabled: false//无倒角
+                    });
+
+                //new THREE.ShapeGeometry(rectShape);
+
+                return new THREE.Mesh(geometry1, that.threeD.material[index]);
+
+            }
+            text_3d(text = "", size = 4, height = 0.1, color = 0xffffff, border_color = 0xd5d5d5) {
+                let that = this;
+                //220111
+               // text = "1";
+                var textGeo = new THREE.TextGeometry(text, {
+                    font: that.font,
+                    size: size,
+                    height: height
+
+                });
+
+                textGeo.computeBoundingBox();
+
+                const centerOffset = - 0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+
+                return new THREE.Mesh(textGeo, [
+                    new THREE.MeshPhongMaterial({ color: color, flatShading: true }), // front
+                    new THREE.MeshPhongMaterial({ color: border_color }) // side
+                ]);
+            }
+
+            
+            interaction() { }
+
+
+
+            createText(text = "", index = 'b') {
+                let that = this;
+                var textGeo = new THREE.TextGeometry(text, {
+
+                    font: that.font,
+
+                    size: 4,
+                    height: 0.1
+                    // ,
+                    // curveSegments: 1,
+                    // bevelThickness: 1,
+                    // bevelSize: 0.5,
+                    // bevelEnabled: true
+
+                });
+
+                textGeo.computeBoundingBox();
+
+                const centerOffset = - 0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+
+                return new THREE.Mesh(textGeo, [
+                    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
+                    new THREE.MeshPhongMaterial({ color: 0xd5d5d5 }) // side
+                ]);
+            }
+            text_wall(text = "", index = 'b') {
+                let that = this;
+                var textGeo = new THREE.TextGeometry(text, {
+
+                    font: that.font,
+
+                    size: 12,
+                    height: 1
+                    // ,
+                    // curveSegments: 1,
+                    // bevelThickness: 1,
+                    // bevelSize: 0.5,
+                    // bevelEnabled: true
+
+                });
+
+                textGeo.computeBoundingBox();
+
+                const centerOffset = - 0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+
+                return new THREE.Mesh(textGeo, [
+                    new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
+                    new THREE.MeshPhongMaterial({ color: 0xd5d5d5 }) // side
+                ]);
+            }
+            desc(text = "", index = 'b') {
+                let that = this;
+                var textGeo = new THREE.TextGeometry(text, {
+
+                    font: that.font,
+                    size: 5,
+                    height: 0.1
+                });
+
+                textGeo.computeBoundingBox();
+                const centerOffset = - 0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+                return new THREE.Mesh(textGeo, [
+                    new THREE.MeshPhongMaterial({ color: 0x409EFF, flatShading: true }), // front
+                    new THREE.MeshPhongMaterial({ color: 0xd5d5d5 }) // side
+                ]);
+            }
+            rect(index = 'b', ratio = 1, img_id) {
+                let that = this;
+                var rectShape = new THREE.Shape();
+                rectShape.moveTo(20 * ratio, 0);
+                rectShape.lineTo(100 * ratio, 0);
+                rectShape.lineTo(100 * ratio, 80 * ratio);
+                rectShape.lineTo(20 * ratio, 80 * ratio);
+
+                rectShape.lineTo(20 * ratio, 0);
+                var geometry1 = new THREE.ExtrudeGeometry(//拉伸造型
+                    rectShape,//二维轮廓
+                    //拉伸参数
+                    {
+                        amount: 2,//拉伸长度amount
+                        bevelEnabled: false//无倒角
+                    });
+
+                //new THREE.ShapeGeometry(rectShape);
+                var m = that.threeD.material['i'];
+                m.map = that.threeD.texture[img_id];
+                return new THREE.Mesh(geometry1, m);
+            }
+            PlaneGeometry(ratio = 1, img_id = 'xz_axis') {
+                let that = this;
+                if (!that.threeD.texture[img_id]) { img_id = "blank"; }
+                var m = new THREE.MeshLambertMaterial({
+                    color: '#b5b5b5', side: THREE.DoubleSide,
+                    opacity: 1, transparent: true,
+                    map: that.threeD.texture[img_id]
+                })
+
+
+                return new THREE.Mesh(new THREE.PlaneGeometry(60 * ratio, 40 * ratio), m);
+
+            }
+        }
+        var loader = new THREE.FontLoader();
+        var three;
+        //  loader.load('./doc/fonts/optimer_regular.typeface.json',
+        loader.load('./doc/fonts/Calibri_Regular.json',
+            function (response) {
+
+                // that.font = response;
+                three=new NAVIGATION_4D('#models', response);
+
+            });
+
+        ELEMENT.locale(ELEMENT.lang.en)
+        var Ctor = Vue.extend({
+            computed: {
+                table_clm() {
+                    return Object.keys(this.table_data[0]).join(',').replace(',SYS_ID','').split(',');
+                }
+            },
+            methods: {
+                get_width(clm) {
+                    var w = 120;
+                    switch (clm) {
+                        case "PROGRAM NAME":
+                            w = 300;
+                            break;
+                        case "ATTACHMENT":
+                            w = 180;
+                            break;
+                        case "COMMENTS":
+                            w = 180;
+                            break;
+                        case "PROGRAM CATEGORY":
+                            w = 240;
+                            break;
+                        case "CHECK_ITEM":
+                            w = 100;
+                            break;
+                        case "LEVEL1 APPROVER":
+                            w = 120;
+                            break;
+                        case "APPROVE TIME1":
+                            w = 220;
+                            break;
+                        case "TRIGGER_PRODUCT_PROJECT":
+                            w = 500;
+                            break;
+                        case "TRIGGER_PHASE":
+                            w = 300;
+                            break;
+                        case "MADS_ID":
+                            w = 300;
+                            break;
+                     
+
+                        case "APPROVE TIME2":
+                            w = 120;
+                            break;
+                    }
+                    return w;
+                },
+                th(a) {
+                    return a.replace(/^v_/g, '').replace(/_/g, ' ').toLowerCase().replace(/^\w|\s\w/g, w => w.toUpperCase());
+                },
+                td(a, flag = 0) {
+
+                    if (flag) { return unescape(('' + a).split('[')[flag - 1]) }
+                    else { return unescape(a); }
+                }
+
+            }
+
+
+            ,
+            data() {
+                return {
+                    loading:false,
+                    auto_height: window.innerHeight * 0.35,
+                    program_id,
+                    program_deliverable:'',
+                    show: false,
+                    table_data: [{}],
+                    v_type:""
+                    //table_clm: []  //'PROGRAM ID,PROGRAM NAME,PROGRAM MANAGER,PROGRAM CATEGORY,PHASE,CHECK_ITEM,STATUS,OWNER_NAME,COMMENTS,SUBMIT_TIME'.split(',')
+                }
+            }
+        });
+       
+        var overview_data = [{ "ROUND_NUMBER": 1.0, "PROGRAM ID": "NB_20200020", "PROGRAM NAME": "CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling", "PROGRAM MANAGER": "Zhang, Izzie (Izzie)", "PROGRAM CATEGORY": "New Fab node of Nand", "PHASE": "ACR", "CHECK_ITEM": "RBL0/Simulator SC", "STATUS": "Pass Delay", "ATTACHMENT": "ps://wdc.box.com/s/aydldeg6q5bn7tiqouwiv60ucrh7v9s3[Attach]", "OWNER_NAME": "Shi, Sara (Sara)", "COMMENTS": "-refer to below summary|", "SUBMIT_TIME": "2021-04-16T18:51:55", "LEVEL1 APPROVER": "Zhang, Izzie (Izzie)", "LEVEL1 STATUS": "Validated", "COMMENTS1": null, "APPROVE TIME1": "2021-04-16T18:55:29", "LEVEL2 APPROVER": "Li, Glory (Glory)", "LEVEL2 STATUS": "Validated", "COMMENTS2": null, "APPROVE TIME2": "2021-04-20T17:50:15", "GAP/ACTION": null, "SYS_ID": "BD26289310B81093E0537536470A93CD" }, { "ROUND_NUMBER": 1.0, "PROGRAM ID": "NB_20200020", "PROGRAM NAME": "CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling", "PROGRAM MANAGER": "Zhang, Izzie (Izzie)", "PROGRAM CATEGORY": "New Fab node of Nand", "PHASE": "ACR", "CHECK_ITEM": "Toll gate check out report-Goodie", "STATUS": "Pass Delay", "ATTACHMENT": "ps://wdc.box.com/s/t0k2w5zsjttycn36gkmf6fld0zkwcmt1?1305[Attach]", "OWNER_NAME": "Li, Glory (Glory)", "COMMENTS": "-ACR pass, particle in stacking found strong correlation with cycle time, need mitigation actions to decrease the YPPM during OW|", "SUBMIT_TIME": "2021-04-21T11:10:47", "LEVEL1 APPROVER": "Sun, Kandy (Kandy)", "LEVEL1 STATUS": "Validated", "COMMENTS1": null, "APPROVE TIME1": "2021-04-21T14:04:18", "LEVEL2 APPROVER": "Li, Glory (Glory)", "LEVEL2 STATUS": "Validated", "COMMENTS2": null, "APPROVE TIME2": "2021-04-21T14:04:18", "GAP/ACTION": null, "SYS_ID": "BD26289310B61093E0537536470A93CD" }, { "ROUND_NUMBER": 1.0, "PROGRAM ID": "NB_20200020", "PROGRAM NAME": "CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling", "PROGRAM MANAGER": "Zhang, Izzie (Izzie)", "PROGRAM CATEGORY": "New Fab node of Nand", "PHASE": "ACR", "CHECK_ITEM": "PNTF", "STATUS": "Pass Delay", "ATTACHMENT": "ps://wdc.box.com/s/7xryw4wn80s84lhtpurqdezfh9zja80e[Attach]", "OWNER_NAME": "Li, Glory (Glory)", "COMMENTS": "-8 PNtF items generated, need to do the regression during OW and TCS|", "SUBMIT_TIME": "2021-04-13T23:36:04", "LEVEL1 APPROVER": "Sun, Kandy (Kandy)", "LEVEL1 STATUS": "Validated", "COMMENTS1": null, "APPROVE TIME1": "2021-04-14T14:54:39", "LEVEL2 APPROVER": "Li, Glory (Glory)", "LEVEL2 STATUS": "Validated", "COMMENTS2": null, "APPROVE TIME2": "2021-04-14T14:54:39", "GAP/ACTION": null, "SYS_ID": "BD26289310B51093E0537536470A93CD" }, { "ROUND_NUMBER": 1.0, "PROGRAM ID": "NB_20200020", "PROGRAM NAME": "CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling", "PROGRAM MANAGER": "Zhang, Izzie (Izzie)", "PROGRAM CATEGORY": "New Fab node of Nand", "PHASE": "ACR", "CHECK_ITEM": "NAND/ASIC Checklist", "STATUS": "Pass Delay", "ATTACHMENT": "ps://wdc.app.box.com/file/706944616734?s=8ou9v9c0zhpopj620zma2p6cl806gtin[Attach]", "OWNER_NAME": "Shi, Sara (Sara)", "COMMENTS": "-refer to below link for report|", "SUBMIT_TIME": "2021-04-16T15:54:01", "LEVEL1 APPROVER": "Zhang, Izzie (Izzie)", "LEVEL1 STATUS": "Validated", "COMMENTS1": null, "APPROVE TIME1": "2021-04-16T18:55:27", "LEVEL2 APPROVER": "Li, Glory (Glory)", "LEVEL2 STATUS": "Validated", "COMMENTS2": null, "APPROVE TIME2": "2021-04-20T17:49:28", "GAP/ACTION": null, "SYS_ID": "BD26289310B71093E0537536470A93CD" }]
+        var mads_data = [{ "STATUS": "Close", "MADS_ID": "MADS-20210199[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-09-15(LVM-HVM:2021-08-23)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": "Close", "MADS_ID": "MADS-20210080[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-07-31(IPQ:2021-07-16)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": "Close", "MADS_ID": "MADS-20210199[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-09-15(LVM-HVM:2021-08-23)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": "Close", "MADS_ID": "MADS-20210080[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-07-31(IPQ:2021-07-16)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": null, "MADS_ID": null, "TRIGGER_PRODUCT_PROJECT": null, "TRIGGER_PHASE": null, "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": "Close", "MADS_ID": "MADS-20210080[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-07-31(IPQ:2021-07-16)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": "Close", "MADS_ID": "MADS-20210199[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-09-15(LVM-HVM:2021-08-23)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": "Close", "MADS_ID": "MADS-20210199[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-09-15(LVM-HVM:2021-08-23)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }, { "STATUS": "Close", "MADS_ID": "MADS-20210080[Link mads_id]", "TRIGGER_PRODUCT_PROJECT": "INFLUENCE:NB_20200020 CPI-NAND develops RBL0/1, which re-uses capex, which aligned scope with CVCE producing BiCS5 1Tb ex4 2p; RPG 1-12D; with DBG 27-30um; EM770 DAF; DB830 with FMS tooling<br />IMPACTED:NP002-20210081 RPG–MicroSD_11 x 15_BiCS5 1Tb ex4_8D_Lambeau", "TRIGGER_PHASE": "TCS:2021-07-31(IPQ:2021-07-16)", "ISSUE_DESCIPTION": null, "REFER_ATTACHMENT": null }];
+        var app = new Ctor().$mount('#app');
+        </script></body>
+</html>

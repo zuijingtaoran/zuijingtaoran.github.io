@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    <title>4D Navigation</title>
+    <script src="doc/JS/three.js"></script>
+    <script src="doc/JS/OBJLoader.js"></script>
+    <script src="doc/JS/MTLLoader.js"></script>
+    <script src="doc/JS/OrbitControls.js"></script>
+    <!--<script src="doc/JS/stats.min.js"></script>
+    <script src="doc/JS/axios.min.js"></script>-->
+    <script src="doc/JS/zepto.min.js"></script>
+    <script src="doc/JS/TextGeometry.js" type="module"></script>
+    <script src="doc/JS/FontLoader.js" type="module"></script>
+</head>
+<body>
+    <script> const radius = 800;
+        class FLOOR_3D {
+            constructor() {
+                this.ele= { "_1": null, "_2": null, "_3": null, "_4": null },
+                this.threeD = {
+                    clickObjects: [],
+                    scene: new THREE.Scene(),
+                    renderer: new THREE.WebGLRenderer({
+                        //1217
+                        alpha: true,
+                        antialias: true
+                    }),
+                    
+                    object: {
+                        star: [],
+                        dmaic: [],
+                        mads: []
+                    },
+                    material:
+                    {
+                        a: new THREE.MeshBasicMaterial({
+                            color: '#eeeeee', transparent: true,
+                            opacity: 0.1
+                        })
+
+                    },
+                    font: null,
+                    OrthographicCamera: (function () {
+                        var width = window.innerWidth;
+                        var height = window.innerHeight
+                        var k = width / height;
+                        var s = radius;
+                        return new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+
+                    })(),
+                    camera: (function () {
+
+                        return new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 4000);
+
+                    })(),
+                    point: new THREE.PointLight(0xffffff, 1, 0, 3),
+                    ambient: new THREE.AmbientLight(0xffffff, 0.7),
+                    DirectionalLight: [new THREE.DirectionalLight(), new THREE.DirectionalLight(), new THREE.DirectionalLight(), new THREE.DirectionalLight(), new THREE.DirectionalLight()],
+
+                    PointLight: new THREE.SpotLight(0xffff00, 1, 100, Math.PI / 6, 25),
+                    helper: new THREE.AxesHelper(radius),
+                    // 红线是X轴，绿线是Y轴，蓝线是Z轴
+                    definition: {
+                        Torus: new THREE.TorusGeometry(4, 1, 16, 18),
+                        Cylinder: new THREE.CylinderGeometry(1.5, 2, 9, 18, 10)
+
+                    },
+                    model: {},
+                    texture: {
+
+                        star: new THREE.ImageUtils.loadTexture('./doc/img/the-milkyway-2k.jpg'),
+                        dalishi: new THREE.ImageUtils.loadTexture('./doc/img/dalishi1.png'),
+                        world: new THREE.ImageUtils.loadTexture('./doc/img/world_1.jpg')
+                    }
+
+                }
+                this.load_model()
+
+            }
+            load_model() {
+                var that = this;
+                var OBJLoader_wd = new THREE.OBJLoader();
+                var MTLLoader_wd = new THREE.MTLLoader();
+                MTLLoader_wd.load(`./doc/Model/wd/wd.mtl`, function (materials) {
+                    console.log(materials);
+                    OBJLoader_wd.setMaterials(materials);
+                    OBJLoader_wd.load(`./doc/Model/wd/wd.obj`, function (obj) {
+                        that.threeD.model['wd'] = obj;
+
+
+                        var OBJLoader1 = new THREE.OBJLoader();
+                        var MTLLoader1 = new THREE.MTLLoader();
+                        MTLLoader1.load(`./doc/Model/female_face/female.mtl`, function (materials) {
+                            console.log(materials);
+                            OBJLoader1.setMaterials(materials);
+                            OBJLoader1.load(`./doc/Model/female_face/female.obj`, function (obj) {
+                                that.threeD.model['female'] = obj;
+                                that.init();
+                            })
+                        })
+
+
+
+                    })
+                })
+               
+                
+            }
+            init() {
+                let that = this;
+                let { scene, renderer, point, ambient, material, helper, definition, DirectionalLight, PointLight } = this.threeD;
+                let OrthographicCamera = this.threeD.camera;
+                const distance = radius,//控制整体尺寸
+                    c_zoom = 2;//控制初始化时的球的的大小
+
+                /*******************render*****************/
+                //renderer.shadowMapEnabled = true;
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+                //add milkyway
+                let mesh_box = new THREE.Mesh(new THREE.SphereGeometry(distance * 2, distance / 10, distance / 10), new THREE.MeshLambertMaterial({
+                    color: '#DFE1E0', side: THREE.BackSide,
+                    opacity: 1,
+                    map: that.threeD.texture['star']
+                }));
+                mesh_box.geometry.verticesNeedUpdate = true;
+                mesh_box.geometry.normalsNeedUpdate = true;
+                //1217
+                scene.add(mesh_box);
+                //add earth
+                var earth = new THREE.Mesh(new THREE.SphereGeometry(100, 40, 40),
+                    new THREE.MeshStandardMaterial({
+                        color: 0xffffff, side: THREE.DoubleSide,
+                        
+                        map: that.threeD.texture['world']
+                    })
+                );
+                earth.position.x = 0;
+                // console.log('h', top)
+                earth.position.y = 300;
+                earth.position.z = -1300;
+              
+               
+                scene.add(earth);
+                /*******************helper*****************/
+               //scene.add(helper);
+
+                //地板
+                var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x909090, depthWrite: true }));//
+                mesh.rotation.x = - Math.PI / 2;
+                mesh.receiveShadow = true;
+                ;
+                /*                         定义地板割线                      */
+                var grid = new THREE.GridHelper(2000, 16, 0x999999, 0x999999);
+                grid.material.opacity = 0.7;
+                grid.material.transparent = true
+               
+                scene.add(mesh);
+                scene.add(grid);
+                /*******************light 2*****************/
+                DirectionalLight[2].position.set(1000, 200, 1000);
+
+                scene.add(DirectionalLight[2]);
+                DirectionalLight[3].position.set(-1000, -1000, -1000);
+
+                scene.add(DirectionalLight[3]);
+
+
+
+                DirectionalLight[0].position.set(0, 1000, 0);
+
+                scene.add(DirectionalLight[0]);
+                //add desk 
+                let desktop = new THREE.Mesh(new THREE.CylinderGeometry(200, 200, 20, 40, 20), new THREE.MeshStandardMaterial({
+                    color: 0xb3b3b3,
+                    //roughness: .9,
+                    //    emissive: 0xd5d5d5,
+                    //shading: THREE.FlatShading,
+                    map: that.threeD.texture['dalishi']
+            }))
+                desktop.position.y = 150;
+                scene.add(desktop);
+                let deskbottom = new THREE.Mesh(new THREE.CylinderGeometry(80, 80, 150, 18, 3), new THREE.MeshStandardMaterial({
+                    color: 0xa0a0a0,
+                    //roughness: .9,
+                    //emissive: 0xd5d5d5,
+                    //shading: THREE.FlatShading,
+                    map: that.threeD.texture['dalishi']
+                }))
+                deskbottom.position.y = 75;
+                scene.add(deskbottom);
+                //add wd
+              
+                    that.ele["wd"] = that.threeD.model['wd'];
+                that.ele["wd"].rotation.x = -Math.PI / 2;
+                   // that.ele["wd"].position.y = 160;
+                //that.ele["wd"].position.x = -60;
+                //that.ele["wd"].position.z = 40;
+                that.ele["wd"].position.x = -700;
+                that.ele["wd"].position.z = -700;
+                    scene.add(that.ele["wd"]);
+                
+              
+
+                //add ele
+                that.ele["_1"] = that.threeD.model['female'].clone();
+                that.ele["_1"].rotation.x = -Math.PI / 2;
+                scene.add(that.ele["_1"]);
+
+                //2
+                that.ele["_2"] = that.threeD.model['female'].clone();
+                that.ele["_2"].rotation.x = -Math.PI / 2;
+               that.ele["_2"].rotation.z = -Math.PI ;
+                that.ele["_2"].position.z = 60;
+                that.ele["_2"].position.x = 30;
+                scene.add(that.ele["_2"]);
+
+                //3
+                that.ele["_3"] = that.threeD.model['female'].clone();
+                that.ele["_3"].rotation.x = -Math.PI / 2;
+                that.ele["_3"].rotation.z = Math.PI/2;
+                that.ele["_3"].position.x = 0;
+                that.ele["_3"].position.z = 30;
+                scene.add(that.ele["_3"]);
+
+                //4
+                that.ele["_3"] = that.threeD.model['female'].clone();
+                that.ele["_3"].rotation.x = -Math.PI / 2;
+                that.ele["_3"].rotation.z = -Math.PI / 2;
+                that.ele["_3"].position.x = 60;
+                that.ele["_3"].position.z = 30;
+                scene.add(that.ele["_3"]);
+                //add laptop
+
+                var OBJLoader1 = new THREE.OBJLoader();
+                var MTLLoader1 = new THREE.MTLLoader();
+                MTLLoader1.load(`./doc/Model/laptop/laptop.mtl`, function (materials) {
+                    console.log(materials);
+                    OBJLoader1.setMaterials(materials);
+                    OBJLoader1.load(`./doc/Model/laptop/laptop.obj`, function (obj) {
+                        that.threeD.model['laptop'] = obj;
+                        that.ele["laptop"] = that.threeD.model['laptop'].clone();
+                        that.ele["laptop"].position.y = 160;
+                        that.ele["laptop"].position.x = -60;
+                        that.ele["laptop"].position.z = 180;
+                        that.ele["laptop"].rotation.x = -Math.PI / 2;
+                        scene.add(that.ele["laptop"]);
+                    })
+                })
+
+
+                OrthographicCamera.position.set(200 * c_zoom, 300 * c_zoom, 200 * c_zoom);
+                OrthographicCamera.lookAt(scene.position);
+                var animate = function () {
+
+                    renderer.render(scene, OrthographicCamera);
+
+
+                };
+
+                animate();
+               var controls = new THREE.OrbitControls(OrthographicCamera, renderer.domElement);
+
+                controls.maxDistance = 1800;
+                controls.minDistance = 300;
+
+                controls.addEventListener('change', animate);
+
+
+            }
+        }
+    var meeting=    new FLOOR_3D();
+    </script>
+</body>
+</html>

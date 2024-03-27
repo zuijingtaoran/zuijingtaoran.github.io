@@ -1,0 +1,25 @@
+# Exported from 3D Builder
+
+newmtl Mat_0
+Kd 1.000000 1.000000 1.000000
+map_Kd 4134454265_2048x2048_5085786608578006328.png
+
+newmtl Mat_1
+Kd 1.000000 1.000000 1.000000
+map_Kd 4131713017_512x512_3248531525346920784.png
+
+newmtl Mat_2
+Kd 1.000000 1.000000 1.000000
+map_Kd donghua_eyeL_hi.jpg
+
+newmtl Mat_3
+Kd 1.000000 1.000000 1.000000
+map_Kd donghua_eyeR_hi.jpg
+
+newmtl Mat_4
+Kd 1.000000 1.000000 1.000000
+map_Kd donghua_skin_hi.jpg
+
+newmtl Mat_5
+Kd 1.000000 1.000000 1.000000
+map_Kd donghua_teethUpper.jpg

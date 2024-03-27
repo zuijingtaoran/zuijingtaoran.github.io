@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DashboardName>Equipment Status Monitor</DashboardName>
+  <EndUser>xx</EndUser>
+  <Requester>xx</Requester>
+  <Description>xx</Description>
+  <DashboardMenues>
+    <DashboardMenue>
+      <Title>Equipment Status Summary</Title>
+      <URL>http://www.baidu.com</URL>
+    </DashboardMenue>
+    <DashboardMenue>
+      <Title>Equipment Down</Title>
+      <URL>xx</URL>
+    </DashboardMenue>
+    <DashboardMenue>
+      <Title>Equipment Idle</Title>
+      <URL>xx</URL>
+    </DashboardMenue>
+  </DashboardMenues>
+  <ColorCodeDefinitions>
+    <ColorCodeDefinition>
+      <DefinedItem>Production</DefinedItem>
+      <Color>green</Color>
+    </ColorCodeDefinition>
+    <ColorCodeDefinition>
+      <DefinedItem>Idle</DefinedItem>
+      <Color>gold</Color>
+    </ColorCodeDefinition>
+    <ColorCodeDefinition>
+      <DefinedItem>Down</DefinedItem>
+      <Color>red</Color>
+    </ColorCodeDefinition>
+  </ColorCodeDefinitions>
+  <Query>
+    <ConnectionString>DBInfo_E3PROD</ConnectionString>
+    <SQLStatement>select Tool_Name as EQP_NAME, ProductionStatus as EQP_STATUS, EQP_Type from  (
+					select TOOL_NAME, PROCESS_STATE,
+					case Process_State
+					  when   'PAUSING' then 'Idle'
+					  when   'DOWN' then 'Down'
+					  when 'RUNNING' then 'Production'
+					  when 'READY' then 'Idle'
+					  when 'IDLE' then 'Idle'
+					  when 'SETUP' then 'Down'
+					  when 'EXECUTING' then 'Production'
+					  when 'WAITING' then 'Idle'
+					  else 'Down' End as ProductionStatus,
+					  'EQP' as EQP_TYPE
+					from EES_EAP_EQUIPMENT_INFO_RT where PROCESS_STATE is not null)
+</SQLStatement>
+    <CheckRequired>true</CheckRequired>
+    <CostLimit>100</CostLimit>
+    <DVLayer>false</DVLayer>
+	 <LastRefreshTime>
+        <DataSource>
+          <DataSourceName>Source Data</DataSourceName>
+          <Query>
+            <ConnectionString>DBInfo_E3PROD</ConnectionString>
+            <SQLStatement>select sysdate - 1/24/60 from dual</SQLStatement>
+          </Query>
+        </DataSource>
+      </LastRefreshTime>
+  </Query>
+  <RefreshIntervalMinute>1</RefreshIntervalMinute>
+</Dashboard>

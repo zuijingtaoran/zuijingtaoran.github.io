@@ -1,0 +1,82 @@
+﻿body {font-family:Calibri;
+      font-size:16px;
+}
+body {
+  
+    background-size: cover;
+    object-fit: cover;
+}
+
+.corner-cut {
+    position: fixed;
+    right: 1vw;
+    width: 43vw;
+    height: auto;
+    top: 10vh;
+    border: 1px solid #27FAF3;
+    border-radius: 20px;
+    color: #27FAF3;
+    margin: 20px 20px;
+    background: #08283D;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    opacity: .8;
+    /*  background: linear-gradient(-45deg,transparent 12px, #08283D 0) bottom right, linear-gradient(45deg,transparent 12px, #08283D 0) bottom left, linear-gradient(135deg,transparent 12px, #08283D 0) top left, linear-gradient(-135deg,transparent 12px,#08283D 0) top right;
+            background-size: 50% 50%;
+            background-repeat: no-repeat;*/
+    transition: all .8s;
+}
+
+.info-table {
+    width: 100%;
+    border-right: 1px solid #27FAF3;
+    border-bottom: 1px solid #27FAF3;
+  
+  
+}
+
+    .info-table th {
+        font-weight: bold;
+        border-left: 1px solid #27FAF3;
+        border-top: 1px solid #27FAF3;
+    }
+
+    .info-table td {
+        border-left: 1px solid #27FAF3;
+        border-top: 1px solid #27FAF3;
+    }
+
+.kanban-div {
+    padding: 4px 15px;
+}
+
+
+[att='all_people'] {
+    color: #FA9F1B;
+    background-color: #333;
+}
+
+[att=Customer] {
+    /*  border-color: #2d8cf0;*/
+    color: #FA9F1B;
+    background-color: #bbb;
+}
+
+[att=Process] {
+    /* border-color: #19be6b;*/
+    color: #FA9F1B;
+    background-color: #888888;
+}
+
+[att=Input] {
+    /*  border-color: #ff9900;*/
+    color: #FA9F1B;
+    background-color: #858585;
+}
+
+[att=Source] {
+    /*    border-color: #808080;*/
+    color: #FA9F1B;
+    background-color: #999;
+}

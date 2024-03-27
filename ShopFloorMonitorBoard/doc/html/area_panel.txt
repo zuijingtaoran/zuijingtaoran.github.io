@@ -1,0 +1,96 @@
+﻿ <ul class="panel">
+       <li>
+            <div class="row">
+                <div class="col-xs-6">Area Size</div>
+                <div class="col-xs-6"> W
+<input value='56' class="inp inp-narrow" id="areaWidth"/>
+          
+H<input value='21' class="inp inp-narrow" id="areaHeight"/></div>
+            </div>
+			    <div class="row">
+                <div class="col-xs-6 ">
+				Area name
+				</div>
+				 <div class="col-xs-6 ">
+				 <input  class="inp " id="areaName"/>
+				
+				 </div>
+				</div>
+           <div class="row">
+                <div class="col-xs-4 ">
+				<select id='times'  class="inp hide  no-visible inp-narrow"> 
+			
+				</select></div><div class="col-xs-12 right">
+			
+				<button class='but drawArea' id='drawArea' onclick='drawAreaAll()'>Draw area</button>
+
+
+</div>
+            </div>
+        </li>
+       <li ><div class="row"><div class="col-xs-12 right">	<select  class='inp inp-narrow' id='hislist'></select>
+<a href='javascript:;' id='hisdata' class=''></a></div></div></li>
+        <li class="hide"><div class="row">
+    <div class="col-xs-6">Area type</div>
+    <div class="col-xs-6">
+       <input class='inp' id='type' />
+
+    </div>
+</div>   
+        </li>
+        <li><div class="row">
+    <div class="col-xs-6">SubArea name</div>
+    <div class="col-xs-6">
+         <input class='inp' id='name' />
+
+    </div>
+</div>
+        </li>
+        
+       
+		
+        <li>
+           
+			<div class="row">
+			<div class="col-xs-12 right"><input id='building' class='hide' type=checkbox />
+			<input type="color" class='hide' value='#FDFDFD' id="color"/>
+
+			
+			<button class='but' id='createObj'>Create Object</button></div></div>
+    
+        </li>
+		 <li>
+            <div class="row">
+                <div class="col-xs-6">SubArea Size</div>
+                <div class="col-xs-6">W:<input class="inp inp-narrow" value='4' id="eqptWidth" /> 
+                H:<input class="inp inp-narrow" value='3.12' id="eqptHeight" /></div>
+            </div>
+
+        </li>
+		 <li>
+            <div class="row">
+                <div class="col-xs-6">SubArea Position</div>
+                <div class="col-xs-6">T:<input class="inp inp-narrow" id="eqptTop" /> 
+                L:<input class="inp inp-narrow" id="eqptLeft" /></div>
+            </div>
+
+        </li>
+		<li>
+            <div class="row">
+			 <div class="col-xs-6 right no-visible">Link-TOP<input class='inp inp-narrow'value='20' id='linktop' />%</div>
+                <div class="col-xs-6 right">
+				<button class='but' id='adjust'>Adjust Location</button>
+				
+				</div>
+                
+            </div>
+			 </li>
+		<li>
+			  <div class="row">
+			   <div class="col-xs-12 right">
+			   	<button class='but save' id='save'>Save Map</button>
+			   </div>
+			  </div>
+
+        </li>
+    </ul>

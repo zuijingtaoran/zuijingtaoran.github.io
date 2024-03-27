@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+	<meta charset="UTF-8">
+	<title>Index Page</title>
+	<style type="text/css">
+		.d{ width: 16vw; height: 16vw; border-radius: 8vw;position: absolute;  color: #fff; font-size: 10vw;
+		} 
+		.f{width: 8vw; height: 8vw; border-radius: 4vw;position: absolute;font-size: 5vw;}
+		.b{ background-color: #00b88c; top: 20vh; left: 20vw;}
+		.a{ background-color: #4394d6; top: 60vh; left: 20vw;}
+		.l{ background-color: seagreen; top: 40vh; right: 40vw;}
+		.r{ background-color: palevioletred; top: 40vh; right: 20vw;}
+		.t{background-color:red top: 0vh; left: 70vw;}
+		.lp{background-color:coral top:0vh; left: 80vw;}
+	</style>
+</head>
+<body>
+	
+	
+	<button class="d b" onmousedown="c('q')" onmouseup="c('s')">B</button>
+	<button class="d a" onmousedown="c('h')"  onmouseup="c('s')">A</button>
+    <button class="d l" onmousedown="c('l')"  onmouseup="c('s')">L</button>
+    <button class="d r" onmousedown="c('y')"  onmouseup="c('s')">R</button>
+    <button class="f t" onclick="c('s')">T</button>
+	  <button class="f lp" onclick="c('lp')">L</button>
+    <p id='notice'></p>
+	<script>
+    function c(w){
+    Ajax.get('w?w='+w,function(data){document.getElementById('notice').innerHTML=data})
+    }
+    var Ajax={
+  get: function(url, fn) {
+     try{
+    var xhr = new XMLHttpRequest();            
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function() {
+   
+      if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) { 
+       
+        fn.call(this, xhr.responseText);  
+      }
+    };
+    xhr.send();
+  }catch(e){}
+ 
+}}
+	</script>
+</body>
+</html>

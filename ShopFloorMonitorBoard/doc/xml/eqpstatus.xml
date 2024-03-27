@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Menu xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Configes>
+    <Configs>
+      <Name>Equipment Status Summary</Name>
+
+    </Configs>
+    <Configs>
+      <Name>Equipment Down</Name>
+
+    </Configs>
+    <Configs>
+      <Name>Equipment Idle</Name>
+
+    </Configs>
+  
+
+  </Configes>
+</Menu>

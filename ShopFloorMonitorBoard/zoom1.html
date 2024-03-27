@@ -1,0 +1,1042 @@
+﻿<!--<!DOCTYPE html>-->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title><meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=8,IE=11" />
+    <script src="./doc/jquery-1.11.3.js"></script>
+    <script src="./doc/PublicFunc.js?v=4"></script>
+    <script src="./doc/hammer.min.js"></script>
+    <link href="doc/style/zoomicon.css" rel="stylesheet" />
+   
+    <style type="text/css">
+        * {
+            overflow: hidden;
+            box-sizing: border-box;
+            margin: 0px;
+            padding: 0px;
+        }
+
+            *:focus {
+                outline: none;
+            }
+
+        body {
+            background-color: #fff;
+        }
+
+        #box {
+            width: 1366px;
+            height: 768px;
+            border: 1px solid #bbb;
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            cursor: crosshair;
+            background-color: #fdfdfd;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            /*background-image: url("data:image/jpeg;base64,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");
+        background-repeat:repeat;*/
+        }
+
+        .area {
+            position: absolute;
+            opacity: 1;
+            background-color: #fdfdfd;
+            border: 2px solid #bbb;
+            border-radius: 1%;
+        }
+
+        .eqp {
+            position: absolute;
+            background-color: #eee;
+            border: 1px solid #ddd;
+            opacity: 1;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 7%;
+        }
+
+            .eqp:hover {
+                border-color: #ffd800;
+                transition: all 1.2s ease-in-out;
+            }
+
+            .eqp > img {
+                position: absolute;
+                width: 80%;
+                top: 1%;
+                left: 10%;
+                height: 80%;
+                z-index: 1000;
+                outline-width: 0px;
+                vertical-align: middle;
+            }
+
+            .eqp > span {
+                position: absolute;
+                left: 0px;
+                bottom: 0px;
+                width: 100%;
+                height: 16%;
+                font-size: 49%;
+                text-align: center;
+                margin: 0px;
+                z-index: 1001;
+                display: block;
+                background-color: #ccc;
+                color: #fff;
+            }
+
+        #panel {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.4;
+            display: table-cell;
+            z-index: 9999;
+        }
+
+            #panel input {
+                width: 35px;
+                height: 24px;
+                border-radius: 12px;
+                background-color: #fff;
+                color: #4394d6;
+                border: 1px solid #4394d6;
+                cursor: pointer;
+                position: relative;
+            }
+
+                #panel input:first-child {
+                    border-top-right-radius: 0%;
+                    border-bottom-right-radius: 0%;
+                    padding-left: 12px;
+                }
+
+                #panel input:last-child {
+                    border-top-left-radius: 0%;
+                    border-bottom-left-radius: 0%;
+                    left: -5px;
+                    border-left: none;
+                }
+
+            #panel .act {
+                background-color: #4394d6;
+                color: #fff;
+            }
+
+
+        .eqpStatus {
+            width: 100%;
+            border: none;
+            height: auto;
+            padding: 15px;
+        }
+
+            .eqpStatus td {
+                border: none;
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            .eqpStatus th {
+                border: none;
+                text-align: left;
+                white-space: nowrap;
+            }
+
+        .eqpStatusBox {
+            font-size: 0.9em;
+            z-index: 10001;
+            width: 410px;
+            height: 210px;
+            border: 1px solid #e2e2e2;
+            border-radius: 6px;
+            background-color: #f4f4f4;
+            color: #333;
+            position: absolute;
+            overflow: visible;
+            top: 20px;
+            left: 20px;
+            display: none;
+            box-shadow: 3px 3px 3px #bbb;
+        }
+
+        .eqpStatusBoxBottom::before {
+            content: '';
+            width: 0;
+            height: 0;
+            font-size: 0;
+            overflow: hidden;
+            position: absolute;
+            border-width: 10px;
+            border-style: dashed dashed solid dashed;
+            border-color: transparent transparent #e2e2e2 transparent;
+            left: 30px;
+            top: -20px;
+        }
+
+        .eqpStatusBoxBottom::after {
+            content: '';
+            width: 0;
+            height: 0;
+            font-size: 0;
+            overflow: hidden;
+            position: absolute;
+            border-width: 10px;
+            border-style: dashed dashed solid dashed;
+            border-color: transparent transparent #f4f4f4 transparent;
+            left: 30px;
+            top: -19px;
+        }
+
+        .eqpStatusBoxTop::before {
+            content: '';
+            width: 0;
+            height: 0;
+            font-size: 0;
+            overflow: hidden;
+            position: absolute;
+            border-width: 10px;
+            border-style: solid dashed dashed dashed;
+            border-color: #e2e2e2 transparent transparent transparent;
+            left: 30px;
+            bottom: -20px;
+        }
+
+        .eqpStatusBoxTop::after {
+            content: '';
+            width: 0;
+            height: 0;
+            font-size: 0;
+            overflow: hidden;
+            position: absolute;
+            border-width: 10px;
+            border-style: solid dashed dashed dashed;
+            border-color: #f4f4f4 transparent transparent transparent;
+            left: 30px;
+            bottom: -19px;
+        }
+        /*"type": "Building",
+        "BGcolor": "whitesmoke",
+        "border": "darkgreen"
+        }
+
+        ,
+        {
+            "type": "Facility", "BGcolor": "whitesmoke", "border": "orange"*/
+        .Building {
+            background-color: whitesmoke;
+            border: 1px dotted darkgreen;
+        }
+
+        .Facility {
+            background-color: whitesmoke;
+            border: 1px solid gray;
+        }
+
+        .Equipment {
+            background-color: whitesmoke;
+            border: 1px solid #000;
+        }
+
+        /*EquipmentStatus: "Production" -- --> darkgreen 14:48
+        EquipmentStatus:"Idle" --- --> Gold 14:49
+        EquipmentStatus:"Down" --- --> Darkred*/
+        @-webkit-keyframes shineDown {
+            from {
+                -webkit-box-shadow: 0 0 5px #bbb;
+            }
+
+            50% {
+                -webkit-box-shadow: 0 0 10px red;
+            }
+
+            to {
+                -webkit-box-shadow: 0 0 5px #bbb;
+            }
+        }
+
+        @-webkit-keyframes shineIdle {
+            from {
+                -webkit-box-shadow: 0 0 9px #ddd;
+            }
+
+            50% {
+                -webkit-box-shadow: 0 0 18px Gold;
+            }
+
+            to {
+                -webkit-box-shadow: 0 0 9px #ddd;
+            }
+        }
+
+        #box .areaDown {
+            -webkit-animation-name: shineDown;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+        }
+
+        #box .areaIdle {
+            -webkit-animation-name: shineIdle;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+        }
+
+        /****/
+        .eqpStatusBox .col-xs-4 {
+            height: 206px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            overflow: hidden;
+            border-radius: 6px 0px 0px 6px;
+        }
+
+        #eqpStatusBox_img {
+            max-width: 80%;
+            height: auto;
+            max-height: 200px;
+            margin: 10%;
+        }
+
+        .colorBox {
+            display: inline-block;
+            width: 20px;
+            height: 13px;
+            border-radius: 2px;
+            margin-left: 4px;
+            margin-right: 10px;
+        }
+
+        .col_green {
+            background-color: darkgreen;
+        }
+
+        .col_gray {
+            background-color: darkgray;
+        }
+
+        .col_red {
+            background-color: red;
+        }
+
+        #box .area_red {
+            -webkit-animation-name: area_red;
+            -webkit-animation-duration: 2s;
+            -webkit-animation-iteration-count: infinite;
+        }
+
+        @keyframes area_red {
+            0% {
+                border-color: #EE8262;
+                -webkit-box-shadow: 0 0 5px #EE8262;
+            }
+
+            100% {
+                border-color: red;
+                -webkit-box-shadow: 0 0 10px red;
+            }
+        }
+    </style>
+    <link href="doc/style/common.css" rel="stylesheet" />
+    <!--<script src="Scripts/jquery-1.11.1.min.js"></script>-->
+    <script src="Js/DCoolWeb.JScript.js"></script>
+    <script src="Js/DCoolWeb.DivCover.js"></script>
+    
+</head>
+
+<body>
+    <!--<div style="padding-left:20px;">
+        <div class="arrow_box" style="height:100px;width:200px;padding-left:5px;"></div>
+    </div>-->
+    <div id="success" style="position: absolute; z-index: 30000; height: 120px; width: 284px; left: 50%; top: 50%; margin-left: -150px; margin-top: -80px; display: none;">
+        <p style="line-height: 32px;">
+            <img src="Images/ajax_loading.gif" />
+            <font style="height: 30px; vartical-algin: center; padding-left: 5px"> Data loading, please wait...</font>
+        </p>
+    </div>
+    <script>objHiddle('success');</script>
+    <div class="eqpStatusBox">
+        <div class="row">
+            <div class="col-xs-4">
+                <img src="#" id="eqpStatusBox_img" alt="image" />
+            </div>
+            <div class="col-xs-8" id="eqpStatusBox_body"></div>
+        </div>
+    </div>
+    <div id="panel">
+        <input type="submit" class="act" value="2D" id="_2d" />
+        <input type="submit" value="3D" id="_3d" />
+    </div>
+    <div id="box">
+
+    </div>
+
+
+
+    <script>
+        'use strict';
+        var ratio = 0.0, zoom = 25, PX = 30, div, area
+            , areaWidth, areaHeight, windowHeight, eqpStatus;
+        var pf = new PublicFunc();
+
+        window.onload = function () {
+
+            area = pf.getQuery('area').toLowerCase();
+            var multi = {
+                'smt': 1,
+                'packingroom': 3
+
+            }
+            !!multi[area] && (zoom = zoom * multi[area]);
+            div = document.getElementById('box');
+            get_area_data(area);
+            windowHeight = $(window).height();
+            $('body').height($(window).height());
+            //////////////////////////////
+
+
+            LisEvent();
+            //
+            addEvent(div, "mousewheel", function (event) {
+
+                var o = event.delta * PX, w = div.css('width') + o, h = (div.css('height') + (o / ratio)), line = 5000;
+                div.css('width', w + 'px');
+                div.css('height', h + 'px');
+                var that = $(div);
+                that.css('top', (that.offset().top - o / ratio / 2) + 'px');
+                that.css('left', (that.offset().left - (o / 2)) + 'px');
+                if ((w > line + 1 - PX) && (w < line - 1 + PX)) {
+                    //$('.eqp img').hide();
+                    //$('.eqp span').css('height', '100%');
+                    $('.eqp span').hide();
+                };
+                if ((w > line + 1) && (w < line - 1 + PX + PX)) {
+                    //$('.eqp img').show();
+                    //$('.eqp span').css('height', '16%');
+                    $('.eqp span').show();
+                };
+            });
+
+            return;
+            setInterval(function () {
+                layer.load();
+                getEqpStatusFunc();
+            }, 1000 * 60)
+        };
+        function getEqpStatusFunc() {
+
+            $.getJSON('maps/' + area + '/eqpstatus.json?_=' + Math.random(), function (data) {
+                eqpStatus = data;
+                var len = data.length;
+
+                for (var a = 0; a < len; a++) {
+
+                    //"EquipmentName": "SPI-05T",
+                    //    "EquipmentStatus": "Idle",
+                    $('#' + data[a]['EquipmentName']).length > 0
+                        &&
+                        $('#' + data[a]['EquipmentName']).addClass('eqp Equipment ' + data[a]['EquipmentStatus']);
+                }
+
+                $('#box .area').each(function () {
+
+                    var that = $(this);
+                    ////***high CPU
+                    //that.find('.Equipment').each(function () {
+
+                    //var    eqp = $(this);
+
+                    //eqp.attr('class', 'eqp Equipment ' + findEqpStatus(eqpStatus, eqp.attr('id'))['EquipmentStatus']);
+
+                    //})
+                    ////***high CPU
+                    that.find('.Idle').length > 0 && that.addClass('areaIdle');
+                    that.find('.Down').length > 0 && that.addClass('areaDown');
+                    that = null;
+
+
+
+                })
+                layer.closeAll();
+            })
+        }
+        function get_area_data(area) {
+            $.getJSON('maps/' + area + '/main.json', function (data) {
+                areaWidth = data[0]['w'], areaHeight = data[0]['h'];
+                div.css('width', areaWidth * zoom + 'px');
+                div.css('height', areaHeight * zoom + 'px');
+                ratio = areaWidth / areaHeight;
+                data.splice(0, 1);
+                get_eqp_data(data);
+            })
+        }
+        function get_eqp_data(str) {
+
+            var list = [], item;
+            var len = str.length;
+            for (var i = 0; i < len; i++) {
+                item = str[i];
+                list.push(item['name']);
+                div.addChild({
+                    'width': item['w'] * 100 / areaWidth + '%'
+                    , 'height': item['h'] * 100 / areaHeight + '%'
+                    , 'top': item['t'] * 100 / areaHeight + '%'
+                    , 'left': item['l'] * 100 / areaWidth + '%'
+
+                }, {
+                        'id': item['name']
+                        , 'class': 'area'
+                    }, 'div')
+            }
+            pf.asynAjax(list, function (a, b) {
+
+                var c = b.shift();
+                var len1 = b.length;
+                for (var x = 0; x < len1; x++) {
+                    (function (box, eqpInfo, ind, areaW, areaH, win) {
+
+                        //var st=setTimeout(function () { 监测下来发现这样会导致内存泄漏，所以隐藏
+                        ////eqp typ
+                        var styleList, attrList, NodeName, children;
+                        styleList = {
+                            'width': eqpInfo['w'] * 100 / areaW + '%'
+                            , 'height': eqpInfo['h'] * 100 / areaH + '%'
+                            , 'top': eqpInfo['t'] * 100 / areaH + '%'
+                            , 'left': eqpInfo['l'] * 100 / areaW + '%'
+                        };
+                        NodeName = 'div';
+                        if (eqpInfo['objtype'] === 'Equipment') {
+                            attrList = {
+                                'id': eqpInfo['name']
+                                , 'class': 'eqp ' + eqpInfo['objtype']
+                            };
+                            children = '<img class="eqpinfo" src="images/' + area + '/' + (!eqpInfo['color'] ? 'blank.png' : eqpInfo['color']) + '" /><span  class="eqpinfo">' + eqpInfo['name'] + '</span>';
+
+                        }
+
+                        if (eqpInfo['objtype'] === 'Building' || eqpInfo['objtype'] === 'Facility') {
+                            attrList = {
+
+                                'class': 'eqp ' + eqpInfo['objtype']
+                            };
+                            //  children = '<img class="eqpinfo" src="images/' + area + '/' + (eqpInfo['name'] || 'blank') + '.png" alt="' + eqpInfo['name'] + '" />';//change 171010
+                            children = '<img class="eqpinfo" src="images/' + area + '/blank.png" alt="' + eqpInfo['name'] + '" />';
+
+
+                        }
+                        box.addChild(styleList, attrList, NodeName, children);
+                        //    win.clearTimeout(st);
+
+                        //}, 80 * ind)
+                    })(document.getElementById(a), b[x], x, c['w'], c['h'], window)
+
+                }
+
+            }, function () {
+                setTimeout(function () {
+                    getEqpStatusFunc();
+                    loadEqpStatus();
+                }, 2000);
+            }, area)
+        }
+
+
+    </script>
+    <script>
+        function LisEvent() {
+            document.getElementById('panel').addEventListener('click', function () {
+                $('.eqpStatusBox').hide();
+                var target = event.target || event.srcElement;
+                if (('' + target.attr('class')).indexOf('act') === -1) {
+                    $('.act').removeClass('act');
+                    $(target).addClass('act');
+                    $('#box').css('transition', 'all 1.2s ease-in-out');
+                    if (target.attr('id') == '_2d') {
+                        $('#style_3d').remove();
+                        $("<link>").attr({
+                            id: 'style_2d',
+                            rel: "stylesheet",
+                            type: "text/css",
+                            href: 'doc/style/2d.css?_=' + Math.random()
+                        }).appendTo("head");
+
+                    }
+                    if (target.attr('id') == '_3d') {
+                        $('#style_2d').remove();
+                        $("<link>").attr({
+                            id: 'style_3d',
+                            rel: "stylesheet",
+                            type: "text/css",
+                            href: 'doc/style/3d.css?_=' + Math.random()
+                        }).appendTo("head");
+
+
+
+                    };
+                    setTimeout(function () {
+
+                        $('#box').css('transition', 'none');
+                    }, 1500)
+                }
+            })
+
+            //////////////////////
+            div.addEventListener('mousedown', function (ev) {
+                $('.eqpStatusBox').hide();
+                var oevent = ev || event;
+                var div1 = oevent.target || oevent.srcElement;
+                if (('' + div1.getAttribute('class')).indexOf('eqpinfo') > -1) {
+                    div1 = div1.parentNode.parentNode.parentNode;//获取img p 的父节点
+                }
+                if (('' + div1.getAttribute('class')).indexOf('eqp') > -1) {
+                    div1 = div1.parentNode.parentNode;//获取eqp 的父节点
+                } if (('' + div1.getAttribute('class')).indexOf('area') > -1) {
+                    div1 = div1.parentNode;//获取area 的父节点
+                }
+                var distanceX = oevent.clientX - div1.offsetLeft;
+                var distanceY = oevent.clientY - div1.offsetTop;
+
+                document.onmousemove = function (ev) {
+                    var oevent = ev || event;
+                    var l = oevent.clientX - distanceX,
+                        t = oevent.clientY - distanceY;
+
+                    div1.style.left = l + 'px';
+                    div1.style.top = t + 'px';
+
+
+
+                };
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+
+                };
+            })
+
+
+
+            /////////
+            document.onkeydown = function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+
+                if (e && e.keyCode == 38) {
+                    div.css('width', (div.css('width') + PX) + 'px');
+                    div.css('height', (div.css('height') + (PX / ratio)) + 'px');
+                }
+                if (e && e.keyCode == 40) {
+                    div.css('width', (div.css('width') - PX) + 'px');
+                    div.css('height', (div.css('height') - (PX / ratio)) + 'px');
+                }
+            };
+        }
+    </script>
+    <script src="doc/layer/layer.js"></script>
+    <script>
+
+        $(function () {
+            $('#box').click(function () {
+                $('.eqpStatusBox').hide();
+                //Facility
+            })
+            $('body').delegate('.Facility', 'mouseover', function () { $('.eqpStatusBox').hide(); })
+
+
+            $('body').delegate('.Equipment', 'click', function () {
+
+
+                div1 = $(this);
+                layer.open({
+                    title: div1.attr('id') + ' Commands',
+                    type: 2,
+                    area: [($(window).width() - 200) + 'px', ($(window).height() - 100) + 'px'],
+                    maxmin: true,
+                    content: 'equipmentcommands.html?area=' + GetChartConfigName('area') + '&dashboard=' + GetChartConfigName('dashboard') + '&eqp_name=' + div1.attr('id')
+                    //  + "&img=" + div1.find('.eqpinfo').eq(0).attr('src')
+                    //  + "&status=" + JSON.stringify( findEqpStatus(eqpStatus, div1.attr('id')))
+                });
+                var status = findEqpStatus(eqpStatus, $(this).attr('id'));
+                status["img"] = div1.find('.eqpinfo').eq(0).attr('src');
+                status["sta"] = div1.attr('class').split(' ')[2] || '';
+                status["id"] = div1.attr('id');
+                pf.setCookie('status', JSON.stringify(status), 1);
+
+                return;
+                $('.eqpStatusBox .col-xs-4').attr('class', 'col-xs-4');
+
+                var status = findEqpStatus(eqpStatus, $(this).attr('id'));
+                tabs = "<table class='eqpStatus'>";
+                for (st in status) {
+                    tabs += "<tr><td>" + st + "</td><th>" + status[st] + "</th></tr>"
+                };
+                tabs += "</table>";
+
+                $('.eqpStatusBox').css("left", div1.offset().left - 27);
+
+                var div1Top = div1.offset().top - $(window).scrollTop();
+                if (div1Top > (windowHeight / 2)) {
+                    $('.eqpStatusBox').addClass('eqpStatusBoxTop');
+                    $('.eqpStatusBox').removeClass('eqpStatusBoxBottom');
+                    $('.eqpStatusBox').css("top", div1.offset().top - 210 - 10);
+                } else {
+                    $('.eqpStatusBox').addClass('eqpStatusBoxBottom');
+                    $('.eqpStatusBox').removeClass('eqpStatusBoxTop');
+                    $('.eqpStatusBox').css("top", div1.offset().top + div1.outerHeight() + 10);
+                }
+
+                $('#eqpStatusBox_body').html(tabs);
+                $('#eqpStatusBox_img').attr('src', div1.find('.eqpinfo').eq(0).attr('src'));
+                $('.eqpStatusBox .col-xs-4').addClass(div1.attr('class').split(' ')[2] || '');
+                $('.eqpStatusBox').show(400);
+
+
+                event.stopPropagation();
+
+
+
+
+
+
+
+
+
+            })
+
+
+
+
+
+
+        })
+        function findEqpStatus(str, name) {
+
+            if (str != undefined) {
+                var len = str.length;
+                for (var i = 0; i < len; i++) {
+
+                    if (name === str[i]['EquipmentName']) {
+                        return str[i];
+                    }
+                }
+            }
+
+            return { 'EquipmentName': name, "EquipmentStatus": "" };
+        }
+    </script>
+
+    <p id="lbl_Error" style="color: darkred; display: none"></p>
+    <p id="lbl_chartDatas" style="color: darkred; display: none;"></p>
+    <script>
+        function Init(chartType, parameters, parametersValue, successFunc) {
+            $.ajax({
+                type: "get",
+                url: "Utility/ConfigParser.ashx",
+                data: { 'ChartType': chartType, 'ConfigPath': GetChartConfigName('ChartConfigPath'), 'Parameters': parameters, 'ParametersValue': parametersValue },
+                dataType: "json",
+                cache: false,
+                beforeSend: function () {
+                    //JqueryShow(getTipsId());
+                },
+                success: function (xml) {
+                    successFunc(xml);
+                },
+                error: function () {
+                    //var lbl_Error = document.getElementById("lbl_Error");
+                    //lbl_Error.style.display = "";
+                    //lbl_Error.innerHTML = "ajax request error!";
+                    //alert("ajax request error!");
+                }
+            });
+        }
+        function GetChartConfigName(para) {
+            return decodeURIComponent("".dcGetQueryStringUrlByName(para));
+        }
+        function showError(data) {
+            var lbl_Error = document.getElementById("lbl_Error");
+
+            if (data.DataType == "Error") {
+                lbl_Error.style.display = "";
+                lbl_Error.innerHTML = data.ExceptionMessage;
+            }
+            else {
+                lbl_Error.style.display = "none";
+            }
+        }
+
+        function loadEqpStatus() {
+            var pars = [];
+            var parvs = [];
+            pars.push('AreaName');
+            pars.push('DashboardName');
+            var area = GetChartConfigName('area');
+            var dashboard = GetChartConfigName('dashboard');
+            parvs.push(area);
+            parvs.push(dashboard);
+            Init('LoadEqpStatus', pars.join(), parvs.join('×'), function (data) {
+                showError(data);
+
+                $('#lbl_chartDatas').setValue(data);
+                var refreshIntervalMinute = data.RefreshIntervalMinute;
+                var secs = (refreshIntervalMinute ? refreshIntervalMinute.dcToInt() : 0) * 60;
+                if (secs > 0) {
+                    setStatus();
+                    setInterval(setStatus, secs * 1000);
+                } else {
+                    JqueryHide(getTipsId());
+                }
+            });
+        }
+        function setStatus() {
+            var data = $('#lbl_chartDatas').getValue();
+            window.parent.createShowInfoHtml(data, data);
+            var colorArea = loadColor(data.MapObject.MapObjectSubs, 'AREA');
+            var colorEqp = loadColor(data.MapObject.MapObjectSubs, 'EQP');
+
+            for (var i = 0; i < data.ChartSeries.Table.length; i++) {
+                var c = data.ChartSeries.Table[i];
+                switch (c.EQP_TYPE) {
+                    case "EQP":
+                        var eqp = $('div.eqp[id]:not([c="1"])');
+                        eqp.each(function () {
+                            if ($(this).iid() === c.EQP_NAME) {
+                                setColor($(this), colorEqp.ColoringObject, colorEqp.ColoringType, c.EQP_STATUS, data.ColorCodeDefinitions);
+                                //$(this).css({ 'background-color': loadStatusColor(c.EQP_STATUS, data.ColorCodeDefinitions) })//.ClassAdd(loadStatusColor(c.EQP_STATUS, data.ColorCodeDefinitions))
+                                //    .setValue('c', '1');
+                                return false;
+                            }
+                        });
+                        break;
+                    case "AREA":
+                        var area = $('div.area[id]:not([c="1"])');
+                        area.each(function () {
+                            if ($(this).iid() === c.EQP_NAME) {
+                                setColor($(this), colorArea.ColoringObject, colorArea.ColoringType, c.EQP_STATUS, data.ColorCodeDefinitions);
+                                return false;
+                            }
+                        });
+                        break;
+                }
+            }
+        }
+        function loadStatusColor(status, colors) {
+            var color = '';
+            for (var i = 0; i < colors.length; i++) {
+                var c = colors[i];
+                if (c.DefinedItem === status) {
+                    return c.Color;
+                }
+            }
+            return color;
+        }
+        function loadColor(MapObjectSubs, cType) {
+            for (var j = 0; j < MapObjectSubs.length; j++) {
+                var c = MapObjectSubs[j];
+                if (c.ObjectName === cType) {
+                    return c;
+                }
+            }
+            return { ObjectName: '', ColoringObject: '', ColoringType: '' }
+        }
+        function setColor(o, coloringObject, coloringType, EQP_STATUS, ColorCodeDefinitions) {
+            var color = loadStatusColor(EQP_STATUS, ColorCodeDefinitions);
+            switch (coloringObject) {
+                case "Background":
+                    o.css({ 'background-color': color });
+                    break;
+                case "Border":
+                    switch (coloringType) {
+                        case "Blinking":
+                            o.ClassAdd('area_' + color);
+                            break;
+                        default:
+                            o.css({ 'border': '2px solid ' + color });
+                            break;
+                    }
+                    break;
+            }
+            o.setValue('c', '1');
+        }
+    </script>
+    <script defer>
+        delete Hammer.defaults.cssProps.userSelect;
+        function point2D(x, y) {
+            return { x: x, y: y };
+        }
+
+        var reqAnimationFrame = (function () {
+            return window[Hammer.prefixed(window, 'requestAnimationFrame')] || function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+        })();
+
+
+        var tMatrix = [1, 0, 0, 1, 0, 0]//x缩放，无，无，y缩放，x平移，y平移
+
+        var initScale = 1;//初始化scale
+        var el = document.getElementById("box");//获取元素
+        var mc = new Hammer.Manager(el)
+        var ticking = false
+        var poscenter = point2D(0, 0);//缓存双指的中心坐标
+        var duration = '';//设置过渡效果，用于双击缩放效果
+        var lastTranslate = point2D(0, 0);//记录上次的偏移值
+        var lastcenter = point2D(el.offsetWidth / 2, el.offsetHeight / 2)//图像的中心点，用于对比双指中心点
+
+        var center = lastcenter
+        mc.add(new Hammer.Pan({ threshold: 0, pointers: 1 }))
+        mc.add(new Hammer.Pinch({ threshold: 0 }))
+        mc.add(new Hammer.Tap({ event: 'doubletap', taps: 2 }));
+        mc.on("panmove", onPan);
+        mc.on("panstart", onPanStart)
+        mc.on("pinchmove", onPinch);
+        mc.on("pinchstart", onPinchStart);
+        mc.on("doubletap", onDoubleTap);
+
+        function onPanStart(ev) {
+            lastTranslate = point2D(tMatrix[4], tMatrix[5])//缓存上一次的偏移值
+        }
+        function onPan(ev) {
+            duration = ''
+            el.className = ''
+            tMatrix[4] = lastTranslate.x + ev.deltaX
+            tMatrix[5] = lastTranslate.y + ev.deltaY
+            requestElementUpdate('onpan');
+
+        }
+        function onPinchStart(ev) {
+            duration = '';
+            lastTranslate = point2D(tMatrix[4], tMatrix[5])//记录上一次的偏移值
+            initScale = tMatrix[0] || 1;
+            poscenter = point2D(ev.center.x, ev.center.y)
+
+            lastcenter = point2D(center.x + lastTranslate.x, center.y + lastTranslate.y)//重新计算放大后的中心坐标
+            poscenter = point2D(ev.center.x - lastcenter.x, ev.center.y - lastcenter.y)
+            console.log("center", lastcenter.x, lastcenter.y)
+
+            requestElementUpdate('onpinchStart');
+        }
+        function onPinch(ev) {
+            var nowScale = tMatrix[0] = tMatrix[3] = initScale * ev.scale;
+            var composscal = (1 - ev.scale)
+            //tMatrix[4] = poscenter.x - ((poscenter.x - lastcenter.x) *  ev.scale + lastcenter.x)  + lastTranslate.x//最后加上上一次的偏移值
+            //tMatrix[5] = poscenter.y - ((poscenter.y - lastcenter.y) *  ev.scale + lastcenter.y)  + lastTranslate.y
+            tMatrix[4] = (1 - ev.scale) * poscenter.x + lastTranslate.x
+            tMatrix[5] = (1 - ev.scale) * poscenter.y + lastTranslate.y
+            requestElementUpdate('onpinch');
+        }
+
+        function onDoubleTap(ev) {
+            duration = ".3s ease all";
+            var nowScale = tMatrix[0];
+            if (nowScale != 1 || tMatrix[4] != 0) {
+                //scale不等于1，要重回1
+                tMatrix[0] = tMatrix[3] = 1;
+                tMatrix[4] = tMatrix[5] = 0;
+            } else {
+                var pointer = ev.center
+                var scale = 2
+                tMatrix[0] = tMatrix[3] = scale
+                //var last = point2D
+                //tMatrix[4] = pointer.x - ((pointer.x-lastcenter.x) * scale + lastcenter.x);
+                //tMatrix[5] = pointer.y - ((pointer.y-lastcenter.y) * scale + lastcenter.y);
+                tMatrix[4] = (1 - scale) * (pointer.x - center.x)
+                tMatrix[5] = (1 - scale) * (pointer.y - center.y)
+            }
+            requestElementUpdate('doubleTap');
+        }
+
+        function updateElementTransform() {
+            el.style.transition = duration
+            var tmp = tMatrix.join(',')
+            console.log(tmp)
+            el.style.transform = 'matrix(' + tmp + ')';
+            ticking = false;
+        }
+
+        function requestElementUpdate() {
+            arguments && console.log(arguments[0])
+
+            if (!ticking) {
+                reqAnimationFrame(updateElementTransform);
+                ticking = true;
+            }
+        }
+
+        /**
+        初始化设置
+        */
+
+        requestElementUpdate();
+            //var getCss = function (o, key) {
+            //    return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
+            //};
+
+            //function drag(element) {
+            //    element.style.top = getCss(element, "top");
+            //    element.style.left = getCss(element, "left");
+            //    var hammer = new Hammer(element);//hammer实例
+            //    var x = 0;
+            //    var y = 0;
+            //    hammer.on('panstart', function (event) {
+            //        x = parseInt(element.style.left);
+            //        y = parseInt(element.style.top);
+            //    });
+            //    hammer.on('panmove', function (event) {
+            //        element.style.top = y + event.deltaY + "px";
+            //        element.style.left = x + event.deltaX + "px";
+            //    });
+            //    hammer.on('panend', function (event) {
+
+            //    });
+
+            //}
+            //var myElement = document.getElementById("box");
+
+            //drag(myElement);
+
+
+
+
+
+            //return;
+            //var hammertime = new Hammer(document.getElementById("box"));
+            ////添加事件
+            //hammertime.on("pan", function (ev) {
+            //    $('.eqpStatusBox').hide();
+            //    var oevent = ev || event;
+            //    var div1 = oevent.target || oevent.srcElement;
+            //    if (('' + div1.getAttribute('class')).indexOf('eqpinfo') > -1) {
+            //        div1 = div1.parentNode.parentNode.parentNode;//获取img p 的父节点
+            //    }
+            //    if (('' + div1.getAttribute('class')).indexOf('eqp') > -1) {
+            //        div1 = div1.parentNode.parentNode;//获取eqp 的父节点
+            //    } if (('' + div1.getAttribute('class')).indexOf('area') > -1) {
+            //        div1 = div1.parentNode;//获取area 的父节点
+            //    }
+            //    var distanceX = oevent.clientX - div1.offsetLeft;
+            //    var distanceY = oevent.clientY - div1.offsetTop;
+
+            //    document.onmousemove = function (ev) {
+            //        var oevent = ev || event;
+            //        var l = oevent.clientX - distanceX,
+            //            t = oevent.clientY - distanceY;
+
+            //        div1.style.left = l + 'px';
+            //        div1.style.top = t + 'px';
+
+
+
+            //    };
+
+            //    document.getElementById("result").innerHTML += "X偏移量：【" + e.deltaX + "】，Y偏移量：【" + e.deltaY + "】<br />";
+            //    //控制台输出
+            //    console.log(e);
+           // });
+    </script>
+   
+</body>
+</html>
